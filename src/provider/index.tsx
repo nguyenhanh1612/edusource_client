@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-// import GlobalContent from "@/provider/global-content";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Message from "../components/message/message";
 
@@ -25,7 +24,7 @@ export default function Provider({
     return (
         <StoreProvider>
             <ReactQueryProvider>
-                <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENTID || ""}>
+                <GoogleOAuthProvider clientId="993818907153-7sre2c2eu9psctd7h253phjlif4ssokk.apps.googleusercontent.com">
                     <Message>{children}</Message>
                 </GoogleOAuthProvider>
             </ReactQueryProvider>

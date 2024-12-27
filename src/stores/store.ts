@@ -15,7 +15,6 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import userSlice from "@/stores/user-slice";
 import authSlice from "@/stores/auth-slice";
-// import createPetSlice from "@/stores/create-pet-slice";
 import accountSlice from "@/stores/account-slice";
 import differenceSlice from "@/stores/difference-slice";
 
@@ -29,7 +28,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   userSlice: userSlice,
   authSlice: authSlice,
-    // createPetSlice: createPetSlice,
   accountSlice: accountSlice,
   differenceSlice: differenceSlice,
 });
