@@ -1,0 +1,96 @@
+[debug] [2024-12-25T16:56:01.173Z] ----------------------------------------------------------------------
+[debug] [2024-12-25T16:56:01.175Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Admin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only storage --debug
+[debug] [2024-12-25T16:56:01.175Z] CLI Version:   13.29.1
+[debug] [2024-12-25T16:56:01.175Z] Platform:      win32
+[debug] [2024-12-25T16:56:01.175Z] Node Version:  v21.6.1
+[debug] [2024-12-25T16:56:01.175Z] Time:          Wed Dec 25 2024 23:56:01 GMT+0700 (Indochina Time)
+[debug] [2024-12-25T16:56:01.176Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-25T16:56:01.239Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-25T16:56:01.240Z] > authorizing via signed-in user (hanhnthse170189@fpt.edu.vn)
+[debug] [2024-12-25T16:56:01.241Z] [iam] checking project courses-4199c for permissions ["firebase.projects.get","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2024-12-25T16:56:01.242Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:01.243Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:01.245Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c:testIamPermissions [none]
+[debug] [2024-12-25T16:56:01.246Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c:testIamPermissions x-goog-quota-user=projects/courses-4199c
+[debug] [2024-12-25T16:56:01.247Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c:testIamPermissions {"permissions":["firebase.projects.get","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2024-12-25T16:56:02.560Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c:testIamPermissions 200
+[debug] [2024-12-25T16:56:02.560Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c:testIamPermissions {"permissions":["firebase.projects.get","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[info] 
+[info] === Deploying to 'courses-4199c'...
+[info] 
+[info] i  deploying storage 
+[info] i  storage: ensuring required API firebasestorage.googleapis.com is enabled... 
+[debug] [2024-12-25T16:56:02.565Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:02.565Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:02.565Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/courses-4199c/services/firebasestorage.googleapis.com [none]
+[debug] [2024-12-25T16:56:02.566Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/courses-4199c/services/firebasestorage.googleapis.com x-goog-quota-user=projects/courses-4199c
+[debug] [2024-12-25T16:56:04.144Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/courses-4199c/services/firebasestorage.googleapis.com 200
+[debug] [2024-12-25T16:56:04.145Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/courses-4199c/services/firebasestorage.googleapis.com [omitted]
+[info] +  storage: required API firebasestorage.googleapis.com is enabled 
+[debug] [2024-12-25T16:56:04.147Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:04.147Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:04.148Z] >>> [apiv2][query] GET https://firebasestorage.googleapis.com/v1alpha/projects/courses-4199c/defaultBucket [none]
+[debug] [2024-12-25T16:56:05.183Z] <<< [apiv2][status] GET https://firebasestorage.googleapis.com/v1alpha/projects/courses-4199c/defaultBucket 200
+[debug] [2024-12-25T16:56:05.183Z] <<< [apiv2][body] GET https://firebasestorage.googleapis.com/v1alpha/projects/courses-4199c/defaultBucket {"name":"projects/courses-4199c/defaultBucket","location":"US","bucket":{"name":"projects/courses-4199c/buckets/courses-4199c.appspot.com"},"storageClass":"STANDARD"}
+[info] i  firebase.storage: checking storage.rules for compilation errors... 
+[debug] [2024-12-25T16:56:05.185Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:05.186Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:05.186Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c:test [none]
+[debug] [2024-12-25T16:56:05.187Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c:test [omitted]
+[debug] [2024-12-25T16:56:06.683Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c:test 200
+[debug] [2024-12-25T16:56:06.684Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c:test {}
+[info] +  firebase.storage: rules file storage.rules compiled successfully 
+[debug] [2024-12-25T16:56:06.686Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:06.686Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:06.687Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases pageSize=10&pageToken=
+[debug] [2024-12-25T16:56:07.228Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases 200
+[debug] [2024-12-25T16:56:07.229Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases {"releases":[{"name":"projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com","rulesetName":"projects/courses-4199c/rulesets/4d4d5ef4-3b1e-4a0d-9d86-929818f4bd9f","createTime":"2024-06-17T07:29:32.554345Z","updateTime":"2024-06-17T07:29:32.554345Z"}]}
+[debug] [2024-12-25T16:56:07.230Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:07.231Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:07.232Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets/4d4d5ef4-3b1e-4a0d-9d86-929818f4bd9f [none]
+[debug] [2024-12-25T16:56:08.528Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets/4d4d5ef4-3b1e-4a0d-9d86-929818f4bd9f 200
+[debug] [2024-12-25T16:56:08.529Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets/4d4d5ef4-3b1e-4a0d-9d86-929818f4bd9f [omitted]
+[debug] [2024-12-25T16:56:08.531Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:08.531Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:08.531Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c [none]
+[debug] [2024-12-25T16:56:09.843Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c 200
+[debug] [2024-12-25T16:56:09.844Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/courses-4199c {"projectNumber":"948729332032","projectId":"courses-4199c","lifecycleState":"ACTIVE","name":"courses","labels":{"firebase":"enabled"},"createTime":"2024-06-17T06:40:10.164437Z","parent":{"type":"organization","id":"977239029562"}}
+[debug] [2024-12-25T16:56:09.846Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:09.846Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T16:56:09.847Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:getIamPolicy [none]
+[debug] [2024-12-25T16:56:10.223Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:getIamPolicy 200
+[debug] [2024-12-25T16:56:10.224Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:getIamPolicy {"version":1,"etag":"BwYbEOyuDUA=","bindings":[{"role":"roles/editor","members":["serviceAccount:courses-4199c@appspot.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-948729332032@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:hanhnthse170189@fpt.edu.vn"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]}]}
+[debug] [2024-12-25T17:01:17.239Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:17.240Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:17.240Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:getIamPolicy [none]
+[debug] [2024-12-25T17:01:18.634Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:getIamPolicy 200
+[debug] [2024-12-25T17:01:18.635Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:getIamPolicy {"version":1,"etag":"BwYbEOyuDUA=","bindings":[{"role":"roles/editor","members":["serviceAccount:courses-4199c@appspot.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-948729332032@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:hanhnthse170189@fpt.edu.vn"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]}]}
+[debug] [2024-12-25T17:01:18.637Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:18.637Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:18.638Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:setIamPolicy [none]
+[debug] [2024-12-25T17:01:18.638Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:setIamPolicy {"policy":{"version":1,"etag":"BwYbEOyuDUA=","bindings":[{"role":"roles/editor","members":["serviceAccount:courses-4199c@appspot.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-948729332032@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:hanhnthse170189@fpt.edu.vn"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.firestoreServiceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firebasestorage.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2024-12-25T17:01:19.468Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:setIamPolicy 200
+[debug] [2024-12-25T17:01:19.469Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/948729332032:setIamPolicy {"version":1,"etag":"BwYqGy2sdIY=","bindings":[{"role":"roles/editor","members":["serviceAccount:courses-4199c@appspot.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-948729332032@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.firestoreServiceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-948729332032@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:hanhnthse170189@fpt.edu.vn"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-ualbk@courses-4199c.iam.gserviceaccount.com"]}]}
+[info] i  storage: updated service account for cross-service rules... 
+[info] i  storage: uploading rules storage.rules... 
+[debug] [2024-12-25T17:01:19.471Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:19.471Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:19.472Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets [none]
+[debug] [2024-12-25T17:01:19.472Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets [omitted]
+[debug] [2024-12-25T17:01:21.006Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets 200
+[debug] [2024-12-25T17:01:21.007Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/courses-4199c/rulesets {"name":"projects/courses-4199c/rulesets/9f3977df-75d4-4fb7-a85c-d32d9bc0d92c","source":{"files":[{"content":"rules_version = '2';\n\n// Craft rules based on data in your Firestore database\n// allow write: if firestore.get(\n//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;\nservice firebase.storage {\n  match /b/{bucket}/o {\n    match /{allPaths=**} {\n      allow read, write: if false;\n    }\n  }\n}\n","name":"storage.rules"}]},"createTime":"2024-12-25T17:01:20.588767Z","metadata":{"services":["firebase.storage"]}}
+[debug] [2024-12-25T17:01:21.008Z] [rules] created ruleset projects/courses-4199c/rulesets/9f3977df-75d4-4fb7-a85c-d32d9bc0d92c
+[debug] [2024-12-25T17:01:21.008Z] [rules] releasing firebase.storage/courses-4199c.appspot.com with ruleset projects/courses-4199c/rulesets/9f3977df-75d4-4fb7-a85c-d32d9bc0d92c
+[debug] [2024-12-25T17:01:21.009Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:21.009Z] Checked if tokens are valid: true, expires at: 1735148409064
+[debug] [2024-12-25T17:01:21.009Z] >>> [apiv2][query] PATCH https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com [none]
+[debug] [2024-12-25T17:01:21.010Z] >>> [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com {"release":{"name":"projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com","rulesetName":"projects/courses-4199c/rulesets/9f3977df-75d4-4fb7-a85c-d32d9bc0d92c"}}
+[debug] [2024-12-25T17:01:22.363Z] <<< [apiv2][status] PATCH https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com 200
+[debug] [2024-12-25T17:01:22.364Z] <<< [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com {"name":"projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com","rulesetName":"projects/courses-4199c/rulesets/9f3977df-75d4-4fb7-a85c-d32d9bc0d92c","createTime":"2024-06-17T07:29:32.554345Z","updateTime":"2024-12-25T17:01:21.936252Z"}
+[debug] [2024-12-25T17:01:22.365Z] [rules] updated release projects/courses-4199c/releases/firebase.storage/courses-4199c.appspot.com
+[info] +  storage: released rules storage.rules to firebase.storage 
+[info] 
+[info] +  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/courses-4199c/overview
