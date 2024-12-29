@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/stores/store";
 import { ChevronDown, SendHorizontal, X } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { HubConnectionBuilder } from "@microsoft/signalr";
+// import { HubConnectionBuilder } from "@microsoft/signalr";
 import TippyHeadless from "@tippyjs/react/headless";
 import { ListMessages } from "@/const/user";
 
@@ -24,24 +24,24 @@ export default function Message({
   const [messagesBot, setMessagesBot] = useState<API.TMessage[]>([]);
   const [messagesStaff, setMessagesStaff] = useState<API.TMessage[]>([]);
 
-  const createConnection = async () => {
-    const hubUrl = `${process.env.NEXT_PUBLIC_HUB_SERVER}/hub/message-hub?userId=${userState.user?.userId}&role=${userState.user?.roleId}`;
-    const newConnection = new HubConnectionBuilder()
-      .withUrl(hubUrl)
-      .withAutomaticReconnect()
-      .build();
+  // const createConnection = async () => {
+  //   const hubUrl = `${process.env.NEXT_PUBLIC_HUB_SERVER}/hub/message-hub?userId=${userState.user?.userId}&role=${userState.user?.roleId}`;
+  //   const newConnection = new HubConnectionBuilder()
+  //     .withUrl(hubUrl)
+  //     .withAutomaticReconnect()
+  //     .build();
 
-    setConnection(newConnection);
-  };
+  //   setConnection(newConnection);
+  // };
 
-  useEffect(() => {
-    const handleFetchConnection = async () => {
-      if (userState.user !== null) {
-        await createConnection();
-      }
-    };
-    handleFetchConnection();
-  }, [userState]);
+  // useEffect(() => {
+  //   const handleFetchConnection = async () => {
+  //     if (userState.user !== null) {
+  //       await createConnection();
+  //     }
+  //   };
+  //   handleFetchConnection();
+  // }, [userState]);
 
   useEffect(() => {
     try {

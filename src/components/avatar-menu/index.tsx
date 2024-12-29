@@ -58,7 +58,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
             handleNavigate(1);
           }
           if(userState?.user?.roleId === Roles[1].id) {
-            handleNavigate(4);
+            handleNavigate(1);
           }
           if(userState?.user?.roleId === Roles[0].id) {
             handleNavigate(2);
@@ -70,7 +70,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
           {userState.user?.firstName} {userState.user?.lastName}
         </div>
       </div>
-      {userState.user?.roleId === Roles[2]?.id && (
+      {userState.user?.roleId === Roles[1]?.id && (
         <ul
           className="py-2 text-sm text-gray-700"
           aria-labelledby="avatarButton"
@@ -107,7 +107,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
           </li>
         </ul>
       )}
-      {userState.user?.roleId === Roles[1].id && (
+      {userState.user?.roleId === Roles[0].id && (
         <ul
           className="py-2 text-sm text-gray-700"
           aria-labelledby="avatarButton"

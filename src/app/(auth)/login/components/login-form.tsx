@@ -1,10 +1,25 @@
 "use client";
 
+import { useLoginForm } from "@/app/(auth)/login/hooks/useLoginForm";
 import { Backdrop } from "@/components/backdrop";
 import InputAuth from "@/components/input-auth";
 import Link from "next/link";
+import useLoginGoogle from "@/hooks/use-login-google";
 
 export default function LoginForm() {
+  const {
+    register,
+    errors,
+    handleSubmit,
+    onSubmit,
+    valuePassword,
+    typePassword,
+    handleToggleTypePassword,
+    isPending,
+  } = useLoginForm();
+
+  const { handleLoginGoogle, isPendingGoogle } = useLoginGoogle();
+
   return (
     <div>
       <div className="w-[70%] px-5 py-4 m-auto">
@@ -15,7 +30,7 @@ export default function LoginForm() {
         </span>
         <form
           className="pt-5 flex flex-col gap-y-4"
-          onSubmit={(e) => e.preventDefault()} // Ngăn submit form tạm thời
+          onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col gap-y-2">
             <InputAuth
@@ -23,36 +38,53 @@ export default function LoginForm() {
               label="Email"
               type="text"
               autoComplete="off"
-              register={() => {}} // Không xử lý logic
-              error="Invalid email" // Hiển thị lỗi tĩnh
+              register={register("email")}
+              error={errors?.email?.message}
             />
           </div>
           <div className="flex flex-col gap-y-2">
             <InputAuth
               id="password"
               label="Password"
-              type="password" // Tĩnh kiểu nhập
+              type={typePassword === false ? "password" : "text"}
               autoComplete="off"
-              register={() => {}} // Không xử lý logic
-              error="Password is required" // Hiển thị lỗi tĩnh
-              value="" // Không có giá trị nhập
-              onClickEyePassword={() => {}} // Không xử lý
+              register={register("password")}
+              error={errors?.password?.message}
+              value={valuePassword}
+              onClickEyePassword={handleToggleTypePassword}
             />
           </div>
           <div className="flex flex-col gap-y-5">
             <button
-              className="mt-2 block w-[100%] rounded-md py-2 bg-[#C3B1E1]"
+              className={`mt-2 block w-[100%] rounded-md py-2 ${
+                Object.keys(errors).length === 0
+                  ? "bg-[#7a3cdd]"
+                  : "bg-[#C3B1E1]"
+              }`}
             >
               <span className="text-base text-gray-200">Log In</span>
             </button>
             <div className="flex items-center justify-between gap-3">
-              <div className="w-[50%] h-1 rounded-full bg-[#C3B1E1]"></div>
+              <div
+                className={`w-[50%] h-1 rounded-full ${
+                  Object.keys(errors).length === 0
+                    ? "bg-[#7a3cdd]"
+                    : "bg-[#C3B1E1]"
+                }`}
+              ></div>
               <span className="text-gray-400">OR</span>
-              <div className="w-[50%] h-1 rounded-full bg-[#C3B1E1]"></div>
+              <div
+                className={`w-[50%] h-1 rounded-full ${
+                  Object.keys(errors).length === 0
+                    ? "bg-[#7a3cdd]"
+                    : "bg-[#C3B1E1]"
+                }`}
+              ></div>
             </div>
             <button
               type="button"
-              className="block w-[100%] rounded-md py-2 bg-white border border-gray-400 hover:bg-gray-300"
+              onClick={() => handleLoginGoogle()}
+              className={`block w-[100%] rounded-md py-2 bg-white border border-gray-400 hover:bg-gray-300`}
             >
               <div className="relative">
                 <figure className="absolute top-1/2 -translate-y-1/2 left-[38%]">
@@ -85,8 +117,8 @@ export default function LoginForm() {
           </div>
         </form>
       </div>
-      <Backdrop open={false} /> {/* Backdrop tắt */}
-      <Backdrop open={false} /> {/* Backdrop Google tắt */}
+      <Backdrop open={isPending} />
+      <Backdrop open={isPendingGoogle} />
     </div>
   );
 }
