@@ -36,7 +36,7 @@ function UploadFile() {
         });
     };
 
-    // Hàm xử lý thay đổi input
+    
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
@@ -150,7 +150,7 @@ function UploadFile() {
                     </select>
                 </div>
 
-                <UploadPhoto onFileSelect={handleFileSelect} />
+                <UploadPhoto onFileSelect={handleFileSelect}/>
 
                 <div className="flex items-center justify-center md:gap-8 gap-4 pt-5 pb-5">
                     <button
