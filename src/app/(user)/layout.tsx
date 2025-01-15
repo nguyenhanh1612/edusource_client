@@ -1,18 +1,23 @@
+'use client'
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function UserLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const pathname = usePathname();
+    const hideHeaderFooter = pathname === "/thankyou";
+
     return (
         <div>
-            <Header />
+            {!hideHeaderFooter && <Header />}
             <main>
                 {children}
             </main>
-            <Footer />
+            {!hideHeaderFooter && <Footer />}
         </div>
-    )
+    );
 }

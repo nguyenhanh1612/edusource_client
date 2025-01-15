@@ -14,6 +14,7 @@ const config: Config = {
         poppins: ["Poppins", "sans-serif"],
         inter: ["Inter", "sans-serif"],
         mulish: ["Mulish", "sans-serif"],
+        pacifico: ["Pacifico", "serif"],
       },
       colors: {
         background: "hsl(var(--background))",
