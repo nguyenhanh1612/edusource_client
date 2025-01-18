@@ -37,8 +37,16 @@ export const useServiceLogin = () => {
 };
 
 export const useServiceRegister = () => {
+  const { addToast } = useToast();
   return useMutation<TResponse, TMeta, RegisterBodyType>({
     mutationFn: register,
+    onSuccess: (data) => {
+      addToast({
+        type: "success",
+        description: data.value.message,
+        duration: 5000,
+      });
+    },
   });
 };
 

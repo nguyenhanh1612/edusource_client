@@ -9,7 +9,7 @@ export default function UserLayout({
     children: React.ReactNode;
 }>) {
     const pathname = usePathname();
-    const hideHeaderFooter = pathname === "/thankyou";
+    const hideHeaderFooter = pathname === "/thankyou" || pathname === "/change-password-success";
 
     return (
         <div>
