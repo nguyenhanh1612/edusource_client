@@ -110,13 +110,6 @@ export const useServiceVerifyChangeEmail = () => {
         duration: 5000,
       });
     },
-    onError: (error) => {
-      addToast({
-        type: "error",
-        description: error?.detail,
-        duration: 3000,
-      });
-    },
   });
 };
 
@@ -150,13 +143,6 @@ export const useServiceVerifyChangePassword = () => {
         type: "success",
         description: data.value.message,
         duration: 5000,
-      });
-    },
-    onError: (error) => {
-      addToast({
-        type: "error",
-        description: error?.detail,
-        duration: 3000,
       });
     },
   });

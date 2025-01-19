@@ -65,21 +65,44 @@ export const useServiceVerifyEmail = () => {
 };
 
 export const useServiceForgotPasswordEmail = () => {
+  const { addToast } = useToast();
   return useMutation<TResponseData, TMeta, ForgotPasswordEmailBodyType>({
     mutationFn: forgotPasswordEmail,
-    onSuccess: () => {},
+    onSuccess: (data) => {
+      addToast({
+        type: "success",
+        description: data.value.message,
+        duration: 5000,
+      });
+    },
   });
 };
 
 export const useServiceForgotPasswordOtp = () => {
+  const { addToast } = useToast();
   return useMutation<TResponseData, TMeta, API.TAuthForgotPasswordOtp>({
     mutationFn: forgotPasswordOtp,
+    onSuccess: (data) => {
+      addToast({
+        type: "success",
+        description: data.value.message,
+        duration: 5000,
+      });
+    },
   });
 };
 
 export const useServiceForgotPasswordChange = () => {
+  const { addToast } = useToast();
   return useMutation<TResponseData, TMeta, API.TAuthForgotPasswordChange>({
     mutationFn: forgotPasswordChange,
+    onSuccess: (data) => {
+      addToast({
+        type: "success",
+        description: data.value.message,
+        duration: 5000,
+      });
+    },
   });
 };
 

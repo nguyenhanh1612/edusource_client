@@ -25,10 +25,9 @@ export default function RegisterForm() {
   return (
     <div>
       <div className="w-[70%] px-5 py-4 pt-10 m-auto">
-        <h2 className="text-[1.5rem] leading-8 font-medium">Sign Up</h2>
+        <h2 className="text-[1.5rem] leading-8 font-medium">Đăng ký</h2>
         <span className="text-gray-500 inline-block mt-2">
-          Help us build a better world for animals in need – sign up and become
-          part of our rescue family!
+          Đăng ký ngay hôm nay để mở khóa hàng ngàn tài liệu tiếng Anh chất lượng, giúp bạn dễ dàng tạo dựng bài học hiệu quả!
         </span>
         <form
           className="pt-5 flex flex-col gap-y-4"
@@ -38,7 +37,7 @@ export default function RegisterForm() {
             <div className="w-1/2 flex flex-col gap-y-2">
               <InputAuth
                 id="firstname"
-                label="First Name"
+                label="Họ"
                 type="text"
                 autoComplete="off"
                 register={register("firstName")}
@@ -48,7 +47,7 @@ export default function RegisterForm() {
             <div className="w-1/2 flex flex-col gap-y-2">
               <InputAuth
                 id="lastname"
-                label="Last Name"
+                label="Tên"
                 type="text"
                 autoComplete="off"
                 register={register("lastName")}
@@ -71,13 +70,12 @@ export default function RegisterForm() {
               <div className="flex flex-col gap-y-2">
                 <div className="flex justify-between">
                   <label htmlFor="Code" className="text-gray-600 mt-2">
-                    Code
+                    Mã số
                   </label>
                 </div>
                 <div
-                  className={`block p-2 border-2 border-gray-300 rounded-md text-center ${
-                    errors?.phoneNumber?.message && "border-red-500"
-                  }`}
+                  className={`block p-2 border-2 border-gray-300 rounded-md text-center ${errors?.phoneNumber?.message && "border-red-500"
+                    }`}
                 >
                   +84
                 </div>
@@ -85,7 +83,7 @@ export default function RegisterForm() {
               <div className="flex-1 flex flex-col gap-y-2">
                 <InputAuth
                   id="phonenumber"
-                  label="Phone Number"
+                  label="Số điện thoại"
                   type="number"
                   autoComplete="off"
                   register={register("phoneNumber")}
@@ -103,7 +101,7 @@ export default function RegisterForm() {
           <div className="flex flex-col gap-y-2">
             <InputAuth
               id="password"
-              label="Password"
+              label="Mật khẩu"
               type={typePassword === false ? "password" : "text"}
               autoComplete="off"
               register={register("password")}
@@ -115,7 +113,7 @@ export default function RegisterForm() {
           <div className="flex flex-col gap-y-2">
             <InputAuth
               id="confirmpassword"
-              label="Confirm Password"
+              label="Xác nhận mật khẩu"
               type={typeConfirmPassword === false ? "password" : "text"}
               autoComplete="off"
               register={register("confirmPassword")}
@@ -126,29 +124,26 @@ export default function RegisterForm() {
           </div>
           <div className="flex flex-col gap-y-5">
             <button
-              className={`mt-2 block w-[100%] rounded-md py-2 ${
-                Object.keys(errors).length === 0
+              className={`mt-2 block w-[100%] rounded-md py-2 ${Object.keys(errors).length === 0
                   ? "bg-[#7a3cdd]"
                   : "bg-[#C3B1E1]"
-              }`}
+                }`}
             >
-              <span className="text-base text-gray-200">Sign Up</span>
+              <span className="text-base text-gray-200">Đăng ký</span>
             </button>
             <div className="flex items-center justify-between gap-3">
               <div
-                className={`w-[50%] h-1 rounded-full ${
-                  Object.keys(errors).length === 0
+                className={`w-[50%] h-1 rounded-full ${Object.keys(errors).length === 0
                     ? "bg-[#7a3cdd]"
                     : "bg-[#C3B1E1]"
-                }`}
+                  }`}
               ></div>
-              <span className="text-gray-400">OR</span>
+              <span className="text-gray-400">HOẶC</span>
               <div
-                className={`w-[50%] h-1 rounded-full ${
-                  Object.keys(errors).length === 0
+                className={`w-[50%] h-1 rounded-full ${Object.keys(errors).length === 0
                     ? "bg-[#7a3cdd]"
                     : "bg-[#C3B1E1]"
-                }`}
+                  }`}
               ></div>
             </div>
             <button
@@ -171,15 +166,15 @@ export default function RegisterForm() {
             </button>
             <div className="flex justify-between">
               <p className="text-[1rem]">
-                Have an account PawFund?{" "}
+                Bạn có tài khoản EduSource không?{" "}
                 <Link href="/login">
-                  <span className="font-bold cursor-pointer">Log In</span>
+                  <span className="font-bold cursor-pointer">Đăng nhập</span>
                 </Link>
               </p>
               <Link href="/forgot-password">
                 <p className="text-[1rem]">
                   <span className="font-bold cursor-pointer">
-                    Forgot password?
+                    Quên mật khẩu?
                   </span>
                 </p>
               </Link>

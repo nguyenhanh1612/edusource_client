@@ -35,9 +35,9 @@ export default function ForgotPasswordOtp() {
 
   return (
     <div>
-      <h2 className="text-[1.5rem] leading-8 font-medium">Forgot Password</h2>
+      <h2 className="text-[1.5rem] leading-8 font-medium">Quên mật khẩu</h2>
       <span className="text-gray-500 inline-block mt-2">
-        The OTP has been sent, please enter it to complete!
+        Mã OTP đã được gửi, vui lòng nhập để hoàn tất!
       </span>
       <form className="pt-5 flex flex-col gap-y-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-y-2">
@@ -47,30 +47,27 @@ export default function ForgotPasswordOtp() {
         <div className="flex flex-col gap-y-5">
           <button
             type="submit"
-            className={`mt-2 block w-[100%] rounded-md py-2 ${
-              value !== "" ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
-            }`}
+            className={`mt-2 block w-[100%] rounded-md py-2 ${value !== "" ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
+              }`}
           >
-            <span className="text-base text-gray-200">Submit</span>
+            <span className="text-base text-gray-200">Tiếp tục</span>
           </button>
           <div className="flex items-center justify-between gap-3">
             <div
-              className={`w-[50%] h-1 rounded-full ${
-                value !== "" ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
-              }`}
+              className={`w-[50%] h-1 rounded-full ${value !== "" ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
+                }`}
             ></div>
-            <span className="text-gray-400">OR</span>
+            {/* <span className="text-gray-400">OR</span> */}
             <div
-              className={`w-[50%] h-1 rounded-full ${
-                value !== "" ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
-              }`}
+              className={`w-[50%] h-1 rounded-full ${value !== "" ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
+                }`}
             ></div>
           </div>
           <div className="flex justify-between">
             <p className="text-[1rem]">
-              Have an account at PawFund?{" "}
+              Bạn có tài khoản EduSource?
               <Link href="/login">
-                <span className="font-bold cursor-pointer">Log In</span>
+                <span className="font-bold cursor-pointer">Đăng nhập</span>
               </Link>
             </p>
           </div>

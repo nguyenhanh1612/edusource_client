@@ -5,7 +5,7 @@ import ForgotPasswordForm from '@/app/(auth)/forgot-password/components/forgot-p
 
 export const metadata: Metadata = {
     title: "Forgot password",
-    description: "Forgot password for PawFund",
+    description: "Forgot password for EduSource",
 };
 
 

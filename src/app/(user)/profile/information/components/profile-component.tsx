@@ -102,14 +102,14 @@ export default function ProfileComponent() {
                     <div className="flex items-center justify-between gap-x-3">
                       <div className="basis-1/2 flex flex-col gap-y-2">
                         <label className="text-[15px] font-medium text-gray-400">
-                          Tên
+                          Họ
                         </label>
                         <Skeleton className="w-1/2 h-[20px] rounded-full" />
                       </div>
 
                       <div className="basis-1/2 flex flex-col gap-y-2">
                         <label className="text-[15px] font-medium text-gray-400">
-                          Họ
+                          Tên
                         </label>
                         <Skeleton className="w-1/2 h-[20px] rounded-full" />
                       </div>
@@ -179,7 +179,7 @@ export default function ProfileComponent() {
                   <div className="flex items-center justify-between gap-x-3">
                     <div className="basis-1/2 flex flex-col gap-y-2">
                       <label className="text-[15px] font-medium text-gray-400">
-                        Tên
+                        Họ
                       </label>
                       <h5 className="text-base text-gray-650">
                         {profileInfo?.firstName}
@@ -188,7 +188,7 @@ export default function ProfileComponent() {
 
                     <div className="basis-1/2 flex flex-col gap-y-2">
                       <label className="text-[15px] font-medium text-gray-400">
-                        Họ
+                        Tên
                       </label>
                       <h5 className="text-base text-gray-650">
                         {profileInfo?.lastName}

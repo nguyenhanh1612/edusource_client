@@ -20,9 +20,9 @@ export default function ForgotPasswordChange() {
 
   return (
     <div className="w-[100%]">
-      <h2 className="text-[1.5rem] leading-8 font-medium">Fogot password</h2>
+      <h2 className="text-[1.5rem] leading-8 font-medium">Quên mật khẩu</h2>
       <span className="text-gray-500 inline-block mt-2">
-        Enter your new password and confirm it to complete the recovery process!
+        Nhập mật khẩu mới và xác nhận để hoàn tất quá trình khôi phục!
       </span>
       <form
         className="pt-5 flex flex-col gap-y-4"
@@ -52,34 +52,31 @@ export default function ForgotPasswordChange() {
         </div>
         <div className="flex flex-col gap-y-5">
           <button
-            className={`mt-2 block w-[100%] rounded-md py-2 ${
-              Object.keys(errors).length === 0 ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
-            }`}
+            className={`mt-2 block w-[100%] rounded-md py-2 ${Object.keys(errors).length === 0 ? "bg-[#7a3cdd]" : "bg-[#C3B1E1]"
+              }`}
           >
-            <span className="text-base text-gray-200"> Submit </span>
+            <span className="text-base text-gray-200"> Tiếp tục </span>
           </button>
           <div className="flex items-center justify-between gap-3">
             <div
-              className={`w-[50%] h-1 rounded-full ${
-                Object.keys(errors).length === 0
+              className={`w-[50%] h-1 rounded-full ${Object.keys(errors).length === 0
                   ? "bg-[#7a3cdd]"
                   : "bg-[#C3B1E1]"
-              }`}
+                }`}
             ></div>
-            <span className="text-gray-400">OR</span>
+            {/* <span className="text-gray-400">OR</span> */}
             <div
-              className={`w-[50%] h-1 rounded-full ${
-                Object.keys(errors).length === 0
+              className={`w-[50%] h-1 rounded-full ${Object.keys(errors).length === 0
                   ? "bg-[#7a3cdd]"
                   : "bg-[#C3B1E1]"
-              }`}
+                }`}
             ></div>
           </div>
           <div className="flex justify-between">
             <p className="text-[1rem] flex items-center gap-x-1">
               Have an account PawFund?{" "}
               <Link href="/login">
-                <span className="font-bold cursor-pointer">Log In</span>
+                <span className="font-bold cursor-pointer">Đăng nhập</span>
               </Link>
             </p>
           </div>
