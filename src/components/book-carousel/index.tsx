@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface Book {
     id: string;
@@ -23,7 +24,7 @@ interface BookDropdownProps {
 export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: BookDropdownProps) {
     const [bookDropdown, setBookDropdown] = React.useState(false);
     const [activeCategoryIndices, setActiveCategoryIndices] = React.useState<{ [category: number]: number }>({});
-
+    const router = useRouter();
     const dropdownRef = React.useRef<HTMLDivElement | null>(null);
 
     const toggleDropdown = () => {
@@ -75,6 +76,11 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
         };
     }, []);
 
+    const handleBookClick = (bookId: string) => {
+        router.push(`/book/${bookId}`); 
+        setBookDropdown(false);
+    };
+
     return (
         <div className="relative">
             <button
@@ -118,7 +124,7 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
                                     </h3>
                                     <div className="relative min-h-[200px] flex items-center justify-center">
                                         {booksToDisplay.map((book: Book) => (
-                                            <div key={book.id} className="bg-[#add7f6] rounded-lg p-4 w-40 text-center">
+                                            <div key={book.id} onClick={() => handleBookClick(book.id)} className="bg-[#add7f6] rounded-lg p-4 w-40 text-center">
                                                 <img
                                                     src={book.imageUrl}
                                                     alt={book.name}

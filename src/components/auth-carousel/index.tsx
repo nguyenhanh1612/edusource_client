@@ -21,7 +21,7 @@ export default function AuthCarousel() {
         <CarouselItem>
           <div className="absolute w-full h-[100vh]">
             <Image
-              src={"/images/login01.jpg"}
+              src={"/images/Login.png"}
               alt="Authen01"
               layout="fill"
               priority
@@ -29,9 +29,9 @@ export default function AuthCarousel() {
             <div className="absolute inset-0 bg-black bg-opacity-20"></div>
             <div className="relative top-[60%]">
               <p className="text-3xl leading-normal text-gray-50 text-center font-montserrat_alternates">
-                Log in to bring hope to abandoned cats
+                Đồng hành cùng bé chinh phục tiếng Anh từ đầu.
                 <br />
-                Help us find them a warm home
+                Tài liệu sinh động, giúp bé yêu thích học mỗi ngày.
               </p>
             </div>
           </div>
@@ -39,7 +39,7 @@ export default function AuthCarousel() {
         <CarouselItem>
           <div className="relative w-full h-[100vh]">
             <Image
-              src={"/images/login02.jpg"}
+              src={"/images/Sign-up.png"}
               alt="Authen02"
               layout="fill"
               priority
@@ -47,9 +47,9 @@ export default function AuthCarousel() {
             <div className="absolute inset-0 bg-black bg-opacity-20"></div>
             <div className="relative top-[60%]">
               <p className="text-3xl leading-normal text-gray-50 text-center font-montserrat_alternates">
-                Amid life’s stress, a cat brings calm and joy
+                Học tiếng Anh dễ dàng, chắp cánh tương lai bé.
                 <br />
-                Adopt one and discover your peace!
+                Từng bước nhỏ, khám phá tiếng Anh thú vị cùng bé!
               </p>
             </div>
           </div>
