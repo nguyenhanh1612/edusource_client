@@ -61,7 +61,7 @@ const Header: React.FC = () => {
   return (
     <header className="flex items-center justify-between px-12 py-8 bg-white">
       <div className="flex items-center">
-        <img src="/images/logo.png" alt="Logo" className="h-14" />
+        <img src="/images/logo1.png" alt="Logo" className="h-24" />
       </div>
       <nav className="flex items-center space-x-20">
         <Link
