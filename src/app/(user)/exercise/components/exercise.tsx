@@ -356,27 +356,27 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface ViewDetailSlideProps {
-  slideId: string;
+interface ViewDetailExcerciseProps {
+  exerciseId: string;
 }
 
-export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
+export default function DetailExercise({ exerciseId }: ViewDetailExcerciseProps) {
   const { isPending, getProductByIdApi } = useGetProductById();
-  const [slideData, setSlideData] = useState<API.Unit | null>(null);
+  const [exerciseData, setExerciseData] = useState<API.Unit | null>(null);
   const [selectedValue, setSelectedValue] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    if (!slideId) {
+    if (!exerciseId) {
       console.error("slideId is undefined");
       return;
     }
 
     const fetchProduct = async () => {
       try {
-        const response = await getProductByIdApi({ id: slideId });
+        const response = await getProductByIdApi({ id: exerciseId });
         if (response?.value?.data) {
-          setSlideData(response.value.data as unknown as API.Unit);
+          setExerciseData(response.value.data as unknown as API.Unit);
         } else {
           router.push("/error");
         }
@@ -386,13 +386,13 @@ export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
     };
 
     fetchProduct();
-  }, [slideId]); 
+  }, [exerciseId]); 
 
   if (isPending) {
     return <Backdrop open={true} />;
   }
 
-  if (!slideData) {
+  if (!exerciseData) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <p className="text-xl text-red-500">Sản phẩm không tồn tại hoặc đã bị xóa.</p>
@@ -405,20 +405,20 @@ export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
       <div className="p-8 bg-[#669bbc]">
         <div className="relative flex flex-col bg-[#669bbc]">
           <div className="ml-20">
-            <h1 className="text-2xl font-bold text-white">{slideData.name}</h1>
-            <h2 className="text-lg text-white">{slideData.description}</h2>
+            <h1 className="text-2xl font-bold text-white">{exerciseData.name}</h1>
+            <h2 className="text-lg text-white">{exerciseData.description}</h2>
             <p className="flex items-center gap-2 text-yellow-300 font-medium mt-2">
-              {[...Array(Math.floor(slideData.rating))].map((_, index) => (
+              {[...Array(Math.floor(exerciseData.rating))].map((_, index) => (
                 <BsStarFill key={`full-${index}`} />
               ))}
 
-              {slideData.rating % 1 !== 0 && <BsStarHalf />}
+              {exerciseData.rating % 1 !== 0 && <BsStarHalf />}
 
-              {[...Array(5 - Math.ceil(slideData.rating))].map((_, index) => (
+              {[...Array(5 - Math.ceil(exerciseData.rating))].map((_, index) => (
                 <BsStar key={`empty-${index}`} />
               ))}
 
-              <span className="ml-2 text-white">{slideData.rating} (100 xếp hạng)</span>
+              <span className="ml-2 text-white">{exerciseData.rating} (100 xếp hạng)</span>
             </p>
           </div>
 
@@ -426,8 +426,8 @@ export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
             <div className="space-y-6 flex flex-col items-center">
               <div>
                 <img
-                  src={slideData.book.imageUrl}
-                  alt={slideData.book.name}
+                  src={exerciseData.book.imageUrl}
+                  alt={exerciseData.book.name}
                   className="rounded-t-xl w-full h-64"
                 />
               </div>
@@ -440,7 +440,7 @@ export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
                   className="w-full max-w-sm"
                 >
                   <CarouselContent>
-                    {slideData.listImages.map((image, index) => (
+                    {exerciseData.listImages.map((image, index) => (
                       <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                         <div className="p-1">
                           <Card>
@@ -460,7 +460,7 @@ export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
             <div className="mx-auto">
               <div className="mt-4 text-gray-700">
                 <span className="text-white">
-                  {slideData.book.name}
+                  {exerciseData.book.name}
                 </span>
                 <div className="flex items-center gap-2">
                   <BsGraphUpArrow className="text-[#ffb154]" /> <span className="text-[#add7f6]">Chủ yếu được sử dụng với mẫu giáo và lớp 1</span>
@@ -469,16 +469,16 @@ export default function DetailSlide({ slideId }: ViewDetailSlideProps) {
               <div className="text-gray-700 flex flex-col">
                 <span className="text-white">Cấp lớp</span>
                 <span className="text-[#add7f6] ml-6">
-                  {slideData.book.gradeLevel}
+                  {exerciseData.book.gradeLevel}
                 </span>
               </div>
               <div className="text-gray-700 flex flex-col">
                 <span className="text-white">Định dạng bao gồm</span>
-                <span className="text-[#add7f6] ml-6">{slideData.category}</span>
+                <span className="text-[#add7f6] ml-6">{exerciseData.category}</span>
               </div>
               <div className="text-gray-700 flex flex-col ">
                 <span className="text-white">Số trang</span>
-                <span className="text-[#add7f6] ml-6">{slideData.totalPage}</span>
+                <span className="text-[#add7f6] ml-6">{exerciseData.totalPage}</span>
               </div>
             </div>
 

@@ -1,49 +1,59 @@
-export const Category = [
+export type TCategory = {
+  id: number;
+  type: string;
+};
+export type TContent = {
+  id: number;
+  type: string;
+};
+export type TUpload = {
+  id: number;
+  type: string;
+};
+export const categoryType: TCategory[] = [
   {
     id: 0,
-    value: "Slide",
+    type: "Slide",
   },
   {
     id: 1,
-    value: "Exercise",
+    type: "Exercise",
   },
   {
     id: 2,
-    value: "Test",
+    type: "Test",
   },
 ] as const;
 
-export const Content = [
+export const contentType: TContent[] = [
   {
     id: 0,
-    value: "Unit",
+    type: "Unit",
   },
   {
     id: 1,
-    value: "Review",
+    type: "Review",
   },
 ];
 
-export const Upload = [
+export const uploadType: TUpload[] = [
   {
     id: 0,
-    value: "PowerPoint",
+    type: "PowerPoint",
   },
   {
     id: 1,
-    value: "Pdf",
+    type: "Pdf",
   },
   {
     id: 2,
-    value: "Zip",
+    type: "Zip",
   },
   {
     id: 3,
-    value: "Rar",
+    type: "Rar",
   },
 ];
 
-export type CategoryId = (typeof Category)[number]["id"];
-export type ContentType = (typeof Content)[number]["id"];
-export type UploadType = (typeof Upload)[number]["id"];
+
 

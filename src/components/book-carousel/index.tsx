@@ -77,7 +77,7 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
     }, []);
 
     const handleBookClick = (bookId: string) => {
-        router.push(`/book/${bookId}`); 
+        router.push(`/book/${bookId}`);
         setBookDropdown(false);
     };
 
@@ -94,14 +94,14 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
                     <FaChevronDown className="ml-2" />
                 )}
             </button>
-
+            {/* bg-[#add7f6] */}
             {bookDropdown && (
-                <div ref={dropdownRef} className="absolute bg-[#add7f6] shadow-lg rounded-r-lg p-4 w-[600px] z-[9999] flex">
+                <div ref={dropdownRef} className="absolute bg-white shadow-lg rounded-r-lg p-4 w-[600px] z-[9999] flex">
                     <div className="absolute -left-10 top-0 flex flex-col items-center space-y-4">
                         {Array.from({ length: totalPages }).map((_, index) => (
                             <div
                                 key={index}
-                                onClick={() => setActiveTab(index + 1)} 
+                                onClick={() => setActiveTab(index + 1)}
                                 className={`w-10 h-10 flex items-center justify-center rounded-l-md text-lg font-bold cursor-pointer ${activeTab === index + 1
                                     ? "bg-orange-500 text-white"
                                     : "bg-orange-300 text-gray-700"
@@ -116,15 +116,16 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
                         {Object.entries(groupedBooks).map(([category, books]) => {
                             const currentIndex = getCategoryIndex(Number(category));
                             const booksToDisplay = books.slice(currentIndex, currentIndex + 3);
-
+                            // bg-[#8ecae6] 
                             return (
                                 <div key={category} className="mb-4">
-                                    <h3 className="text-lg px-6 font-semibold text-[#219ebc] mb-2 bg-[#8ecae6] rounded-full">
+                                    <h3 className="text-lg px-6 font-semibold text-[#219ebc] mb-2 rounded-full">
                                         Sách phổ biến
                                     </h3>
+                                    {/* bg-[#add7f6]  */}
                                     <div className="relative min-h-[200px] flex items-center justify-center">
                                         {booksToDisplay.map((book: Book) => (
-                                            <div key={book.id} onClick={() => handleBookClick(book.id)} className="bg-[#add7f6] rounded-lg p-4 w-40 text-center">
+                                            <div key={book.id} onClick={() => handleBookClick(book.id)} className="rounded-lg p-4 w-40 text-center">
                                                 <img
                                                     src={book.imageUrl}
                                                     alt={book.name}

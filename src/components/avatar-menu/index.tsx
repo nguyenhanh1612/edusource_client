@@ -41,7 +41,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
         break;
       }
       case 4: {
-        router.push("/staff/dashboard");
+        router.push("/uploadfile");
         onCloseTooltip();
       }
       default:
@@ -54,11 +54,11 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
       <div
         className="px-4 py-3 text-lg text-gray-900 hover:bg-gray-200 select-none cursor-pointer"
         onClick={() => {
-          if(userState?.user?.roleId === Roles[2].id) {
-            handleNavigate(1);
-          }
           if(userState?.user?.roleId === Roles[1].id) {
             handleNavigate(1);
+          }
+          if(userState?.user?.roleId === Roles[2].id) {
+            handleNavigate(4);
           }
           if(userState?.user?.roleId === Roles[0].id) {
             handleNavigate(2);
@@ -107,7 +107,8 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
           </li>
         </ul>
       )}
-      {userState.user?.roleId === Roles[0].id && (
+
+      {userState.user?.roleId === Roles[2].id && (
         <ul
           className="py-2 text-sm text-gray-700"
           aria-labelledby="avatarButton"
@@ -122,7 +123,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
                   className="p-1 bg-gray-300 text-black rounded-full mr-2"
                   size={30}
                 />
-                <span className="text-black">Staff dashboard</span>
+                <span className="text-black">Thêm tài nguyên</span>
               </div>
               <FiChevronRight className="text-gray-500" size={24} />
             </div>

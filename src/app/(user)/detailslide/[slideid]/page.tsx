@@ -7,7 +7,8 @@ export const metadata: Metadata = {
     description: "Slide detail for EduSource",
 };
 
-export default function ViewProfileCatPage({ params }: any) {
+export default function ViewDetailSlideProps({ params }: any) {
+    
     return (
         <div className="w-full">
             <DetailSlide slideId={params?.slideid}/>

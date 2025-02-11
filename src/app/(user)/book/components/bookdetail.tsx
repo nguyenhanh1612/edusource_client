@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from "next/navigation"
 import { Checkbox } from "@/components/ui/checkbox"
 import useGetAllProductOfBook from '../hooks/useGetAllProductOfBook'
-import { Category, Content, Upload } from '@/const/product';
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { Label } from "@/components/ui/label"
@@ -26,6 +26,7 @@ function BookDetail({ bookId }: BookDetailProps) {
     const [showAllUnits, setShowAllUnits] = useState(false);
     const [selectedUnits, setSelectedUnits] = useState<number[]>([]);
     const { isPending, getAllProductOfBookApi } = useGetAllProductOfBook();
+    const router = useRouter();
 
     useEffect(() => {
         if (!bookId) return;
@@ -57,6 +58,16 @@ function BookDetail({ bookId }: BookDetailProps) {
     const filteredProducts = selectedUnits.length > 0
         ? products.filter(product => selectedUnits.includes(product.unit))
         : products;
+
+    const handleClick = (product: API.Product) => {
+        if (product.category === 0) {
+            router.push(`/detailslide/${product.id}`);
+        } else if (product.category === 1) {
+            router.push(`/exercise/${product.id}`);
+        } else if (product.category === 2) {
+            router.push(`/detailtest/${product.id}`);
+        }
+    };
 
 
 
@@ -178,7 +189,8 @@ function BookDetail({ bookId }: BookDetailProps) {
                     ) : (
                         filteredProducts.map((product) => {
                             return (
-                                <div key={product.unit} className="p-4 border rounded-lg shadow-sm bg-white">
+                                <div key={product.id} className="p-4 border rounded-lg shadow-sm bg-white" onClick={() => handleClick(product)}
+                                >
                                     {product.imageUrl && (
                                         <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover border-2 border-[#8ecae6] rounded-lg" />
                                     )}
@@ -198,16 +210,6 @@ function BookDetail({ bookId }: BookDetailProps) {
                                         </div>
                                         <div className="text-sm font-medium text-gray-700 mt-1">{product.rating}</div>
                                     </div>
-                                    {/* <div className="mt-2">
-                                        <a
-                                            href={product.fileUrl}
-                                            className="text-blue-500"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Download PDF
-                                        </a>
-                                    </div> */}
                                 </div>
                             );
                         })
@@ -221,3 +223,13 @@ function BookDetail({ bookId }: BookDetailProps) {
 
 export default BookDetail;
 
+{/* <div className="mt-2">
+                                        <a
+                                            href={product.fileUrl}
+                                            className="text-blue-500"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Download PDF
+                                        </a>
+                                    </div> */}

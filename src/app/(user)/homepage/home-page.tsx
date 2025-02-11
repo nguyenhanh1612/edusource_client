@@ -1,16 +1,36 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { GiFlexibleStar } from "react-icons/gi";
 import CardComponent from "@/components/slide-carousel";
 import { PowerPoint } from "@/components/powerpoint-carousel";
 import FeedbackCarousel from "@/components/feedback-carousel";
+import useGetAllProduct from "./hooks/useGetAllProduct";
 
 
 export default function HomePage() {
+  const { isPending, getAllProductApi } = useGetAllProduct();
+  const [products, setProducts] = useState<API.Product[]>([]);
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getAllProductApi({});
+      if (response) {
+        const filteredProducts = response.value.data.items.filter(
+          (product) => product.category === 0
+        );
+        setProducts(filteredProducts); 
+      }
+    };
+  
+    fetchProducts();
+  }, []);
+  
+
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
@@ -252,7 +272,7 @@ export default function HomePage() {
             Tăng cường sự tự tin của học sinh với bộ sưu tập bài tập bổ sung phong phú của chúng tôi. Được biên soạn cẩn thận để phù hợp với sách giáo khoa của bạn, những bài tập này phù hợp với nhiều phong cách học tập khác nhau và giúp học sinh hiểu sâu hơn về các bài học trên lớp.
           </p>
           <div className="mt-4">
-            <Link href="/adopt">
+            <Link href="/allexercise">
               <Button
                 variant="outline"
                 className="text-gray-600 bg-teal-400 uppercase p-8 hover:bg-teal-300"
@@ -284,7 +304,9 @@ export default function HomePage() {
         transition={{ duration: 0.7 }}
         className="p-8 bg-[#669bbc] w-full"
       >
-        <CardComponent />
+         {products.map((product) => (
+            <CardComponent key={product.id} slideId={product.id} />
+          ))}
       </motion.div>
 
       <motion.div
