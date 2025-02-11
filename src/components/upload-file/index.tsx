@@ -417,7 +417,8 @@ interface FileInfo {
 
 interface UploadPhotoProps {
     onMainImageSelect: (file: File | null, filePreview: string | null, fileInfo: FileInfo | null) => void;
-    onFileUpload: (file: File | null, filePreview: string | null, fileInfo: FileInfo | null) => void;
+    // onFileUpload: (file: File | null, filePreview: string | null, fileInfo: FileInfo | null, size: number) => void;
+    onFileUpload: (file: File | null, preview: string | null, size: number | null) => void;
     onOtherImagesSelect?: (files: FileList | null, previews: string[] | null, fileInfos: FileInfo[] | null) => void;
 }
 
@@ -466,7 +467,8 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
         const selectedFile = e.target.files ? e.target.files[0] : null;
 
         if (selectedFile) {
-            const previewUrl = URL.createObjectURL(selectedFile);  // Even for non-image files, we can create a URL
+            const previewUrl = URL.createObjectURL(selectedFile);  
+            const fileSize = selectedFile.size; 
             setUploadedFile(selectedFile);
             setUploadedFilePreview(previewUrl);
             const info = { name: selectedFile.name, size: selectedFile.size, type: selectedFile.type };
@@ -480,9 +482,9 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                     clearInterval(interval);
                     setIsUploaded(true);
                 }
-            }, 200); // Reduced interval for faster progress bar
+            }, 200); 
 
-            onFileUpload(selectedFile, previewUrl, info);
+            onFileUpload(selectedFile, previewUrl, fileSize);
         }
     };
 
@@ -577,9 +579,9 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                     {mainImagePreview && (
                         <img src={mainImagePreview} alt={mainImageInfo?.name || "Main Image Preview"} className="mt-2 w-32 h-32 object-cover" />
                     )}
-                    <p><strong>Name:</strong> {mainImageInfo?.name}</p>
+                    {/* <p><strong>Name:</strong> {mainImageInfo?.name}</p>
                     <p><strong>Size:</strong> {Math.round((mainImageInfo?.size || 0) / 1024)} KB</p>
-                    <p><strong>Type:</strong> {mainImageInfo?.type}</p>
+                    <p><strong>Type:</strong> {mainImageInfo?.type}</p> */}
                 </div>
             )}
 
@@ -629,11 +631,11 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                         {/* ... các icon khác */}
                         {!uploadedFileInfo.type.includes("pdf") && !uploadedFileInfo.type.includes("powerpoint") && !uploadedFileInfo.type.includes("zip") && !uploadedFileInfo.type.includes("rar") && <i className="fas fa-file text-2xl mr-2"></i>}
 
-                        <div>
+                        {/* <div>
                             <p><strong>Name:</strong> {uploadedFileInfo.name}</p>
                             <p><strong>Size:</strong> {Math.round(uploadedFileInfo.size / 1024)} KB</p>
                             <p><strong>Type:</strong> {uploadedFileInfo.type}</p>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Preview cho PDF */}

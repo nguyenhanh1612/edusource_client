@@ -8,9 +8,7 @@ export const CreateProductBody = z.object({
   contentType: z.number().int().min(0, "Loại nội dung không hợp lệ"), // Số nguyên
   unit: z.number().int().min(0, "Đơn vị không hợp lệ"), // Đơn vị có thể = 0
   uploadType: z.number().int().min(0, "Loại tải lên không hợp lệ"), // Số nguyên, min = 0
-  totalPage: z.number().int().positive("Số trang phải lớn hơn 0"), // Số nguyên dương
   size: z.number().nonnegative("Kích thước phải lớn hơn hoặc bằng 0"), // Không âm
-  bookId: z.string().uuid("ID sách không hợp lệ"),
 
   mainImage: z
     .custom<File>((file) => file instanceof File, "Ảnh chính không hợp lệ")

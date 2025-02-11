@@ -26,7 +26,7 @@ function AllExercise() {
   }, []);
   
 const handleProductClick = (id: string) => {
-    router.push(`/detailslide/${id}`); 
+    router.push(`/exercise/${id}`); 
   };
 
   return (

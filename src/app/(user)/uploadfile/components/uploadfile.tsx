@@ -5,6 +5,7 @@ import UploadPhoto from "@/components/upload-file";
 import useCreateProductForm from "../hooks/useCreateProduct";
 import { categoryType, contentType, TCategory, TContent, TUpload, uploadType } from "@/const/product";
 import useGetAllBook from "@/components/header/useGetAllBook";
+import { CreateProductBodyType } from "@/utils/schema-validations/create-product.schema";
 
 function UploadFile() {
     const {
@@ -13,35 +14,38 @@ function UploadFile() {
         onSubmit,
         watch,
         errors,
+        setError,
         setValue,
         isPending,
     } = useCreateProductForm();
 
-    const handleFormSubmit = (data: any, onSubmit: (data: any, callback: () => void) => void, setFilePreview: React.Dispatch<React.SetStateAction<string | null>>) => {
-        console.log("Raw data:", data);
-
-        console.log("Errors:", data.errors);
-
-        const formattedData = {
+    const handleFormSubmit = (data: CreateProductBodyType) => {
+        const formattedData: REQUEST.TCreateProduct = {
             ...data,
-            category: Number(data.category) as 0 | 1 | 2,
-            contentType: Number(data.contentType) as 0 | 1,
-            uploadType: Number(data.uploadType) as 0 | 1 | 2 | 3,
+            unit: data.unit,
+            size: fileSize,
+            category: category.id,
+            contentType: content.id,
+            uploadType: upload.id,
+            totalPage: 1,
+            bookId: selectedBook,
+            file: selectedFiles || undefined,
+            mainImage: filePreview || undefined,
+            otherImages: otherImages
         };
 
-        console.log("Formatted data:", formattedData);
-
         onSubmit(formattedData, () => setFilePreview(null));
-    };
+
+    }
 
     const { getAllBookApi, isPending: isLoadingBooks } = useGetAllBook();
     const [category, setCategory] = useState<TCategory>(categoryType[0]);
     const [content, setContent] = useState<TContent>(contentType[0]);
     const [upload, setUpload] = useState<TUpload>(uploadType[0]);
-
-    const [filePreview, setFilePreview] = useState<string | null>(null);
+    const [fileSize, setFileSize] = useState<number | null>(null);
+    const [filePreview, setFilePreview] = useState<File | null>(null);
     const [otherImages, setOtherImages] = useState<File[]>([]);
-    const [selectedFiles, setSelectedFiles] = useState<string | null>(null);
+    const [selectedFiles, setSelectedFiles] = useState<File | null>(null);
     const [books, setBooks] = useState<API.Book[]>([]);
     const [selectedBook, setSelectedBook] = useState<string>("");
 
@@ -49,17 +53,17 @@ function UploadFile() {
         let allBooks: API.Book[] = [];
         let pageIndex = 1;
         let pageSize = 10;
-        let totalPages = 1; 
+        let totalPages = 1;
 
         while (pageIndex <= totalPages) {
             const response = await getAllBookApi({ pageIndex, pageSize });
 
             if (response && response.value.data) {
                 allBooks = [...allBooks, ...response.value.data.items];
-                totalPages = response.value.data.totalPages; 
+                totalPages = response.value.data.totalPages;
             }
 
-            pageIndex++; 
+            pageIndex++;
         }
 
         setBooks(allBooks);
@@ -72,7 +76,7 @@ function UploadFile() {
 
     const handleFileSelect = (selectedFile: File | null, preview: string | null) => {
         setValue("mainImage", selectedFile);
-        setFilePreview(preview);
+        setFilePreview(selectedFile);
     };
 
     const handleOtherImagesSelect = (files: FileList | null) => {
@@ -83,9 +87,10 @@ function UploadFile() {
         }
     };
 
-    const handleFileUpload = (selectedFile: File | null, preview: string | null) => {
+    const handleFileUpload = (selectedFile: File | null, preview: string | null, size: number | null) => {
         setValue("file", selectedFile);
-        setSelectedFiles(preview);
+        setFileSize(size);
+        setSelectedFiles(selectedFile);
     };
 
 
@@ -96,15 +101,15 @@ function UploadFile() {
                     <h1 className="text-gray-600 font-bold md:text-2xl text-xl">Upload Form</h1>
                 </div>
 
-                <form onSubmit={handleSubmit((data) => handleFormSubmit(data, onSubmit, setFilePreview))}>
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <div className="grid grid-cols-1 mt-5 mx-7">
-                    <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Chọn sách</label>
+                        <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Chọn sách</label>
                         <select
                             id="book-select"
                             value={selectedBook}
                             onChange={(e) => setSelectedBook(e.target.value)}
                             className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                            
+
                         >
                             <option value="">-- Chọn một cuốn sách --</option>
                             {books.map((book) => (
@@ -205,13 +210,27 @@ function UploadFile() {
                         {errors.uploadType && <p className="text-red-500 text-xs">{errors.uploadType.message}</p>}
                     </div>
 
+                    <div className="grid grid-cols-1 mt-5 mx-7">
+                        <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Unit</label>
+                        <input
+                            {...register("unit", { valueAsNumber: true })}
+                            className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                            type="number"
+                            placeholder="Unit"
+                        />
+                        {errors.unit && <p className="text-red-500 text-xs">{errors.unit.message}</p>}
+                    </div>
 
-                    <UploadPhoto
-                        onFileUpload={handleFileUpload}
-                        onMainImageSelect={handleFileSelect}
-                        onOtherImagesSelect={handleOtherImagesSelect}
-
-                    />
+                    <div>
+                        <UploadPhoto
+                            onFileUpload={handleFileUpload}
+                            onMainImageSelect={handleFileSelect}
+                            onOtherImagesSelect={handleOtherImagesSelect}
+                        />
+                        {selectedFiles && (
+                            <p>File đã chọn: {selectedFiles.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
+                        )}
+                    </div>
 
                     <div className="flex items-center justify-center md:gap-8 gap-4 pt-5 pb-5">
                         <button

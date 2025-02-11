@@ -9,7 +9,7 @@ import CardComponent from "@/components/slide-carousel";
 import { PowerPoint } from "@/components/powerpoint-carousel";
 import FeedbackCarousel from "@/components/feedback-carousel";
 import useGetAllProduct from "./hooks/useGetAllProduct";
-
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 export default function HomePage() {
   const { isPending, getAllProductApi } = useGetAllProduct();
@@ -23,13 +23,13 @@ export default function HomePage() {
         const filteredProducts = response.value.data.items.filter(
           (product) => product.category === 0
         );
-        setProducts(filteredProducts); 
+        setProducts(filteredProducts);
       }
     };
-  
+
     fetchProducts();
   }, []);
-  
+
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -296,6 +296,7 @@ export default function HomePage() {
         <span>Khám phá tài nguyên slide của chúng tôi</span>
         <GiFlexibleStar className="text-[#219ebc]" />
       </motion.div>
+
       <motion.div
         ref={ref8}
         initial="hidden"
@@ -304,9 +305,17 @@ export default function HomePage() {
         transition={{ duration: 0.7 }}
         className="p-8 bg-[#669bbc] w-full"
       >
-         {products.map((product) => (
-            <CardComponent key={product.id} slideId={product.id} />
-          ))}
+        <Carousel opts={{ align: "start" }} className="w-full max-w-7xl mx-auto">
+          <CarouselContent className="flex-nowrap">
+            {products.map((product) => (
+              <CarouselItem className="md:basis-1/2 lg:basis-1/4" key={product.id}>
+                <CardComponent slideId={product.id} product={product} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </motion.div>
 
       <motion.div

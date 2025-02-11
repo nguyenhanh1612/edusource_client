@@ -355,6 +355,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useAppSelector } from "@/stores/store";
+import { Roles } from "@/const/authentication";
 
 interface ViewDetailExcerciseProps {
   exerciseId: string;
@@ -365,6 +367,7 @@ export default function DetailExercise({ exerciseId }: ViewDetailExcerciseProps)
   const [exerciseData, setExerciseData] = useState<API.Unit | null>(null);
   const [selectedValue, setSelectedValue] = useState("");
   const router = useRouter();
+  const userState = useAppSelector((state) => state.userSlice);
 
   useEffect(() => {
     if (!exerciseId) {
@@ -386,7 +389,7 @@ export default function DetailExercise({ exerciseId }: ViewDetailExcerciseProps)
     };
 
     fetchProduct();
-  }, [exerciseId]); 
+  }, [exerciseId]);
 
   if (isPending) {
     return <Backdrop open={true} />;
@@ -482,14 +485,16 @@ export default function DetailExercise({ exerciseId }: ViewDetailExcerciseProps)
               </div>
             </div>
 
-
-
             <div className="space-y-8">
               <div className="flex flex-col py-16 items-center justify-center bg-[#fdf0d5] shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] w-[70%] rounded-md space-y-4 mx-auto">
-                <h3 className="text-4xl font-semibold text-[#219ebc]"> VND</h3>
+                <h3 className="text-4xl font-semibold text-[#219ebc]">
+                  {(exerciseData.price).toLocaleString("vi-VN")}<sup className="text-2xl">đ</sup>
+                </h3>
                 <p className="mt-2 text-sm text-gray-500 leading-relaxed">Giá niêm yết:  VND</p>
                 <p className="mt-2 text-sm leading-relaxed text-red-500">Bạn tiết kiệm:  VND</p>
-                <Button className="mt-3 bg-[#ffb154] text-black hover:bg-[#de9944] w-2/3 rounded-full"><MdShoppingCart />Thêm vào giỏ hàng</Button>
+                {!(userState.user?.roleId === Roles[2].id) && (
+                  <Button className="mt-3 bg-[#ffb154] text-black hover:bg-[#de9944] w-2/3 rounded-full"><MdShoppingCart />Thêm vào giỏ hàng</Button>
+                )}
               </div>
               <div className="flex flex-col justify-center items-center text-white space-y-4">
                 <span>Chia sẻ tài nguyên này</span>

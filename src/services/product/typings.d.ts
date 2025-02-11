@@ -27,10 +27,10 @@ declare namespace REQUEST {
     category: number;
     description: string;
     contentType: number;
-    unit: number;
+    unit: int;
     uploadType: number;
     totalPage: number;
-    size: number;
+    size: number | null;
     bookId: string;
     file?: File;
     mainImage?: File;
@@ -70,6 +70,7 @@ declare namespace API {
   type Unit = {
     id: string;
     name: string;
+    price: number;
     category: import("@/const/product").CategoryId;
     unit: number;
     description: string;

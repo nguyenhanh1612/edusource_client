@@ -13,10 +13,10 @@ export const useServiceCreateProduct = () => {
       formData.append("Category", data.category.toString());
       formData.append("Description", data.description);
       formData.append("ContentType", data.contentType.toString());
-      formData.append("Unit", data.unit.toString());
+      formData.append("Unit", String(data.unit));
       formData.append("UploadType", data.uploadType.toString());
       formData.append("TotalPage", data.totalPage.toString());
-      formData.append("Size", data.size.toString());
+      formData.append("Size", (data.size ?? 0).toString());
       formData.append("BookId", data.bookId);
 
       if (data.mainImage) {
@@ -28,7 +28,7 @@ export const useServiceCreateProduct = () => {
       data.otherImages?.forEach((image) => {
         formData.append("OtherImages", image);
       });
-      
+
       return await createProduct(formData);
     },
     onSuccess: (data) => {
