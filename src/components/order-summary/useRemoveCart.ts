@@ -1,14 +1,14 @@
-import { useServiceAddToCart } from "@/services/cart/services";
-import { addToCart } from "@/stores/cart-slice";
+import { useServiceDeleteCart } from "@/services/cart/services";
+import { removeFromCart } from "@/stores/cart-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function usePostAddToCart() {
+export default function useDeleteCart() {
   const dispatch = useDispatch();
   const [isPending, setPending] = useState(false);
-  const { mutate, isPending: isMutating } = useServiceAddToCart();
+  const { mutate, isPending: isMutating } = useServiceDeleteCart();
 
-  const postAddToCartApi = async (params: REQUEST.AddProductToCart) => {
+  const deleteCartApi = async (params: REQUEST.DeleteCart) => {
     setPending(true);
     try {
       mutate(params, {
@@ -17,7 +17,7 @@ export default function usePostAddToCart() {
             console.error("productId is undefined");
             return;
           }
-          dispatch(addToCart({ productId: params.productId, quantity: 1 }));
+          dispatch(removeFromCart({ productId: params.productId }));
         },
         onError: (error) => {},
       });
@@ -25,5 +25,5 @@ export default function usePostAddToCart() {
       setPending(false);
     }
   };
-  return { isPending: isPending || isMutating, postAddToCartApi };
+  return { isPending: isPending || isMutating, deleteCartApi };
 }

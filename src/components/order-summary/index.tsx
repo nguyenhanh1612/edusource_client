@@ -1,81 +1,99 @@
-import React from 'react';
+import { categoryType } from "@/const/product";
+import React from "react";
+import useDeleteCart from "./useRemoveCart";
+import { RootState } from "@/stores/store";
+import { useSelector } from "react-redux";
 
-const OrderSummary: React.FC = () => {
-    const products = [
-        {
-            imgSrc: 'https://readymadeui.com/images/product10.webp',
-            name: 'Naruto: Split Sneakers',
-            size: '37',
-            quantity: 2,
-            price: '$40',
-        },
-        {
-            imgSrc: 'https://readymadeui.com/images/product11.webp',
-            name: 'VelvetGlide Boots',
-            size: '37',
-            quantity: 2,
-            price: '$40',
-        },
-        {
-            imgSrc: 'https://readymadeui.com/images/product14.webp',
-            name: 'Echo Elegance',
-            size: '37',
-            quantity: 2,
-            price: '$40',
-        },
-        {
-            imgSrc: 'https://readymadeui.com/images/product12.webp',
-            name: 'Naruto: Split Sneakers',
-            size: '37',
-            quantity: 2,
-            price: '$40',
-        },
-        {
-            imgSrc: 'https://readymadeui.com/images/product9.webp',
-            name: 'VelvetGlide Boots',
-            size: '37',
-            quantity: 2,
-            price: '$40',
-        },
-    ];
+interface OrderSummaryProps {
+    cartItems: API.ProductCart[];
+    setCartItems: React.Dispatch<React.SetStateAction<API.ProductCart[]>>;
+}
 
-    const totalPrice = products.reduce((total, product) => total + parseFloat(product.price.replace('$', '')), 0);
+const OrderSummary: React.FC<OrderSummaryProps> = ({ cartItems, setCartItems }) => {
+    const getCategoryName = (categoryId: number) => {
+        const category = categoryType.find((cat) => cat.id === categoryId);
+        return category ? category.type : "Không xác định";
+    };
+
+    const { isPending, deleteCartApi } = useDeleteCart();
+
+    const handleRemoveItem = async (productId: string) => {
+        try {
+            await deleteCartApi({ productId });
+            setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== productId));
+        } catch (error) {
+            console.error("Lỗi khi xóa sản phẩm:", error);
+        }
+    };
+
+   
+    const totalPrice = cartItems.reduce((total, product) => total + product.price, 0);
 
     return (
         <div className="relative h-full">
-            <div className="p-6 overflow-auto max-lg:max-h-[450px] lg:h-[calc(100vh-50px)]">
-                <h2 className="text-xl font-bold text-gray-800">Order Summary</h2>
+            <div className="overflow-auto max-lg:max-h-[450px] lg:h-[calc(100vh-50px)] p-4">
+                <div className="relative bg-white border border-gray-300 rounded-lg p-4 shadow-md w-full max-w-3xl">
+                    <h2 className="text-xl font-bold text-gray-800 mb-2">Tổng sản phẩm</h2>
 
-                <div className="space-y-6 mt-8">
-                    {products.map((product, index) => (
-                        <div key={index} className="flex gap-4">
-                            <div className="w-[124px] h-[100px] flex items-center justify-center p-4 shrink-0 bg-gray-200 rounded-lg">
-                                <img src={product.imgSrc} className="w-full object-contain" alt={product.name} />
-                            </div>
+                    {cartItems.length > 0 ? (
+                        <>
+                            {cartItems.map((product) => (
+                                <div key={product.id} className="relative flex items-center gap-4 py-3 border-b mb-4">
+                                    <button
+                                        onClick={() => handleRemoveItem(product.id)} 
+                                        className="absolute top-0 right-0 bg-white border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white text-lg w-7 h-7 flex items-center justify-center rounded-full shadow-md transition"
+                                        disabled={isPending}
+                                    >
+                                        ❌
+                                    </button>
 
-                            <div className="w-full">
-                                <h3 className="text-sm text-gray-800 font-bold">{product.name}</h3>
-                                <ul className="text-xs text-gray-800 space-y-1 mt-2">
-                                    <li className="flex flex-wrap gap-4">
-                                        Size <span className="ml-auto">{product.size}</span>
-                                    </li>
-                                    <li className="flex flex-wrap gap-4">
-                                        Quantity <span className="ml-auto">{product.quantity}</span>
-                                    </li>
-                                    <li className="flex flex-wrap gap-4">
-                                        Total Price <span className="ml-auto">{product.price}</span>
-                                    </li>
-                                </ul>
+                                    <div className="w-[200px] h-[120px] rounded-md border bg-gray-100 flex items-center justify-center">
+                                        <img
+                                            src={product.imageUrl}
+                                            className="w-full h-full object-cover rounded-md"
+                                            alt={product.name}
+                                        />
+                                    </div>
+
+                                    <div className="flex-1 pr-10">
+                                        <h3 className="text-base font-semibold text-orange-600">{product.name}</h3>
+                                        <p className="text-xs text-gray-500">{product.description}</p>
+
+                                        <span className="text-xs text-white bg-orange-500 px-2 py-1 rounded-md inline-block mt-1">
+                                            {getCategoryName(product.category)}
+                                        </span>
+
+                                        <p className="text-sm text-gray-500 mt-1">
+                                            Created by <span className="font-semibold text-orange-500">EduSource</span>
+                                        </p>
+
+                                        <div className="text-xl font-bold text-orange-600 whitespace-nowrap space-x-2">
+                                            <span>Giá:</span>
+                                            <span>
+                                                {new Intl.NumberFormat("vi-VN", {
+                                                    style: "currency",
+                                                    currency: "VND"
+                                                }).format(product.price)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="border-t pt-4 mt-4 flex justify-between items-center">
+                                <span className="text-lg font-semibold text-gray-700">Tổng cộng:</span>
+                                <span className="text-xl font-bold text-orange-600">
+                                    {new Intl.NumberFormat("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND"
+                                    }).format(totalPrice)}
+                                </span>
                             </div>
-                        </div>
-                    ))}
+                        </>
+                    ) : (
+                        <p className="text-gray-500 text-center mt-4">Giỏ hàng của bạn trống.</p>
+                    )}
                 </div>
-            </div>
-
-            <div className="lg:absolute lg:left-0 lg:bottom-0 bg-gray-200 w-full p-4">
-                <h4 className="flex flex-wrap gap-4 text-sm text-gray-800 font-bold">
-                    Total <span className="ml-auto">${totalPrice.toFixed(2)}</span>
-                </h4>
             </div>
         </div>
     );

@@ -3,10 +3,22 @@ import { addToCart, deleteCart } from "./api-services";
 import useToast from "@/hooks/use-toast";
 
 export const useServiceAddToCart = () => {
+  const { addToast } = useToast();
   return useMutation<TResponse, TMeta, REQUEST.AddProductToCart>({
     mutationFn: addToCart,
     onSuccess: (data) => {
-      console.log("Thêm giỏ hàng thành công", data);
+      addToast({
+        type: "success",
+        description: data.value.message,
+        duration: 5000,
+      });
+    },
+    onError: (error) => {
+      addToast({
+        type: "error",
+        description: error?.detail,
+        duration: 5000,
+      });
     },
   });
 };
@@ -22,13 +34,12 @@ export const useServiceDeleteCart = () => {
           description: data.value.message,
           duration: 5000,
         },
-        false
       );
     },
-    onError: () => {
+    onError: (error) => {
       addToast({
         type: "error",
-        description: "Please try again!",
+        description: error?.detail,
         duration: 5000,
       });
     },

@@ -15,8 +15,8 @@ export const getAllProductCart = async ({
   BookId,
   pageIndex,
   pageSize,
-}: REQUEST.GetProductFromCart): Promise<TResponseData<API.ProductCart>> => {
-  const response = await request<TResponseData<API.ProductCart>>(
+}: REQUEST.GetProductFromCart): Promise<TResponseData<API.ResponseDataProductCart>> => {
+  const response = await request<TResponseData<API.ResponseDataProductCart>>(
     API_ENDPOINTS.GET_ALL_PRODUCTS_FROM_CART,
     {
       method: "GET",
@@ -41,20 +41,33 @@ export const getAllProductCart = async ({
   return response.data;
 };
 
-export const addToCart = async (body: REQUEST.AddProductToCart) => {
-  const response = await request<TResponse>(API_ENDPOINTS.ADD_PRODUCT_TO_CART, {
-    method: "POST",
-    data: body,
-  });
+export const addToCart = async ({
+  productId,
+}: REQUEST.AddProductToCart): Promise<TResponseData> => {
+  const response = await request<TResponseData>(
+    API_ENDPOINTS.ADD_PRODUCT_TO_CART,
+    {
+      method: "POST",
+      params: {
+        productId
+      },
+    }
+  );
+
   return response.data;
 };
 
-export const deleteCart = async (body: REQUEST.DeleteCart) => {
-  const response = await request<TResponse>(
+
+export const deleteCart = async ({
+  productId,
+}: REQUEST.DeleteCart): Promise<TResponseData> => {
+  const response = await request<TResponseData>(
     API_ENDPOINTS.REMOVE_PRODUCT_FROM_CART,
     {
       method: "DELETE",
-      data: body,
+      params: {
+        productId
+      },
     }
   );
   return response.data;

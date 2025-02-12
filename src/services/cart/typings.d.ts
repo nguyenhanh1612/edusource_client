@@ -38,10 +38,13 @@ declare namespace API {
     imageUrl: string;
     fileUrl: string;
     rating: number;
+    price: number;
+    IsPublic?: boolean;
+    IsApproved?: boolean;
     listImages: string[] | null;
   };
 
-  type ResponseDataProduct = {
+  type ResponseDataProductCart = {
     items: ProductCart[];
     pageIndex: number;
     pageSize: number;

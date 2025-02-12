@@ -3,23 +3,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useAppSelector } from "@/stores/store";
+import { usePathname, useRouter } from "next/navigation";
+import { RootState, useAppSelector } from "@/stores/store";
 import AvatarMenu from "@/components/avatar-menu";
 import TippyHeadless from "@tippyjs/react/headless";
 import { IoMdCart } from "react-icons/io";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { BookDropdown } from "@/components/book-carousel";
 import useGetAllBook from "./useGetAllBook";
+import { Roles } from "@/const/authentication";
 
 const Header: React.FC = () => {
   const userState = useAppSelector((state) => state.userSlice);
-
-  // const userState = {
-  //   user: {
-  //     cropAvatarLink: "https://randomuser.me/api/portraits/men/85.jpg", // Hình ảnh đại diện giả
-  //   },
-  // };
+  const totalItems = useAppSelector((state) => state.cartSlice.totalItems);
 
   const currentPath = usePathname();
 
@@ -27,6 +23,7 @@ const Header: React.FC = () => {
   const [books, setBooks] = useState<any>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<number>(1);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -36,12 +33,12 @@ const Header: React.FC = () => {
         setTotalPages(data.value.data.totalPages);
       }
     };
-  
+
     if (activeTab) {
       fetchBooks();
     }
-  }, [activeTab]); 
-  
+  }, [activeTab]);
+
 
   const [avatarTooltip, setAvatarTooltip] = useState<boolean>(false);
   const [bookDropdown, setBookDropdown] = useState<boolean>(false);
@@ -57,7 +54,17 @@ const Header: React.FC = () => {
     setAvatarTooltip(false);
   };
 
+  console.log("User state:", userState.user);
 
+  const handleNavigateToCart = () => {
+    if (!userState.user) {
+      router.push("/login");
+    } else {
+      router.push("/checkout");
+    }
+  };
+
+  
   return (
     <header className="flex items-center justify-between px-12 py-8 bg-white">
       <div className="flex items-center">
@@ -91,7 +98,16 @@ const Header: React.FC = () => {
 
       </nav>
       <div className="flex items-center space-x-6">
-        <IoMdCart className="text-2xl" />
+        {!(userState.user?.roleId === Roles[2].id) && (
+          <div className="relative">
+            <IoMdCart className="text-2xl" onClick={handleNavigateToCart}/>
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                {totalItems}
+              </span>
+            )}
+          </div>
+        )}
         {userState.user === null ? (
           <Link
             href="/login"

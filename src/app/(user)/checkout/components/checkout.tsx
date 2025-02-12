@@ -1,8 +1,11 @@
 "use client";
 import OrderSummary from '@/components/order-summary';
 import { useRouter } from 'next/navigation';
-
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import useGetAllProductCart from '../hooks/useGetProductFromCart';
+import { getAllProductCart } from '@/services/cart/api-services';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/stores/store';
 
 interface FormData {
     name: string;
@@ -20,6 +23,23 @@ interface FormData {
 }
 
 function CheckOut() {
+    const { isPending, getAllProductCartApi } = useGetAllProductCart();
+    const [cartItems, setCartItems] = useState<API.ProductCart[]>([]);
+
+    const cartItem = useSelector((state: RootState) => state.cartSlice.items);
+
+     useEffect(() => {
+        const fetchProducts = async () => {
+          const res = await getAllProductCart({ pageIndex:1, pageSize: 10 });
+          if (res) {
+            setCartItems(res.value.data.items);
+          }
+          console.log("Hello",res.value.data.items)
+        };
+      
+        fetchProducts();
+      }, []);
+
     const [formData, setFormData] = useState<FormData>({
         name: '',
         email: '',
@@ -73,10 +93,10 @@ function CheckOut() {
     return (
         <div className="font-[sans-serif] bg-white p-8">
             <div className="max-lg:max-w-xl mx-auto w-full">
-                <div className="grid lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 max-lg:order-1 p-6 !pr-0 max-w-4xl mx-auto w-full">
+                <div className="grid lg:grid-cols-5 gap-6">
+                    <div className="lg:col-span-3 max-lg:order-1 p-6 !pr-0 max-w-4xl mx-auto w-full">
                         <div className="text-center max-lg:hidden">
-                            <h2 className="text-3xl font-bold text-gray-800 inline-block border-b-2 border-gray-800 pb-1">Checkout</h2>
+                            <h2 className="text-3xl font-bold text-gray-800 inline-block border-gray-800 pb-1">Thanh toán</h2>
                         </div>
 
                         <form className="lg:mt-16" onSubmit={handleSubmit}>
@@ -215,10 +235,9 @@ function CheckOut() {
                             </div>
                         </form>
                     </div>
-
                     
-                    <div className="bg-gray-100 lg:h-screen lg:sticky lg:top-0 lg:max-w-[430px] w-full lg:ml-auto">
-                        <OrderSummary />
+                    <div className="lg:h-screen lg:sticky lg:top-0 w-full lg:ml-auto lg:col-span-2">
+                       {isPending ? <p>Loading...</p> : <OrderSummary cartItems={cartItems} setCartItems={setCartItems} />}
                     </div>
                 </div>
             </div>
