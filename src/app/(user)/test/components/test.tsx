@@ -7,46 +7,44 @@ import { useAppSelector } from "@/stores/store";
 import { Roles } from "@/const/authentication";
 import usePostAddToCart from "../../exercise/hooks/useAddToCart";
 import { DetailView } from "@/components/detail-view";
-import { useDispatch } from "react-redux";
 
-interface ViewDetailExcerciseProps {
-  exerciseId: string;
+interface ViewDetailTestProps {
+  testId: string;
 }
 
-export default function DetailTest({ exerciseId }: ViewDetailExcerciseProps) {
+export default function DetailTest({ testId }: ViewDetailTestProps) {
   const { isPending: isProductLoading, getProductByIdApi } = useGetProductById();
   const { isPending: isAddingToCart, postAddToCartApi } = usePostAddToCart();
 
-  const [exerciseData, setExerciseData] = useState<API.Unit | null>(null);
+  const [testData, setTestData] = useState<API.Unit | null>(null);
   const router = useRouter();
   const userState = useAppSelector((state) => state.userSlice);
-  const dispatch = useDispatch();
 
   const handleAddToCart = async () => {
     if (!userState.user) {
       router.push("/login"); 
       return;
     }
-    if (!exerciseId) {
+    if (!testId) {
       return;
     }
     try {
-      const response = await postAddToCartApi({ productId: exerciseId });
+      const response = await postAddToCartApi({ productId: testId });
     } catch (error) {
       console.log(error)
     }
   };
 
   useEffect(() => {
-    if (!exerciseId) {
+    if (!testId) {
       return;
     }
 
     const fetchProduct = async () => {
       try {
-        const response = await getProductByIdApi({ id: exerciseId });
+        const response = await getProductByIdApi({ id: testId });
         if (response?.value?.data) {
-          setExerciseData(response.value.data as unknown as API.Unit);
+            setTestData(response.value.data as unknown as API.Unit);
         } else {
           router.push("/error");
         }
@@ -56,13 +54,13 @@ export default function DetailTest({ exerciseId }: ViewDetailExcerciseProps) {
     };
 
     fetchProduct();
-  }, [exerciseId]);
+  }, [testId]);
 
   if (isProductLoading) {
     return <Backdrop open={true} />;
   }
 
-  if (!exerciseData) {
+  if (!testData) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <p className="text-xl text-red-500">Sản phẩm không tồn tại hoặc đã bị xóa.</p>
@@ -72,7 +70,7 @@ export default function DetailTest({ exerciseId }: ViewDetailExcerciseProps) {
 
   return (
     <DetailView
-      data={exerciseData}
+      data={testData}
       onAddToCart={handleAddToCart}
       isAddingToCart={isAddingToCart}
     />

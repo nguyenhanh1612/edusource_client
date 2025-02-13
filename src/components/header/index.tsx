@@ -64,11 +64,14 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleNavigate = () => {
+    router.push("/")
+  };
   
   return (
     <header className="flex items-center justify-between px-12 py-8 bg-white">
       <div className="flex items-center">
-        <img src="/images/logo1.png" alt="Logo" className="h-24" />
+        <img src="/images/logo1.png" alt="Logo" className="h-24" onClick={handleNavigate}/>
       </div>
       <nav className="flex items-center space-x-20">
         <Link

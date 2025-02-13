@@ -216,7 +216,7 @@ export default function HomePage() {
             Ngân hàng đề thi toàn diện này giúp giáo viên đánh giá chính xác sự tiến bộ của học sinh. Với nhiều loại câu hỏi khác nhau, bao gồm tất cả các chủ đề thiết yếu trong sách giáo khoa, những bài kiểm tra này giúp tiết kiệm thời gian và cung cấp thông tin chi tiết có giá trị để cải thiện mục tiêu.
           </p>
           <div className="mt-4">
-            <Link href="/adopt">
+            <Link href="/alltest">
               <Button
                 variant="outline"
                 className="text-gray-600 bg-teal-400 uppercase p-8 hover:bg-teal-300"

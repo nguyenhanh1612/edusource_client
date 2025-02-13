@@ -98,7 +98,7 @@ function UploadFile() {
         <div className="flex min-h-screen items-center justify-center py-10">
             <div className="grid bg-white rounded-lg shadow-xl w-11/12 md:w-9/12 lg:w-1/2">
                 <div className="flex justify-center">
-                    <h1 className="text-gray-600 font-bold md:text-2xl text-xl">Upload Form</h1>
+                    <h1 className="text-gray-600 font-bold md:text-2xl text-xl">Tạo tài liệu</h1>
                 </div>
 
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
