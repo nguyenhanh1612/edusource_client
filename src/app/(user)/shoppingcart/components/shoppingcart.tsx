@@ -1,32 +1,72 @@
 "use client";
 import ReviewProduct from '@/components/review-product'
+import { getAllProductCart } from '@/services/cart/api-services';
+import { RootState } from '@/stores/store';
 import { useRouter } from 'next/navigation';
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 
 function ShoppingCart() {
-
+    const [cartItems, setCartItems] = useState<API.ProductCart[]>([]);
+    const [totalPrice, setTotalPrice] = useState(0);
     const router = useRouter()
-    
+    const cartItem = useSelector((state: RootState) => state.cartSlice.items);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const res = await getAllProductCart({ pageIndex: 1, pageSize: 10 });
+            if (res) {
+                setCartItems(res.value.data.items);
+            }
+            console.log("Hello", res.value.data.items)
+        };
+
+        fetchProducts();
+    }, []);
+
+
     return (
-        <div className="font-sans max-w-5xl max-md:max-w-xl mx-auto bg-white py-8">
-            <h1 className="text-3xl font-bold text-gray-800 text-center">Shopping Cart</h1>
+        <div className="font-sans max-w-7xl max-md:max-w-xl mx-auto bg-white py-8">
+            <h1 className="text-3xl font-bold text-gray-800 text-center">Giỏ hàng</h1>
 
             <div className="grid md:grid-cols-3 gap-8 mt-16">
-                <ReviewProduct />
-                <div className="bg-gray-100 rounded-md p-4 h-max">
-                    <h3 className="text-lg max-sm:text-base font-bold text-gray-800 border-b border-gray-300 pb-2">Order Summary</h3>
+                {/* Phần ReviewProduct */}
+                <ReviewProduct cartItems={cartItems} setCartItems={setCartItems} setTotalPrice={setTotalPrice} />
+
+                {/* Phần OrderSummary */}
+                <div className="bg-white border border-gray-300 rounded-lg p-6 shadow-md h-max">
+                    <h3 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-4">Tóm tắt đơn hàng</h3>
+
+                    {/* Tổng giá */}
                     <ul className="text-gray-800 mt-6 space-y-3">
-                        <li className="flex flex-wrap gap-4 text-sm">Subtotal <span className="ml-auto font-bold">$200.00</span></li>
-                        <li className="flex flex-wrap gap-4 text-sm">Shipping <span className="ml-auto font-bold">$2.00</span></li>
-                        <li className="flex flex-wrap gap-4 text-sm">Tax <span className="ml-auto font-bold">$4.00</span></li>
-                        <hr className="border-gray-300" />
-                        <li className="flex flex-wrap gap-4 text-sm font-bold">Total <span className="ml-auto">$206.00</span></li>
+                        <li className="flex flex-wrap gap-4 text-base font-semibold">
+                            Tổng tiền:
+                            <span className="ml-auto text-orange-600">
+                                {new Intl.NumberFormat("vi-VN", {
+                                    style: "currency",
+                                    currency: "VND"
+                                }).format(totalPrice)}
+                            </span>
+                        </li>
                     </ul>
 
+                    {/* Nút thanh toán và tiếp tục mua sắm */}
                     <div className="mt-6 space-y-3">
-                        <button type="button" className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md" onClick={() => router.push('/checkout')}>Checkout</button>
-                        <button type="button" className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-md">Continue Shopping</button>
+                        <button
+                            type="button"
+                            className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-orange-500 hover:bg-orange-600 text-white rounded-md transition-colors"
+                            onClick={() => router.push('/checkout')}
+                        >
+                            Thanh toán
+                        </button>
+                        <button
+                            type="button"
+                            className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 hover:bg-gray-100 rounded-md transition-colors"
+                            onClick={() => router.push('/')}
+                        >
+                            Tiếp tục mua sắm
+                        </button>
                     </div>
                 </div>
             </div>

@@ -58,8 +58,8 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
         const selectedFile = e.target.files ? e.target.files[0] : null;
 
         if (selectedFile) {
-            const previewUrl = URL.createObjectURL(selectedFile);  
-            const fileSize = selectedFile.size; 
+            const previewUrl = URL.createObjectURL(selectedFile);
+            const fileSize = selectedFile.size;
             setUploadedFile(selectedFile);
             setUploadedFilePreview(previewUrl);
             const info = { name: selectedFile.name, size: selectedFile.size, type: selectedFile.type };
@@ -73,7 +73,7 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                     clearInterval(interval);
                     setIsUploaded(true);
                 }
-            }, 200); 
+            }, 200);
 
             onFileUpload(selectedFile, previewUrl, fileSize);
         }
@@ -173,63 +173,6 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
             )}
 
 
-            {/* File Upload */}
-            <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold mb-1">
-                File tải lên (PDF, PPT, ZIP, RAR)
-            </label>
-            <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col border-4 border-dashed w-full h-32 hover:bg-gray-100 hover:border-purple-300 group">
-                    <div className="flex flex-col items-center justify-center pt-7">
-                        <p className="text-sm text-gray-400 group-hover:text-purple-600 pt-1 tracking-wider">
-                            Chọn file
-                        </p>
-                    </div>
-                    <input type="file" accept=".pdf, .pptx, .ppt, .zip, .rar" className="hidden" onChange={handleFileUpload} />
-                </label>
-            </div>
-
-            {uploadedFile && !isUploaded && (
-                <div className="mt-5">
-                    <div className="bg-gray-300 rounded-full w-full h-2.5">
-                        <div
-                            className="w-full h-full rounded-full bg-blue-600 flex items-center relative"
-                            style={{ width: `${uploadProgress}%` }}
-                        >
-                            <span className="absolute text-xs right-0.5 bg-white w-2 h-2 rounded-full"></span>
-                        </div>
-                    </div>
-                    <p className="text-sm text-gray-400 font-semibold mt-2">{uploadProgress}% done</p>
-                </div>
-            )}
-
-            {isUploaded && uploadedFile && uploadedFileInfo && (
-                <div className="mt-5 mx-7">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-gray-600 font-semibold">Uploaded File:</h2>
-                        <IoClose className="text-2xl cursor-pointer" onClick={handleRemoveUploadedFile} />
-                    </div>
-                    <div className="flex items-center">
-                        {uploadedFileInfo.type.includes("pdf") && <i className="fas fa-file-pdf text-2xl mr-2"></i>}
-                        {uploadedFileInfo.type.includes("powerpoint") && <i className="fas fa-file-powerpoint text-2xl mr-2"></i>}
-                        {uploadedFileInfo.type.includes("zip") || uploadedFileInfo.type.includes("rar") && <i className="fas fa-file-archive text-2xl mr-2"></i>}
-                        {!uploadedFileInfo.type.includes("pdf") && !uploadedFileInfo.type.includes("powerpoint") && !uploadedFileInfo.type.includes("zip") && !uploadedFileInfo.type.includes("rar") && <i className="fas fa-file text-2xl mr-2"></i>}
-
-                        {/* <div>
-                            <p><strong>Name:</strong> {uploadedFileInfo.name}</p>
-                            <p><strong>Size:</strong> {Math.round(uploadedFileInfo.size / 1024)} KB</p>
-                            <p><strong>Type:</strong> {uploadedFileInfo.type}</p>
-                        </div> */}
-                    </div>
-
-                    {/* Preview cho PDF */}
-                    {uploadedFileInfo.type.includes("pdf") && uploadedFilePreview && (
-                        <div className="mt-2 w-full max-w-full h-64 overflow-hidden border border-gray-300 rounded-md">
-                            <iframe src={uploadedFilePreview} title="PDF Preview" className="w-full h-full"></iframe>
-                        </div>
-                    )}
-                </div>
-            )}
-
             <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold mb-1">
                 Ảnh minh họa khác
             </label>
@@ -259,6 +202,70 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                     ))}
                 </div>
             )}
+
+            {/* File Upload */}
+            <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold mb-1">
+                File tải lên (PDF, PPT, ZIP, RAR)
+            </label>
+            <div className="flex items-center justify-center w-full">
+                <label className="flex flex-col border-4 border-dashed w-full h-32 hover:bg-gray-100 hover:border-purple-300 group">
+                    <div className="flex flex-col items-center justify-center pt-7">
+                        <p className="text-sm text-gray-400 group-hover:text-purple-600 pt-1 tracking-wider">
+                            Chọn file
+                        </p>
+                    </div>
+                    <input type="file" accept=".pdf, .pptx, .ppt, .zip, .rar" className="hidden" onChange={handleFileUpload} />
+                </label>
+            </div>
+
+            {uploadedFile && !isUploaded && (
+                <div className="mt-5">
+                    <div className="bg-gray-300 rounded-full w-full h-2.5">
+                        <div
+                            className="w-full h-full rounded-full bg-blue-600 flex items-center relative"
+                            style={{ width: `${uploadProgress}%` }}
+                        >
+                            <span className="absolute text-xs right-0.5 bg-white w-2 h-2 rounded-full"></span>
+                        </div>
+                    </div>
+                    <p className="text-sm text-gray-400 font-semibold mt-2">{uploadProgress}% done</p>
+                </div>
+            )}
+
+            {isUploaded && uploadedFile && uploadedFileInfo &&
+                ["pdf", "ppt", "pptx"].some(type => uploadedFileInfo.type.includes(type)) && (
+                    <div className="mt-5 mx-7">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-gray-600 font-semibold">Uploaded File:</h2>
+                            <IoClose className="text-2xl cursor-pointer" onClick={handleRemoveUploadedFile} />
+                        </div>
+                        <div className="flex items-center">
+                            <div className="flex items-center">
+                                {uploadedFileInfo.type.includes("pdf") && <i className="fas fa-file-pdf text-2xl mr-2"></i>}
+                                {(uploadedFileInfo.type.includes("ppt") || uploadedFileInfo.type.includes("pptx")) && <i className="fas fa-file-powerpoint text-2xl mr-2"></i>}
+                            </div>
+                        </div>
+
+                        {/* Preview cho PDF */}
+                        {uploadedFileInfo.type.includes("pdf") && uploadedFilePreview && (
+                            <div className="mt-2 w-full max-w-full h-64 overflow-hidden border border-gray-300 rounded-md">
+                                <iframe src={uploadedFilePreview} title="PDF Preview" className="w-full h-full"></iframe>
+                            </div>
+                        )}
+
+                        {/* Preview cho PowerPoint */}
+                        {(uploadedFileInfo.type.includes("ppt") || uploadedFileInfo.type.includes("pptx")) && uploadedFilePreview && (
+                            <div className="mt-2 w-full max-w-full h-64 overflow-hidden border border-gray-300 rounded-md">
+                                <iframe
+                                    src={`https://docs.google.com/gview?url=${uploadedFilePreview}&embedded=true`}
+                                    title="PPT Preview"
+                                    className="w-full h-full"
+                                ></iframe>
+                            </div>
+                        )}
+                    </div>
+                )}
+
         </div>
     );
 };

@@ -6,6 +6,7 @@ export const CreateProductBody = z.object({
   category: z.number().int().min(0, "Vui lòng chọn danh mục"), // Số nguyên
   description: z.string().min(10, "Mô tả phải có ít nhất 10 ký tự"),
   contentType: z.number().int().min(0, "Loại nội dung không hợp lệ"), // Số nguyên
+  totalPage: z.number().int().min(1, "Số trang không thể là 0"),
   unit: z.number().int().min(0, "Đơn vị không hợp lệ"), // Đơn vị có thể = 0
   uploadType: z.number().int().min(0, "Loại tải lên không hợp lệ"), // Số nguyên, min = 0
   size: z.number().nonnegative("Kích thước phải lớn hơn hoặc bằng 0"), // Không âm

@@ -190,7 +190,7 @@ export default function HomePage() {
             Nâng cao khả năng giảng dạy của bạn với các slide được thiết kế của chúng tôi. Các trang trình bày có thể tùy chỉnh này tuân theo cấu trúc sách giáo khoa, giúp bạn trình bày các bài học rõ ràng, ngắn gọn, có tổ chức và mang tính tương tác một cách dễ dàng. Tiết kiệm thời gian và gây ấn tượng với học sinh của bạn bằng các trang trình bày sinh động và hấp dẫn về mặt hình ảnh.
           </p>
           <div className="mt-4">
-            <Link href="/adopt">
+            <Link href="/allpowerpoint">
               <Button
                 variant="outline"
                 className="text-gray-600 bg-teal-400 uppercase p-8 hover:bg-teal-300"

@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 import { useAppSelector } from "@/stores/store";
 import { Roles } from "@/const/authentication";
+import { categoryType, contentType, uploadType } from "@/const/product";
 
 interface DetailViewProps {
   data: API.Unit;
@@ -41,6 +42,11 @@ interface DetailViewProps {
 export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProps) {
   const userState = useAppSelector((state) => state.userSlice);
   const [selectedValue, setSelectedValue] = useState("");
+
+  const getCategoryType = (id: number) => categoryType.find((item) => item.id === id)?.type || "Không xác định";
+  const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
+  const getUploadType = (id: number) => uploadType.find((item) => item.id === id)?.type || "Không xác định";
+
 
   return (
     <div className="mx-auto ">
@@ -116,7 +122,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
               </div>
               <div className="text-gray-700 flex flex-col">
                 <span className="text-white">Định dạng bao gồm</span>
-                <span className="text-[#add7f6] ml-6">{data.category}</span>
+                <span className="text-[#add7f6] ml-6">{getUploadType(data.uploadType)}</span>
               </div>
               <div className="text-gray-700 flex flex-col ">
                 <span className="text-white">Số trang</span>

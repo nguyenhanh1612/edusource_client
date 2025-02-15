@@ -60,7 +60,7 @@ const Header: React.FC = () => {
     if (!userState.user) {
       router.push("/login");
     } else {
-      router.push("/checkout");
+      router.push("/shoppingcart");
     }
   };
 

@@ -27,7 +27,7 @@ function UploadFile() {
             category: category.id,
             contentType: content.id,
             uploadType: upload.id,
-            totalPage: 1,
+            totalPage: data.totalPage,
             bookId: selectedBook,
             file: selectedFiles || undefined,
             mainImage: filePreview || undefined,
@@ -221,6 +221,17 @@ function UploadFile() {
                         {errors.unit && <p className="text-red-500 text-xs">{errors.unit.message}</p>}
                     </div>
 
+                    <div className="grid grid-cols-1 mt-5 mx-7">
+                        <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Số trang</label>
+                        <input
+                            {...register("totalPage", { valueAsNumber: true })}
+                            className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                            type="number"
+                            placeholder="Số trang"
+                        />
+                        {errors.totalPage && <p className="text-red-500 text-xs">{errors.totalPage.message}</p>}
+                    </div>
+
                     <div>
                         <UploadPhoto
                             onFileUpload={handleFileUpload}
@@ -228,7 +239,7 @@ function UploadFile() {
                             onOtherImagesSelect={handleOtherImagesSelect}
                         />
                         {selectedFiles && (
-                            <p>File đã chọn: {selectedFiles.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
+                            <p className="px-7 py-4">File đã chọn: {selectedFiles.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
                         )}
                     </div>
 

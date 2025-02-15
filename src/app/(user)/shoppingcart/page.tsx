@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description: "Shopping cart for EduSource",
 };
 
-export default function Home() {
+export default function ShoppingCartPae() {
     return (
         <div>
             <ShoppingCart />
