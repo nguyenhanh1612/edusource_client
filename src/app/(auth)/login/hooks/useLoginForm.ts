@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import useGetAllProductCart from "@/app/(user)/checkout/hooks/useGetProductFromCart";
 import { setCart } from "@/stores/cart-slice";
+import { useAppSelector } from "@/stores/store";
 
 interface CartItem {
-  productId: string; 
-  quantity: number; 
+  productId: string;
+  quantity: number;
 }
 
 export function useLoginForm() {
@@ -25,6 +26,7 @@ export function useLoginForm() {
 
   const dispatch = useDispatch();
   const { getAllProductCartApi } = useGetAllProductCart();
+  const userState = useAppSelector((state) => state.userSlice);
 
   const {
     register,
@@ -47,24 +49,30 @@ export function useLoginForm() {
         onSuccess: async (data) => {
           if (data) {
             reset();
-            
-            const cartResponse = await getAllProductCartApi({
-              pageIndex: 1,
-              pageSize: 10,
-            });
+            if (data.authProfile.roleId === 2) {
+              const cartResponse = await getAllProductCartApi({
+                pageIndex: 1,
+                pageSize: 10,
+              });
 
-            if (cartResponse && cartResponse.value?.data) {
-              const cartItems: CartItem[] = cartResponse.value.data.items.map((item) => ({
-                productId: item.id, 
-                quantity: 1, 
-              }));
-              
-              dispatch(
-                setCart({
-                  items: cartItems,
-                  totalItems: cartItems.reduce((total, item) => total + item.quantity, 0),
-                })
-              );
+              if (cartResponse && cartResponse.value?.data) {
+                const cartItems: CartItem[] = cartResponse.value.data.items.map(
+                  (item) => ({
+                    productId: item.id,
+                    quantity: 1,
+                  })
+                );
+
+                dispatch(
+                  setCart({
+                    items: cartItems,
+                    totalItems: cartItems.reduce(
+                      (total, item) => total + item.quantity,
+                      0
+                    ),
+                  })
+                );
+              }
             }
 
             // Navigate

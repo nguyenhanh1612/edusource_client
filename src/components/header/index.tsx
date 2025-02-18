@@ -69,7 +69,7 @@ const Header: React.FC = () => {
   };
   
   return (
-    <header className="flex items-center justify-between px-12 py-8 bg-white">
+    <header className="flex items-center justify-between px-8 bg-white rounded-full fixed top-0 left-0 right-0 z-50 shadow-lg max-w-[1500px] mx-auto mt-6">
       <div className="flex items-center">
         <img src="/images/logo1.png" alt="Logo" className="h-24" onClick={handleNavigate}/>
       </div>

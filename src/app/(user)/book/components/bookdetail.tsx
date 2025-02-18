@@ -65,7 +65,7 @@ function BookDetail({ bookId }: BookDetailProps) {
         } else if (product.category === 1) {
             router.push(`/exercise/${product.id}`);
         } else if (product.category === 2) {
-            router.push(`/detailtest/${product.id}`);
+            router.push(`/test/${product.id}`);
         }
     };
 
@@ -73,7 +73,7 @@ function BookDetail({ bookId }: BookDetailProps) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-4 bg-[#8ecae6] px-20">
-            <div className="flex flex-col space-y-4 bg-[#fdf0d5] p-4 shadow-lg rounded-lg">
+            <div className="flex flex-col space-y-4 bg-[#fdf0d5] p-4 shadow-lg rounded-lg mt-32">
                 <div>
                     <h3 className="text-lg font-medium text-[#fb8500]">Unit</h3>
                     <div className="space-y-2 text-[#fb8500]">
@@ -179,7 +179,7 @@ function BookDetail({ bookId }: BookDetailProps) {
             </div>
 
 
-            <div className="col-span-2 md:col-span-2 bg-[#add7f6] p-4 shadow-lg rounded-lg">
+            <div className="col-span-2 md:col-span-2 bg-[#add7f6] p-4 shadow-lg rounded-lg mt-32">
                 <h2 className="text-2xl font-semibold mb-4">Content</h2>
 
 

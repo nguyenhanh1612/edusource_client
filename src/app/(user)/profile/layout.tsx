@@ -17,11 +17,11 @@ export default function UserProfileLayout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="relative bg-[url('/images/profile.jpg')] bg-cover bg-center w-full h-[34vh] shadow-md flex flex-col items-start justify-center p-4">
+      <div className="relative bg-[url('/images/profile.jpg')] bg-cover bg-center w-full h-[60vh] shadow-md flex flex-col items-start justify-center p-4">
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div>
           <div className="relative z-10 w-9/12 p-20 ml-0">
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-4 mt-24">
               <h1 className="text-white text-5xl font-bold">Hồ sơ</h1>
               <p className="text-white text-lg">
                 Hồ sơ của bạn phản ánh hành trình và giá trị của bạn, đóng vai trò là
@@ -31,7 +31,7 @@ export default function UserProfileLayout({ children }: LayoutProps) {
             </div>
           </div>
         </div>
-        <div className="z-20 absolute left-[50%] translate-x-[-50%] -bottom-[40%] flex flex-col items-center gap-y-3">
+        <div className="z-20 absolute left-[50%] translate-x-[-50%] -bottom-[20%] flex flex-col items-center gap-y-3">
           <AvatarProfile />
           <h2 className="text-center font-bold">
             {userState.user?.lastName} {userState.user?.firstName}

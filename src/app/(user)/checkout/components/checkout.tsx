@@ -40,7 +40,7 @@ function CheckOut() {
     return (
         <div className="font-[sans-serif] bg-white p-8">
             <div className="max-lg:max-w-xl mx-auto w-full">
-                <div className="grid lg:grid-cols-5 gap-6">
+                <div className="grid lg:grid-cols-5 gap-6 mt-28">
                     <div className="lg:col-span-3 max-lg:order-1 p-6 !pr-0 max-w-4xl mx-auto w-full">
                         <div className="text-center max-lg:hidden">
                             <h2 className="text-3xl font-bold text-gray-800 inline-block border-b-2 border-orange-500 pb-2">Thanh toán</h2>

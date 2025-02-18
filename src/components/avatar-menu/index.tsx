@@ -8,6 +8,7 @@ import { Backdrop } from "@/components/backdrop";
 import { openMessageUser } from "@/stores/difference-slice";
 import { useRouter } from "next/navigation";
 import { Roles } from "@/const/authentication";
+import { FaReceipt } from "react-icons/fa";
 
 interface AvatarMenuProps {
   onCloseTooltip: () => void;
@@ -43,6 +44,12 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
       case 4: {
         router.push("/uploadfile");
         onCloseTooltip();
+        break;
+      }
+      case 5: {
+        router.push("/purchased");
+        onCloseTooltip();
+        break;
       }
       default:
         break;
@@ -54,13 +61,13 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
       <div
         className="px-4 py-3 text-lg text-gray-900 hover:bg-gray-200 select-none cursor-pointer"
         onClick={() => {
-          if(userState?.user?.roleId === Roles[1].id) {
+          if (userState?.user?.roleId === Roles[1].id) {
             handleNavigate(1);
           }
-          if(userState?.user?.roleId === Roles[2].id) {
+          if (userState?.user?.roleId === Roles[2].id) {
             handleNavigate(4);
           }
-          if(userState?.user?.roleId === Roles[0].id) {
+          if (userState?.user?.roleId === Roles[0].id) {
             handleNavigate(2);
           }
         }}
@@ -75,6 +82,21 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
           className="py-2 text-sm text-gray-700"
           aria-labelledby="avatarButton"
         >
+          <li>
+            <div
+              className="flex items-center justify-between px-4 py-2 bg-white rounded-lg hover:bg-gray-200 cursor-pointer"
+              onClick={() => handleNavigate(5)}
+            >
+              <div className="flex items-center">
+                <FaReceipt
+                  className="p-1 bg-gray-300 text-black rounded-full mr-2"
+                  size={30}
+                />
+                <span className="text-black">Sản phẩm đã mua</span>
+              </div>
+              <FiChevronRight className="text-gray-500" size={24} />
+            </div>
+          </li>
           <li>
             <div
               onClick={() => handleNavigate(1)}
@@ -146,7 +168,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
         </div>
       </div>
       <Backdrop open={isPending} />
-      
+
     </div>
   );
 }

@@ -95,7 +95,7 @@ function UploadFile() {
 
 
     return (
-        <div className="flex min-h-screen items-center justify-center py-10">
+        <div className="flex min-h-screen items-center justify-center py-10 mt-28">
             <div className="grid bg-white rounded-lg shadow-xl w-11/12 md:w-9/12 lg:w-1/2">
                 <div className="flex justify-center">
                     <h1 className="text-gray-600 font-bold md:text-2xl text-xl">Tạo tài liệu</h1>

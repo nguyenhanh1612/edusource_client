@@ -21,7 +21,7 @@ const AboutUs = () => {
 
 
     return (
-        <div className='grid grid-cols-12'>
+        <div className='grid grid-cols-12 mt-6'>
             <motion.div
                 ref={ref1}
                 initial="hidden"

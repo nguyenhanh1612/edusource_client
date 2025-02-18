@@ -7,6 +7,7 @@ import { useAppSelector } from "@/stores/store";
 import { Roles } from "@/const/authentication";
 import usePostAddToCart from "../../exercise/hooks/useAddToCart";
 import { DetailView } from "@/components/detail-view";
+import useGetProductByIdByUser from "../../detailslide/hooks/useGetProductByIdByUser";
 
 interface ViewDetailTestProps {
   testId: string;
@@ -19,10 +20,11 @@ export default function DetailTest({ testId }: ViewDetailTestProps) {
   const [testData, setTestData] = useState<API.Unit | null>(null);
   const router = useRouter();
   const userState = useAppSelector((state) => state.userSlice);
+  const { isPending: isUserPending, getProductByIdByUserApi } = useGetProductByIdByUser();
 
   const handleAddToCart = async () => {
     if (!userState.user) {
-      router.push("/login"); 
+      router.push("/login");
       return;
     }
     if (!testId) {
@@ -42,9 +44,16 @@ export default function DetailTest({ testId }: ViewDetailTestProps) {
 
     const fetchProduct = async () => {
       try {
-        const response = await getProductByIdApi({ id: testId });
+        let response;
+
+        if (userState.user && userState.user.roleId === 2) {
+          response = await getProductByIdByUserApi({ id: testId });
+        } else {
+          response = await getProductByIdApi({ id: testId });
+        }
+
         if (response?.value?.data) {
-            setTestData(response.value.data as unknown as API.Unit);
+          setTestData(response.value.data as unknown as API.Unit);
         } else {
           router.push("/error");
         }

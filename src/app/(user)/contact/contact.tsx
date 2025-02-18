@@ -11,7 +11,7 @@ export default function Contact() {
                 <div className="relative w-full h-96"><img className="absolute h-full w-full object-cover object-center" src="https://bucket.material-tailwind.com/magic-ai/bbe71871de8b4d6f23bb0f17a6d5aa342f3dea72677ba7238b18defa3741244d.jpg" alt="nature image" />
                     <div className="absolute inset-0 h-full w-full bg-black/50"></div>
                     <div className="relative pt-28 text-center">
-                        <h2 className="block antialiased tracking-normal font-sans font-semibold leading-[1.3] text-white mb-4 text-3xl lg:text-4xl">Thông tin liên hệ</h2>
+                        <h2 className="block antialiased tracking-normal font-sans font-semibold leading-[1.3] text-white mb-4 text-3xl lg:text-4xl mt-6">Thông tin liên hệ</h2>
                         <p className="block antialiased font-sans text-xl font-normal leading-relaxed text-white mb-9 opacity-70">Chúng tôi luôn sẵn sàng hỗ trợ bạn. Hãy liên hệ với chúng tôi nếu có bất kỳ câu hỏi nào!</p>
                     </div>
                 </div>

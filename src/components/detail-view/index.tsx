@@ -47,11 +47,10 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
   const getUploadType = (id: number) => uploadType.find((item) => item.id === id)?.type || "Không xác định";
 
-
   return (
-    <div className="mx-auto ">
+    <div className="mx-auto">
       <div className="p-8 bg-[#669bbc]">
-        <div className="relative flex flex-col bg-[#669bbc]">
+        <div className="relative flex flex-col bg-[#669bbc] mt-28">
           <div className="ml-20">
             <h1 className="text-2xl font-bold text-white">{data.name}</h1>
             <h2 className="text-lg text-white">{data.description}</h2>
@@ -138,13 +137,23 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
                 <p className="mt-2 text-sm text-gray-500 leading-relaxed">Giá niêm yết:  VND</p>
                 <p className="mt-2 text-sm leading-relaxed text-red-500">Bạn tiết kiệm:  VND</p>
                 {!(userState.user?.roleId === Roles[2].id) && (
-                  <Button
-                    onClick={onAddToCart}
-                    disabled={isAddingToCart}
-                    className="mt-3 bg-[#ffb154] text-black hover:bg-[#de9944] w-2/3 rounded-full"
-                  >
-                    <MdShoppingCart /> {isAddingToCart ? "Đang xử lý..." : "Thêm vào giỏ hàng"}
-                  </Button>
+                  data.isPurchased ? (
+                    <a
+                      href={data.fileUrl}
+                      download
+                      className="mt-3 bg-green-500 text-white hover:bg-green-600 w-2/3 rounded-full flex items-center justify-center py-2"
+                    >
+                      📥 Tải xuống
+                    </a>
+                  ) : (
+                    <Button
+                      onClick={onAddToCart}
+                      disabled={isAddingToCart}
+                      className="mt-3 bg-[#ffb154] text-black hover:bg-[#de9944] w-2/3 rounded-full flex items-center justify-center"
+                    >
+                      <MdShoppingCart /> {isAddingToCart ? "Đang xử lý..." : "Thêm vào giỏ hàng"}
+                    </Button>
+                  )
                 )}
               </div>
               <div className="flex flex-col justify-center items-center text-white space-y-4">

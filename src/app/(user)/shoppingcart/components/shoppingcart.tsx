@@ -30,7 +30,7 @@ function ShoppingCart() {
         <div className="font-sans max-w-7xl max-md:max-w-xl mx-auto bg-white py-8">
             <h1 className="text-3xl font-bold text-gray-800 text-center">Giỏ hàng</h1>
 
-            <div className="grid md:grid-cols-3 gap-8 mt-16">
+            <div className="grid md:grid-cols-3 gap-8 mt-28">
                 {/* Phần ReviewProduct */}
                 <ReviewProduct cartItems={cartItems} setCartItems={setCartItems} setTotalPrice={setTotalPrice} />
 

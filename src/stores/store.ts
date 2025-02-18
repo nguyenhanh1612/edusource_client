@@ -23,7 +23,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["cartSlice"],
+  whitelist: ["cartSlice", "userSlice"],
   blacklist: ["authSlice", "accountSlice", "differenceSlice"],
 };
 
