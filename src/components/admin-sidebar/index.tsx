@@ -4,7 +4,7 @@ import Link from "next/link";
 import { LayoutDashboard, Building, Users, Coins, ChevronDown, Menu } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/stores/store";
 import { closeSidebar, openSidebar } from "@/stores/difference-slice";
-
+import { CiAlignLeft } from "react-icons/ci";
 export default function AdminSidebar() {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [isMobile, setIsMobile] = useState(false);
@@ -34,9 +34,9 @@ export default function AdminSidebar() {
             {isMobile && (
                 <button
                     onClick={() => dispatch(staffState.openSidebar ? closeSidebar() : openSidebar())}
-                    className="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md"
+                    className="fixed top-4 left-6 z-50 p-2 bg-gray-800 text-white rounded-md"
                 >
-                    <Menu size={24} />
+                    <CiAlignLeft size={26} />
                 </button>
             )}
 
@@ -87,18 +87,18 @@ export default function AdminSidebar() {
                         </li>
 
                         <li>
-                            <Link href="/admin/create-branch" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                            <Link href="/admin/transaction" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
                                 <Building className="size-5" />
 
-                                <span className={`${staffState.openSidebar || isMobile ? "block" : "hidden"}`}>Create branch</span>
+                                <span className={`${staffState.openSidebar || isMobile ? "block" : "hidden"}`}>Thống kê giao dịch</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/admin/manageuser" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                            <Link href="/admin/manage-users" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
                                 <Users className="size-5" />
 
-                                <span className={`${staffState.openSidebar || isMobile ? "block" : "hidden"}`}>Manage User</span>
+                                <span className={`${staffState.openSidebar || isMobile ? "block" : "hidden"}`}>Quản lí người dùng</span>
                             </Link>
                         </li>
                     </ul>

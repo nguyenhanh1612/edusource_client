@@ -96,7 +96,7 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
             </button>
             {/* bg-[#add7f6] */}
             {bookDropdown && (
-                <div ref={dropdownRef} className="absolute bg-white shadow-lg rounded-r-lg p-4 w-[600px] z-[9999] flex">
+                <div ref={dropdownRef} className="absolute bg-white shadow-lg rounded-r-lg p-4 w-[550px] z-[9999] flex">
                     <div className="absolute -left-10 top-0 flex flex-col items-center space-y-4">
                         {Array.from({ length: totalPages }).map((_, index) => (
                             <div

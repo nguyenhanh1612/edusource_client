@@ -107,7 +107,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
                   className="p-1 bg-gray-300 text-black rounded-full mr-2"
                   size={30}
                 />
-                <span className="text-black">Setting</span>
+                <span className="text-black">Hồ sơ cá nhân</span>
               </div>
               <FiChevronRight className="text-gray-500" size={24} />
             </div>
@@ -122,7 +122,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
                   className="p-1 bg-gray-300 text-black rounded-full mr-2"
                   size={30}
                 />
-                <span className="text-black">Support</span>
+                <span className="text-black">Chat hỗ trợ</span>
               </div>
               <FiChevronRight className="text-gray-500" size={24} />
             </div>
