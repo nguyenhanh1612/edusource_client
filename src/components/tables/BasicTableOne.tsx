@@ -15,6 +15,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dia
 interface Order {
   id: number;
   eduSource: string;
+  productName: string;
+  quantity: number;
   orderAmount: string;
   paymentAmount: string;
   createdAt: string;
@@ -31,6 +33,8 @@ const tableData: Order[] = [
   {
     id: 1,
     eduSource: "/images/logo1.png",
+    productName: "1",
+    quantity: 1,
     orderAmount: "3.900.000đ",
     paymentAmount: "3.900.000đ",
     createdAt: "2024-02-10",
@@ -43,6 +47,8 @@ const tableData: Order[] = [
   {
     id: 2,
     eduSource: "/images/logo1.png",
+    productName: "1",
+    quantity: 1,
     orderAmount: "2.500.000đ",
     paymentAmount: "2.500.000đ",
     createdAt: "2024-02-12",
@@ -55,6 +61,8 @@ const tableData: Order[] = [
   {
     id: 3,
     eduSource: "/images/logo1.png",
+    productName: "1",
+    quantity: 1,
     orderAmount: "1.200.000đ",
     paymentAmount: "1.200.000đ",
     createdAt: "2024-02-14",
@@ -67,6 +75,8 @@ const tableData: Order[] = [
   {
     id: 4,
     eduSource: "/images/logo1.png",
+    productName: "1",
+    quantity: 1,
     orderAmount: "5.000.000đ",
     paymentAmount: "5.000.000đ",
     createdAt: "2024-02-15",
@@ -79,6 +89,8 @@ const tableData: Order[] = [
   {
     id: 5,
     eduSource: "/images/logo1.png",
+    productName: "1",
+    quantity: 2,
     orderAmount: "4.500.000đ",
     paymentAmount: "4.500.000đ",
     createdAt: "2024-02-17",
@@ -212,20 +224,28 @@ export default function BasicTableOne() {
                   </TableCell>
                   {selectedOrder && (
                     <Dialog open={Boolean(selectedOrder)} onOpenChange={closeModal}>
-                      <DialogContent className="bg-white transition-opacity duration-300 opacity-100">
-                        <DialogTitle>Chi tiết đơn hàng</DialogTitle>
-                        <DialogDescription>
-                          <p><strong>Giá trị đơn hàng:</strong> {selectedOrder.orderAmount}</p>
-                          <p><strong>Đã thanh toán:</strong> {selectedOrder.paymentAmount}</p>
-                          <p><strong>Ngày tạo:</strong> {selectedOrder.createdAt}</p>
-                          <p><strong>Ngày thanh toán:</strong> {selectedOrder.paidAt}</p>
-                          <p><strong>Số tài khoản:</strong> {selectedOrder.accountNumber}</p>
-                          <p><strong>Ngân hàng:</strong> {selectedOrder.bankCode}</p>
-                          <p><strong>Mô tả:</strong> {selectedOrder.description}</p>
-                          <p><strong>Chi tiết:</strong> {selectedOrder.details}</p>
-                        </DialogDescription>
-                      </DialogContent>
-                    </Dialog>
+                    <DialogContent className="bg-white transition-opacity duration-300 opacity-100 p-6">
+                      <DialogTitle className="border-b-2 border-gray-200 pb-4">Chi tiết đơn hàng</DialogTitle>
+                      <DialogDescription>
+                        <table className="table-auto w-full">
+                          <thead>
+                            <tr>
+                              <th>Tên sản phẩm</th>
+                              <th>Đơn giá</th>
+                              <th>Số lượng</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="text-center px-4 py-2">{selectedOrder.productName}</td>
+                              <td className="text-center px-4 py-2">{selectedOrder.orderAmount}</td>
+                              <td className="text-center px-4 py-2">{selectedOrder.quantity}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </DialogDescription>
+                    </DialogContent>
+                  </Dialog>                  
                   )}
 
                 </TableRow>

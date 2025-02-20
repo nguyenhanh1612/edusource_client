@@ -32,20 +32,12 @@ export default function AdminHeader() {
     };
 
     useEffect(() => {
-        if (isLoggingOut) return; 
-
+        if (isLoggingOut) return;
+    
         if (!userState?.user) {
-            router.push("/login");
-            addToast({
-                type: "error",
-                description: "Sorry, you do not have permission to access this page.",
-                duration: 5000,
-            });
-            return;
-        }
-
-        if (userState?.user?.roleId !== 1) {
-            router.push("/");
+            router.replace("/login");
+        } else if (userState?.user?.roleId !== 1) {
+            router.replace("/");
             addToast({
                 type: "error",
                 description: "Sorry, you do not have permission to access this page.",
@@ -53,6 +45,7 @@ export default function AdminHeader() {
             });
         }
     }, [userState, router, addToast, isLoggingOut]);
+    
 
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -98,14 +91,8 @@ export default function AdminHeader() {
                     } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
             >
                 <div className="flex items-center gap-2 2xsm:gap-3">
-                    {/* <!-- Dark Mode Toggler --> */}
-                    {/* <ThemeToggleButton /> */}
-                    {/* <!-- Dark Mode Toggler --> */}
-
                     <NotificationDropdown />
-                    {/* <!-- Notification Menu Area --> */}
                 </div>
-                {/* <!-- User Area --> */}
                 <UserDropdown setIsLoggingOut={setIsLoggingOut} />
 
             </div>
