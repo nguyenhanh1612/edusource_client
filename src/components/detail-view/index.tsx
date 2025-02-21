@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Backdrop } from "@/components/backdrop";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,8 @@ import {
 import { useAppSelector } from "@/stores/store";
 import { Roles } from "@/const/authentication";
 import { categoryType, contentType, uploadType } from "@/const/product";
-
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import "photoswipe/style.css";
 interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
@@ -42,6 +43,24 @@ interface DetailViewProps {
 export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProps) {
   const userState = useAppSelector((state) => state.userSlice);
   const [selectedValue, setSelectedValue] = useState("");
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!galleryRef.current) return;
+
+    let lightbox = new PhotoSwipeLightbox({
+      gallery: galleryRef.current,
+      children: "a",
+      pswpModule: () => import("photoswipe"),
+    });
+
+    lightbox.init();
+
+    return () => {
+      lightbox.destroy();
+    };
+  }, []);
+
 
   const getCategoryType = (id: number) => categoryType.find((item) => item.id === id)?.type || "Không xác định";
   const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
@@ -80,27 +99,64 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
               </div>
 
               <div className="mt-4 space-y-2">
-                <Carousel
-                  opts={{
-                    align: "start",
-                  }}
-                  className="w-full max-w-sm"
-                >
-                  <CarouselContent>
+                {data.listImages.length === 1 ? (
+                  // Hiển thị ảnh đơn
+                  <div ref={galleryRef} className="p-1 w-full max-w-sm">
+                    <Card className="overflow-hidden rounded-lg h-32 flex items-center justify-center">
+                      <a href={data.listImages[0]} data-pswp-width="1200" data-pswp-height="800">
+                        <img
+                          src={data.listImages[0]}
+                          alt="single-image"
+                          className="w-full h-32 object-cover cursor-pointer rounded-lg"
+                        />
+                      </a>
+                    </Card>
+                  </div>
+                ) : data.listImages.length <= 3 ? (
+                  // Hiển thị toàn bộ ảnh nếu <= 3 ảnh
+                  <div ref={galleryRef} className="grid grid-cols-3 gap-2 w-full max-w-sm">
                     {data.listImages.map((image, index) => (
-                      <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                        <div className="p-1">
-                          <Card>
-                            <img src={image} alt={`additional-image-${index + 1}`} className="w-full h-full object-contain" />
-                          </Card>
-                        </div>
-                      </CarouselItem>
+                      <div key={index} className="p-1">
+                        <Card className="overflow-hidden rounded-lg h-32 flex items-center justify-center">
+                          <a href={image} data-pswp-width="1200" data-pswp-height="800">
+                            <img
+                              src={image}
+                              alt={`image-${index}`}
+                              className="w-full h-32 object-cover cursor-pointer rounded-lg"
+                            />
+                          </a>
+                        </Card>
+                      </div>
                     ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
+                  </div>
+                ) : (
+                  // Dùng Carousel nếu có từ 4 ảnh trở lên
+                  <Carousel opts={{ align: "start" }} className="w-full max-w-sm">
+                    <CarouselContent ref={galleryRef}>
+                      {data.listImages.map((image, index) => (
+                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                          <div className="p-1">
+                            <Card className="overflow-hidden rounded-lg h-32 flex items-center justify-center">
+                              <a href={image} data-pswp-width="1200" data-pswp-height="800">
+                                <img
+                                  src={image}
+                                  alt={`image-${index}`}
+                                  className="w-full h-32 object-cover cursor-pointer rounded-lg"
+                                />
+                              </a>
+                            </Card>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                )}
               </div>
+
+
+
               <Button className="rounded-full bg-[#003566] w-1/2"><IoSearchOutline />Xem trước</Button>
             </div>
 

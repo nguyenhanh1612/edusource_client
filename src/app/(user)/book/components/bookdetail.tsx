@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { categoryType } from '@/const/product'
 
 interface BookDetailProps {
     bookId: string;
@@ -25,7 +26,11 @@ function BookDetail({ bookId }: BookDetailProps) {
     const [products, setProducts] = useState<API.Product[]>([]);
     const [showAllUnits, setShowAllUnits] = useState(false);
     const [selectedUnits, setSelectedUnits] = useState<number[]>([]);
+    const [isReviewChecked, setIsReviewChecked] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedPrice, setSelectedPrice] = useState("all");
     const { isPending, getAllProductOfBookApi } = useGetAllProductOfBook();
+    const hasReviewContent = products.some(product => product.contentType === 1);
     const router = useRouter();
 
     useEffect(() => {
@@ -45,6 +50,10 @@ function BookDetail({ bookId }: BookDetailProps) {
         setShowAllUnits(!showAllUnits);
     };
 
+    const handleCategoryChange = (value: string) => {
+        setSelectedCategory(value);
+    };
+
     const displayedUnits = showAllUnits ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] : [1, 2, 3, 4];
 
     const handleFilterChange = (unit: number) => {
@@ -55,9 +64,19 @@ function BookDetail({ bookId }: BookDetailProps) {
         );
     };
 
-    const filteredProducts = selectedUnits.length > 0
-        ? products.filter(product => selectedUnits.includes(product.unit))
-        : products;
+    const filteredProducts = products.filter(product =>
+        (isReviewChecked ? product.contentType === 1 : true) && // Lọc theo contentType nếu checkbox Review được chọn
+        (selectedUnits.length === 0 || selectedUnits.includes(product.unit)) && // Lọc theo unit nếu có unit được chọn
+        (selectedCategory === "all" || !selectedCategory || // Nếu không chọn category => hiển thị tất cả
+            (selectedCategory === "slide" && product.category === 0) ||
+            (selectedCategory === "bài tập" && product.category === 1) ||
+            (selectedCategory === "bài kiểm tra" && product.category === 2)) &&
+        (selectedPrice === "all" || !selectedPrice || // Nếu chọn "Tất cả" thì không lọc
+            (selectedPrice === "under25" && product.price < 25000) ||
+            (selectedPrice === "25to50" && product.price >= 25000 && product.price <= 50000) ||
+            (selectedPrice === "above50" && product.price > 50000))
+
+    );
 
     const handleClick = (product: API.Product) => {
         if (product.category === 0) {
@@ -113,19 +132,25 @@ function BookDetail({ bookId }: BookDetailProps) {
 
                 </div>
 
-                <div>
-                    <h3 className="text-lg font-medium text-[#fb8500]">Ôn tập</h3>
-                    <div className="flex items-center space-x-2">
-                        <Checkbox id="terms" />
-                        <label
-                            htmlFor="terms"
-                            className="text-[#fb8500] text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                            Tổng hợp ôn tập
-                        </label>
-                    </div>
-                </div>
+                {hasReviewContent && (
+                    <div>
+                        <h3 className="text-lg font-medium text-[#fb8500]">Ôn tập</h3>
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
+                                id="terms"
+                                checked={isReviewChecked}
+                                onCheckedChange={(checked) => setIsReviewChecked(checked === true)}
+                            />
 
+                            <label
+                                htmlFor="terms"
+                                className="text-[#fb8500] text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Tổng hợp ôn tập
+                            </label>
+                        </div>
+                    </div>
+                )}
 
                 <div>
                     <h3 className="text-lg font-medium text-[#fb8500]">Bài học</h3>
@@ -143,38 +168,45 @@ function BookDetail({ bookId }: BookDetailProps) {
 
                 <div>
                     <h3 className="text-lg font-medium text-[#fb8500]">Thể loại</h3>
-                    <Select>
+                    <Select onValueChange={(value) => setSelectedCategory(value)}>
                         <SelectTrigger className="w-[200px] text-[#fb8500]">
                             <SelectValue placeholder="Chọn thể loại phù hợp" />
                         </SelectTrigger>
-                        <SelectContent >
+                        <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Các dạng</SelectLabel>
+                                <SelectItem value="all">Tất cả thể loại</SelectItem>
                                 <SelectItem value="slide">Slide</SelectItem>
                                 <SelectItem value="bài tập">Bài tập</SelectItem>
                                 <SelectItem value="bài kiểm tra">Bài kiểm tra</SelectItem>
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+
                 </div>
 
 
                 <div>
                     <h3 className="text-lg font-medium">Phạm vi giá</h3>
-                    <RadioGroup defaultValue="comfortable">
+                    <RadioGroup value={selectedPrice} onValueChange={setSelectedPrice}>
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="default" id="r1" />
+                            <RadioGroupItem value="all" id="r0" />
+                            <Label htmlFor="r0">Tất cả giá</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="under25" id="r1" />
                             <Label htmlFor="r1">Dưới 25.000</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="comfortable" id="r2" />
+                            <RadioGroupItem value="25to50" id="r2" />
                             <Label htmlFor="r2">25.000 - 50.000</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="compact" id="r3" />
+                            <RadioGroupItem value="above50" id="r3" />
                             <Label htmlFor="r3">Trên 50.000</Label>
                         </div>
                     </RadioGroup>
+
                 </div>
             </div>
 

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     description: "Payment fail for EduSource",
 };
 
-export default function Home() {
+export default function FailPage() {
     return (
         <div>
             <PaymentFailedPage />

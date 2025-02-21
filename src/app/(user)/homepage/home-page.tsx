@@ -12,56 +12,54 @@ import useGetAllProduct from "./hooks/useGetAllProduct";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import useGetProductByIdByUser from "../detailslide/hooks/useGetProductByIdByUser";
 import { useAppSelector } from "@/stores/store";
+import useGetAllProductByUser from "./hooks/useGetAllProductsByUser";
 
 export default function HomePage() {
-  // const { isPending, getAllProductApi } = useGetAllProduct();
-  // const [products, setProducts] = useState<API.Product[]>([]);
-  // const { isPending: isUserPending, getProductByIdByUserApi } = useGetProductByIdByUser();
-  // const [statusMap, setStatusMap] = useState<{ [key: string]: boolean }>({});
-  // const userState = useAppSelector((state) => state.userSlice);
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const response = await getAllProductApi({});
-  //     if (response) {
-  //       const filteredProducts = response.value.data.items.filter(
-  //         (product) => product.category === 0
-  //       );
-  //       setProducts(filteredProducts);
-  //       const statusMap: { [key: string]: boolean } = {};
-  //       for (const product of filteredProducts) {
-  //         const productId = product.id;
-  //         const res = await getProductByIdByUserApi({ id: productId });
-
-  //         if (res?.value?.data) {
-  //           statusMap[productId] = res?.value?.data?.data?.isPurchased; 
-  //         }
-  //       }
-  //        console.log("Updated statusMap: ", statusMap);
-  //       setStatusMap(statusMap);
-  //     }
-  //   };
-
-  //   fetchProducts();
-  // }, [userState.user]);
-
-  const { isPending, getAllProductApi } = useGetAllProduct();
+  const userState = useAppSelector((state) => state.userSlice);
+  const { isPending: isPendingAll, getAllProductApi } = useGetAllProduct();
+  const { isPending: isPendingUser, getAllProductByUserApi } = useGetAllProductByUser();
   const [products, setProducts] = useState<API.Product[]>([]);
-
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await getAllProductApi({});
-      if (response) {
-        const filteredProducts = response.value.data.items.filter(
+      try {
+        console.log("Fetching products...");
+  
+        let response;
+        if (userState.user?.roleId === 2) {
+          response = await getAllProductByUserApi({});
+          console.log("Response from getAllProductByUserApi:", response);
+        } else {
+          response = await getAllProductApi({});
+          console.log("Response from getAllProductApi:", response);
+        }
+  
+        if (!response || !response.value?.data?.items) {
+          console.warn("Invalid API response");
+          return;
+        }
+
+        let filteredProducts = response.value.data.items.filter(
           (product) => product.category === 0
         );
-        setProducts(filteredProducts);
+  
+        let updatedProducts = filteredProducts.map((product) => ({
+          ...product,
+          isPurchased: product.isPurchased ?? false, 
+        }));
+  
+        console.log("Final filtered products:", updatedProducts);
+        setProducts(updatedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
     };
-
+  
     fetchProducts();
-  }, []);
+  }, [userState.user]);
+  
+  
+  
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },

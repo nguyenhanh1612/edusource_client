@@ -5,7 +5,7 @@ import PaymentFailedPage from "@/app/(user)/fail/components/fail";
 export default function OrderFail() {
     return (
         <OrderFailComponent>
-            <Home />
+            <PaymentFailedPage />
         </OrderFailComponent>
     );
 }

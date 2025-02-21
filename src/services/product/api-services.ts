@@ -45,6 +45,50 @@ export const getAllProduct = async ({
   return response.data;
 };
 
+export const getAllProductByUser = async ({
+  name,
+  price,
+  category,
+  description,
+  ContentType,
+  Unit,
+  UploadType,
+  TotalPage,
+  Size,
+  Rating,
+  IsPublic,
+  IsApproved,
+  BookId,
+  pageIndex,
+  pageSize,
+}: REQUEST.GetProductByUser): Promise<TResponseData<API.ResponseDataProductByUser>> => {
+  const response = await request<TResponseData<API.ResponseDataProductByUser>>(
+    API_ENDPOINTS.GET_ALL_PRODUCTS_BY_USER,
+    {
+      method: "GET",
+      params: {
+        name,
+        price,
+        category,
+        description,
+        ContentType,
+        Unit,
+        UploadType,
+        TotalPage,
+        Size,
+        Rating,
+        IsPublic,
+        IsApproved,
+        BookId,
+        pageIndex,
+        pageSize,
+      },
+    }
+  );
+
+  return response.data;
+};
+
 export const getAllProductPurchased = async ({
   name,
   price,

@@ -42,6 +42,7 @@ declare namespace API {
     IsPublic?: boolean;
     IsApproved?: boolean;
     listImages: string[] | null;
+   
   };
 
   type ResponseDataProductCart = {
