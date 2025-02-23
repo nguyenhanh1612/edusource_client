@@ -1,0 +1,1 @@
+//PAGE: Customer create a new hiring post asking for edu resource
