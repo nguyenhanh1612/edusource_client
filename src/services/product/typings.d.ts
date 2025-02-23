@@ -122,6 +122,7 @@ declare namespace API {
   type ProductPurchased = {
     id: string;
     name: string;
+    price: number;
     category: import("@/const/product").CategoryId;
     unit: number;
     description: string;

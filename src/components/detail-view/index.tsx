@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Backdrop } from "@/components/backdrop";
 import { Button } from "@/components/ui/button";
 import { MdShoppingCart } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
@@ -34,6 +32,8 @@ import { Roles } from "@/const/authentication";
 import { categoryType, contentType, uploadType } from "@/const/product";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
 interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
@@ -44,6 +44,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   const userState = useAppSelector((state) => state.userSlice);
   const [selectedValue, setSelectedValue] = useState("");
   const galleryRef = useRef<HTMLDivElement>(null);
+  const [ref1, inView1] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   useEffect(() => {
     if (!galleryRef.current) return;
@@ -61,6 +62,10 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
     };
   }, []);
 
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
 
   const getCategoryType = (id: number) => categoryType.find((item) => item.id === id)?.type || "Không xác định";
   const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
@@ -240,14 +245,31 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
             </div>
           </div>
         </div>
-
-      </div>
-      <div className="bg-[#fb8500] w-full text-white text-3xl text-center flex items-center justify-center space-x-4">
-        <GiFlexibleStar className="text-[#219ebc]" />
-        <span>Đánh giá</span>
-        <GiFlexibleStar className="text-[#219ebc]" />
       </div>
 
+      <motion.div
+        ref={ref1}
+        initial="hidden"
+        animate={inView1 ? "visible" : "hidden"}
+        variants={sectionVariants}
+        transition={{ duration: 0.7 }}
+        className="bg-[#fb8500] w-full text-white text-3xl text-center flex items-center justify-center p-4 overflow-hidden"
+      >
+        <motion.div
+          animate={{ x: ["100%", "-100%"] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+          className="whitespace-nowrap flex items-center w-full"
+        >
+          {[...Array(10)].map((_, index) => (
+            <div key={index} className="flex items-center space-x-4 px-4">
+              <GiFlexibleStar className="text-[#219ebc]" />
+              <span>Đánh giá</span>
+              <GiFlexibleStar className="text-[#219ebc]" />
+            </div>
+          ))}
+        </motion.div>
+      </motion.div>
+      
       <div className="px-12">
         <Reviews />
       </div>

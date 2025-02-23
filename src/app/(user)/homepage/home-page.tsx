@@ -6,13 +6,13 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { GiFlexibleStar } from "react-icons/gi";
 import CardComponent from "@/components/slide-carousel";
-import { PowerPoint } from "@/components/powerpoint-carousel";
 import FeedbackCarousel from "@/components/feedback-carousel";
 import useGetAllProduct from "./hooks/useGetAllProduct";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import useGetProductByIdByUser from "../detailslide/hooks/useGetProductByIdByUser";
 import { useAppSelector } from "@/stores/store";
 import useGetAllProductByUser from "./hooks/useGetAllProductsByUser";
+import PowerPoint from "@/components/powerpoint-carousel";
 
 export default function HomePage() {
   const userState = useAppSelector((state) => state.userSlice);
@@ -24,7 +24,7 @@ export default function HomePage() {
     const fetchProducts = async () => {
       try {
         console.log("Fetching products...");
-  
+
         let response;
         if (userState.user?.roleId === 2) {
           response = await getAllProductByUserApi({});
@@ -33,7 +33,7 @@ export default function HomePage() {
           response = await getAllProductApi({});
           console.log("Response from getAllProductApi:", response);
         }
-  
+
         if (!response || !response.value?.data?.items) {
           console.warn("Invalid API response");
           return;
@@ -42,24 +42,21 @@ export default function HomePage() {
         let filteredProducts = response.value.data.items.filter(
           (product) => product.category === 0
         );
-  
+
         let updatedProducts = filteredProducts.map((product) => ({
           ...product,
-          isPurchased: product.isPurchased ?? false, 
+          isPurchased: product.isPurchased ?? false,
         }));
-  
+
         console.log("Final filtered products:", updatedProducts);
         setProducts(updatedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-  
+
     fetchProducts();
   }, [userState.user]);
-  
-  
-  
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -159,7 +156,7 @@ export default function HomePage() {
               </Button>
             </Link>
 
-            <Link href="/event">
+            <Link href="/contact">
               <Button
                 className={`hover:bg-transparent text-lg w-48 transform transition-transform duration-700 relative group flex items-center justify-center uppercase p-6`}
                 variant="outline"
@@ -222,23 +219,30 @@ export default function HomePage() {
             animate={inView2 ? "visible" : "hidden"}
             variants={sectionVariants}
             transition={{ duration: 0.7 }}
-            className='col-span-6 space-y-10 flex flex-col items-center justify-center'
+            className="col-span-6 space-y-10 flex flex-col items-center justify-center p-8"
           >
-            <h1 className='text-4xl font-semibold text-center'>Bài giảng PowerPoint</h1>
-            <p className="text-gray-500 text-xl mb-4">
-              Nâng cao khả năng giảng dạy của bạn với các slide được thiết kế của chúng tôi. Các trang trình bày có thể tùy chỉnh này tuân theo cấu trúc sách giáo khoa, giúp bạn trình bày các bài học rõ ràng, ngắn gọn, có tổ chức và mang tính tương tác một cách dễ dàng. Tiết kiệm thời gian và gây ấn tượng với học sinh của bạn bằng các trang trình bày sinh động và hấp dẫn về mặt hình ảnh.
+            <h1 className="text-5xl font-bold text-[#fb8500] text-center drop-shadow-md">
+              Bài giảng PowerPoint
+            </h1>
+            <p className="text-gray-700 text-xl max-w-3xl text-center leading-relaxed">
+              Nâng cao khả năng giảng dạy của bạn với các slide được thiết kế của chúng tôi.
+              Các trang trình bày có thể tùy chỉnh này tuân theo cấu trúc sách giáo khoa, giúp bạn trình bày
+              các bài học rõ ràng, ngắn gọn, có tổ chức và mang tính tương tác một cách dễ dàng.
+              Tiết kiệm thời gian và gây ấn tượng với học sinh của bạn bằng các trang trình bày sinh động và hấp dẫn.
             </p>
-            <div className="mt-4">
+            <div className="mt-6">
               <Link href="/allpowerpoint">
                 <Button
                   variant="outline"
-                  className="text-gray-600 bg-teal-400 uppercase p-8 hover:bg-teal-300"
+                  className="text-white text-lg font-semibold bg-gradient-to-r from-teal-400 to-teal-600 px-6 py-8 rounded-full 
+        hover:from-teal-500 hover:to-teal-700 transition-all duration-300 shadow-md"
                 >
                   Khám phá bài giảng
                 </Button>
               </Link>
             </div>
           </motion.div>
+
         </div>
 
         <div className='col-span-12 py-16 px-28 grid grid-cols-12 mt-8'>
@@ -248,23 +252,29 @@ export default function HomePage() {
             animate={inView3 ? "visible" : "hidden"}
             variants={sectionVariants}
             transition={{ duration: 0.7 }}
-            className='col-span-5 space-y-10 flex flex-col items-center justify-center'
+            className="col-span-5 space-y-10 flex flex-col items-center justify-center p-8"
           >
-            <h1 className='text-4xl font-semibold text-center'>Kho tàng đề thi</h1>
-            <p className="text-gray-500 text-xl mb-4">
-              Ngân hàng đề thi toàn diện này giúp giáo viên đánh giá chính xác sự tiến bộ của học sinh. Với nhiều loại câu hỏi khác nhau, bao gồm tất cả các chủ đề thiết yếu trong sách giáo khoa, những bài kiểm tra này giúp tiết kiệm thời gian và cung cấp thông tin chi tiết có giá trị để cải thiện mục tiêu.
+            <h1 className="text-5xl font-bold text-[#fb8500] text-center drop-shadow-md">
+              Kho tàng đề thi
+            </h1>
+            <p className="text-gray-700 text-xl max-w-3xl text-center leading-relaxed">
+              Ngân hàng đề thi toàn diện này giúp giáo viên đánh giá chính xác sự tiến bộ của học sinh.
+              Với nhiều loại câu hỏi khác nhau, bao gồm tất cả các chủ đề thiết yếu trong sách giáo khoa,
+              những bài kiểm tra này giúp tiết kiệm thời gian và cung cấp thông tin chi tiết có giá trị để cải thiện mục tiêu.
             </p>
-            <div className="mt-4">
+            <div className="mt-6">
               <Link href="/alltest">
                 <Button
                   variant="outline"
-                  className="text-gray-600 bg-teal-400 uppercase p-8 hover:bg-teal-300"
+                  className="text-white text-lg font-semibold bg-gradient-to-r from-teal-400 to-teal-600 px-6 py-8 rounded-full 
+        hover:from-teal-500 hover:to-teal-700 transition-all duration-300 shadow-md"
                 >
                   Khám phá đề thi
                 </Button>
               </Link>
             </div>
           </motion.div>
+
 
           <motion.div
             ref={ref4}
@@ -304,17 +314,22 @@ export default function HomePage() {
             animate={inView6 ? "visible" : "hidden"}
             variants={sectionVariants}
             transition={{ duration: 0.7 }}
-            className='col-span-5 space-y-10 flex flex-col items-center justify-center'
+            className="col-span-5 space-y-10 flex flex-col items-center justify-center p-8"
           >
-            <h1 className='text-4xl font-semibold text-center'>Bài tập bổ sung</h1>
-            <p className="text-gray-500 text-xl mb-4">
-              Tăng cường sự tự tin của học sinh với bộ sưu tập bài tập bổ sung phong phú của chúng tôi. Được biên soạn cẩn thận để phù hợp với sách giáo khoa của bạn, những bài tập này phù hợp với nhiều phong cách học tập khác nhau và giúp học sinh hiểu sâu hơn về các bài học trên lớp.
+            <h1 className="text-5xl font-bold text-[#fb8500] text-center drop-shadow-md">
+              Bài tập bổ sung
+            </h1>
+            <p className="text-gray-700 text-xl max-w-3xl text-center leading-relaxed">
+              Tăng cường sự tự tin của học sinh với bộ sưu tập bài tập bổ sung phong phú của chúng tôi.
+              Được biên soạn cẩn thận để phù hợp với sách giáo khoa của bạn, những bài tập này phù hợp với
+              nhiều phong cách học tập khác nhau và giúp học sinh hiểu sâu hơn về các bài học trên lớp.
             </p>
-            <div className="mt-4">
+            <div className="mt-6">
               <Link href="/allexercise">
                 <Button
                   variant="outline"
-                  className="text-gray-600 bg-teal-400 uppercase p-8 hover:bg-teal-300"
+                  className="text-white text-lg font-semibold bg-gradient-to-r from-teal-400 to-teal-600 px-6 py-8 rounded-full 
+              hover:from-teal-500 hover:to-teal-700 transition-all duration-300 shadow-md"
                 >
                   Khám phá bài tập
                 </Button>
@@ -330,11 +345,17 @@ export default function HomePage() {
         animate={inView7 ? "visible" : "hidden"}
         variants={sectionVariants}
         transition={{ duration: 0.7 }}
-        className="bg-[#fb8500] w-full text-white text-3xl text-center flex items-center justify-center space-x-4"
+        className="bg-[#fb8500] w-full text-white text-3xl text-center flex items-center justify-center space-x-4 p-4"
       >
-        <GiFlexibleStar className="text-[#219ebc]" />
-        <span>Khám phá tài nguyên slide của chúng tôi</span>
-        <GiFlexibleStar className="text-[#219ebc]" />
+        <motion.div
+          animate={{ x: ['100%', '-100%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+          className="whitespace-nowrap flex items-center space-x-4"
+        >
+          <GiFlexibleStar className="text-[#219ebc]" />
+          <span>Khám phá tài nguyên slide của chúng tôi</span>
+          <GiFlexibleStar className="text-[#219ebc]" />
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -349,7 +370,7 @@ export default function HomePage() {
           <CarouselContent className="flex-nowrap">
             {products.map((product) => (
               <CarouselItem className="md:basis-1/2 lg:basis-1/4 px-6 py-4 overflow-visible" key={product.id}>
-                <CardComponent slideId={product.id} product={product}/>
+                <CardComponent slideId={product.id} product={product} />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -378,10 +399,10 @@ export default function HomePage() {
           transition={{ duration: 0.7 }}
           className="grid grid-cols-12 my-8"
         >
-          <div className="col-span-6 col-start-2">
+          <div className="col-span-6 flex justify-center items-center">
             <PowerPoint />
           </div>
-          <div className="col-span-4 flex flex-col justify-center px-8 gap-y-4">
+          <div className="col-span-6 flex flex-col justify-center px-8 gap-y-4 w-5/6">
             <h1 className='text-4xl font-semibold text-center'>Family and Friends 3
               National Edition</h1>
             <p className="text-gray-500 text-xl mb-4">
