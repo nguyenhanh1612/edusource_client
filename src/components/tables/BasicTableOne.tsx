@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,255 +7,194 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useState } from "react";
 import Badge from "../ui/badge/Badge";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
-
-interface Order {
-  id: number;
-  eduSource: string;
-  productName: string;
-  quantity: number;
-  orderAmount: string;
-  paymentAmount: string;
-  createdAt: string;
-  paidAt: string;
-  description: string;
-  accountNumber: string;
-  bankCode: string;
-  details: string;
-}
-
-
-// Define the table data using the interface
-const tableData: Order[] = [
-  {
-    id: 1,
-    eduSource: "/images/logo1.png",
-    productName: "1",
-    quantity: 1,
-    orderAmount: "3.900.000đ",
-    paymentAmount: "3.900.000đ",
-    createdAt: "2024-02-10",
-    paidAt: "2024-02-11",
-    description: "Thanh toán khóa học ReactJS",
-    accountNumber: "123456789",
-    bankCode: "VCB",
-    details: "Giao dịch thành công",
-  },
-  {
-    id: 2,
-    eduSource: "/images/logo1.png",
-    productName: "1",
-    quantity: 1,
-    orderAmount: "2.500.000đ",
-    paymentAmount: "2.500.000đ",
-    createdAt: "2024-02-12",
-    paidAt: "2024-02-13",
-    description: "Thanh toán khóa học NextJS",
-    accountNumber: "987654321",
-    bankCode: "PP",
-    details: "Giao dịch thành công",
-  },
-  {
-    id: 3,
-    eduSource: "/images/logo1.png",
-    productName: "1",
-    quantity: 1,
-    orderAmount: "1.200.000đ",
-    paymentAmount: "1.200.000đ",
-    createdAt: "2024-02-14",
-    paidAt: "2024-02-14",
-    description: "Thanh toán khóa học UI/UX",
-    accountNumber: "012345678",
-    bankCode: "MOMO",
-    details: "Giao dịch thành công",
-  },
-  {
-    id: 4,
-    eduSource: "/images/logo1.png",
-    productName: "1",
-    quantity: 1,
-    orderAmount: "5.000.000đ",
-    paymentAmount: "5.000.000đ",
-    createdAt: "2024-02-15",
-    paidAt: "2024-02-16",
-    description: "Thanh toán khóa học Laravel",
-    accountNumber: "654321987",
-    bankCode: "ACB",
-    details: "Giao dịch thành công",
-  },
-  {
-    id: 5,
-    eduSource: "/images/logo1.png",
-    productName: "1",
-    quantity: 2,
-    orderAmount: "4.500.000đ",
-    paymentAmount: "4.500.000đ",
-    createdAt: "2024-02-17",
-    paidAt: "2024-02-18",
-    description: "Thanh toán khóa học VueJS",
-    accountNumber: "789123456",
-    bankCode: "ZLP",
-    details: "Giao dịch thành công",
-  },
-];
+import useGetAllOrders from "@/app/admin/transaction/hooks/useGetAllOrder";
+import DateTimeDisplay from "../date";
+import Pagination from "./Pagination";
 
 export default function BasicTableOne() {
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<API.Order | null>(null);
+  const { isPending, getAllOrdersApi } = useGetAllOrders();
+  const [orders, setOrders] = useState<API.Order[]>([]);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(2);
+  const [totalOrders, setTotalOrders] = useState(0);
 
-  const openModal = (order: Order) => {
+  useEffect(() => {
+    async function fetchOrders() {
+      const res = await getAllOrdersApi({ pageIndex, pageSize });
+      if (res) {
+        setOrders(res.value.data.items);
+        setTotalPages(res.value.data.totalPages);
+        setTotalOrders(res.value.data.totalCount);
+      }
+    }
+    fetchOrders();
+  }, [pageIndex, pageSize]);
+
+  const startIndex = (pageIndex - 1) * entriesPerPage + 1;
+  const endIndex = Math.min(pageIndex * entriesPerPage, totalOrders);
+
+  const openModal = (order: API.Order) => {
     setSelectedOrder(order);
   };
 
   const closeModal = () => {
     setSelectedOrder(null);
   };
+
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
-      <div className="max-w-full overflow-x-auto">
-        <div className="min-w-[1102px]">
-          <Table>
-            {/* Table Header */}
-            <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-              <TableRow>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Kênh thanh toán
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Tiền đơn hàng
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Tiền thanh toán
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Ngày tạo
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Ngày thanh toán
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Mô tả
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Số tài khoản
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Mã đơn hàng
-                </TableCell>
-                <TableCell
-
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Chi tiết
-                </TableCell>
-              </TableRow>
-            </TableHeader>
-
-            {/* Table Body */}
-            <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {tableData.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="px-5 py-4 sm:px-6 text-start">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 overflow-hidden rounded-full">
-                        <Image
-                          width={40}
-                          height={40}
-                          src={order.eduSource}
-                          alt="Edu Source"
-                        />
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.orderAmount}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.paymentAmount}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.createdAt}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.paidAt}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.description}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.accountNumber}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.bankCode}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <button
-                      className="text-blue-500 hover:underline "
-                      onClick={() => openModal(order)}
-                    >
-                      ...
-                    </button>
-                  </TableCell>
-                  {selectedOrder && (
-                    <Dialog open={Boolean(selectedOrder)} onOpenChange={closeModal}>
-                    <DialogContent className="bg-white transition-opacity duration-300 opacity-100 p-6">
-                      <DialogTitle className="border-b-2 border-gray-200 pb-4">Chi tiết đơn hàng</DialogTitle>
-                      <DialogDescription>
-                        <table className="table-auto w-full">
-                          <thead>
-                            <tr>
-                              <th>Tên sản phẩm</th>
-                              <th>Đơn giá</th>
-                              <th>Số lượng</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="text-center px-4 py-2">{selectedOrder.productName}</td>
-                              <td className="text-center px-4 py-2">{selectedOrder.orderAmount}</td>
-                              <td className="text-center px-4 py-2">{selectedOrder.quantity}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </DialogDescription>
-                    </DialogContent>
-                  </Dialog>                  
-                  )}
-
-                </TableRow>
-              ))}
-            </TableBody>
-
-          </Table>
-
+    <div className="overflow-hidden rounded-2xl border border-gray-300 bg-white shadow-md dark:border-white/[0.1] dark:bg-gray-900">
+      <div className="flex justify-between items-center p-4 bg-white dark:bg-gray-800 border-b">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-600 dark:text-gray-400 text-sm">Hiển thị</span>
+          <select
+            className="border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 text-gray-700 dark:text-white bg-white dark:bg-gray-800 focus:ring focus:ring-indigo-300"
+            value={entriesPerPage}
+            onChange={(e) => {
+              setEntriesPerPage(Number(e.target.value));
+              setPageSize(Number(e.target.value));
+              setPageIndex(1);
+            }}
+          >
+            <option value={2}>2</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+          <span className="text-gray-600 dark:text-gray-400 text-sm">mục</span>
+        </div>
+        <div className="relative w-80">
+          <span className="absolute -translate-y-1/2 left-4 top-1/2 pointer-events-none">
+            <svg
+              className="fill-gray-500 dark:fill-gray-400"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 5.87693 15.7084 9.37363C15.7084 12.8703 12.8731 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z"
+                fill=""
+              />
+            </svg>
+          </span>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10"
+          />
         </div>
       </div>
+
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader className="border-b bg-gray-100 dark:bg-gray-800">
+            <TableRow className="text-gray-600 dark:text-gray-300 text-sm font-semibold">
+              {[
+                "Kênh thanh toán",
+                "Tiền đơn hàng",
+                "Tiền thanh toán",
+                "Ngày tạo",
+                "Ngày thanh toán",
+                "Mô tả",
+                "Mã đơn hàng",
+                "Chi tiết",
+              ].map((header) => (
+                <TableCell key={header} className="px-6 py-4 text-left">
+                  {header}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHeader>
+
+          <TableBody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {orders.map((order) => (
+              <TableRow key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                <TableCell className="px-6 py-4 flex items-center gap-3">
+                  <Image width={40} height={40} src="/images/logo1.png" alt="Edu Source" className="rounded-full" />
+                  <span className="font-medium text-gray-800 dark:text-gray-200">EduSource</span>
+                </TableCell>
+
+                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                  {order.totalAmount.toLocaleString()} VND
+                </TableCell>
+
+                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                  {order.paymentAmount.toLocaleString()} VND
+                </TableCell>
+
+                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                  <DateTimeDisplay dateTime={order.paidAt} />
+                </TableCell>
+
+                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                  <DateTimeDisplay dateTime={order.paidAt} />
+                </TableCell>
+
+                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300 truncate max-w-xs">
+                  {order.description}
+                </TableCell>
+
+                <TableCell className="px-6 py-4 font-medium text-gray-800 dark:text-gray-200">
+                  {order.orderCode}
+                </TableCell>
+
+                <TableCell className="px-6 py-4">
+                  <button
+                    className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-400 hover:bg-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 transition"
+                    onClick={() => openModal(order)}
+                  >
+                    <span className="text-gray-600 dark:text-gray-300">...</span>
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="p-4 border-t bg-white dark:bg-gray-800 flex justify-between items-center">
+        <span className="text-gray-600 dark:text-gray-400 text-sm">
+          Đang hiển thị {orders.length > 0 ? `${startIndex} - ${endIndex}` : "0"} trên tổng {orders.length} đơn hàng
+        </span>
+        <Pagination currentPage={pageIndex} totalPages={totalPages} onPageChange={setPageIndex} />
+      </div>
+
+      {selectedOrder && (
+        <Dialog open={Boolean(selectedOrder)} onOpenChange={closeModal}>
+          <DialogContent className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
+            <DialogTitle className="border-b pb-4 text-lg font-semibold">Chi tiết đơn hàng</DialogTitle>
+            <DialogDescription>
+              <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                <thead>
+                  <tr className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                    <th className="py-2 px-4 border">Tên sản phẩm</th>
+                    <th className="py-2 px-4 border">Đơn giá</th>
+                    <th className="py-2 px-4 border">Số lượng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedOrder.orderDetails.map((detail) => (
+                    <tr key={detail.id} className="text-gray-700 dark:text-gray-300">
+                      <td className="py-2 px-4 border text-center">{detail.productName}</td>
+                      <td className="py-2 px-4 border text-center">{detail.price.toLocaleString()} VND</td>
+                      <td className="py-2 px-4 border text-center">{detail.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </DialogDescription>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

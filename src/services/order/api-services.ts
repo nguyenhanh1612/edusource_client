@@ -10,3 +10,21 @@ export const createOrder = async (): Promise<TResponseData<{ success: boolean; p
   );
   return response.data;
 };
+
+export const getAllOrders = async ({
+  pageIndex,
+  pageSize,
+}: REQUEST.GetAllOrders): Promise<TResponseData<API.ResponseDataGetAllOrders>> => {
+  const response = await request<TResponseData<API.ResponseDataGetAllOrders>>(
+    API_ENDPOINTS.GET_ALL_ORDERS,
+    {
+      method: "GET",
+      params: {
+        pageIndex,
+        pageSize,
+      }
+    }
+  );
+
+  return response.data;
+};
