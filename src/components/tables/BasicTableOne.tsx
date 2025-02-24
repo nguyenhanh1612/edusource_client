@@ -102,9 +102,9 @@ export default function BasicTableOne() {
                 "Kênh thanh toán",
                 "Tiền đơn hàng",
                 "Tiền thanh toán",
-                "Ngày tạo",
                 "Ngày thanh toán",
                 "Mô tả",
+                "Số tài khoản",
                 "Mã đơn hàng",
                 "Chi tiết",
               ].map((header) => (
@@ -135,12 +135,12 @@ export default function BasicTableOne() {
                   <DateTimeDisplay dateTime={order.paidAt} />
                 </TableCell>
 
-                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300">
-                  <DateTimeDisplay dateTime={order.paidAt} />
+                <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300 truncate max-w-xs">
+                  {order.description}
                 </TableCell>
 
                 <TableCell className="px-6 py-4 text-gray-600 dark:text-gray-300 truncate max-w-xs">
-                  {order.description}
+                  6150591310
                 </TableCell>
 
                 <TableCell className="px-6 py-4 font-medium text-gray-800 dark:text-gray-200">
