@@ -51,7 +51,7 @@ export default function AdminHeader() {
     const inputRef = useRef<HTMLInputElement>(null);
 
     return (
-        <header className="bg-white py-4 px-6 border-gray-200 lg:border-b flex items-center justify-between ">
+        <header className="bg-white py-4 px-6 border-gray-200 lg:border-b flex items-center justify-between">
             <div className="flex items-center gap-4 ">
                 <button onClick={handleToggleSidebar} className="border border-gray-200 rounded-md p-2">
                     <CiAlignLeft className="text-2xl" />

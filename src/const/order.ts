@@ -20,3 +20,8 @@ export enum CheckOrderStatus {
   Report = 2,
   Feedback = 3
 }
+
+export enum FilterSortType {
+  TotalAmount = 0,
+  PaidDate = 1,
+}

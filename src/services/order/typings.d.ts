@@ -2,6 +2,8 @@ declare namespace REQUEST {
   type CreateOrder = {};
 
   type GetAllOrders = {
+    SortType: SortType;
+    IsSortASC: boolean;
     pageIndex: number;
     pageSize: number;
   };
