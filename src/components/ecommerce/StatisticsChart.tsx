@@ -2,222 +2,147 @@
 import React, { useState } from "react";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import ChartTab from "../common/ChartTab";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Dynamically import the ReactApexChart component
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function StatisticsChart() {
-  const [selected, setSelected] = useState<
-    "optionOne" | "optionTwo" | "optionThree" | "optionFour"
-  >("optionOne");
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
-  // Hàm lấy ngày từ hôm nay
-  const getDatesFromToday = (days: number) => {
-    const dates = [];
-    const today = new Date();
-    for (let i = 0; i < days; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-      dates.push(date.toISOString().split("T")[0]); // Format: YYYY-MM-DD
-    }
-    return dates;
+  // Danh sách 12 tháng
+  const months = [
+    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+    "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+  ];
+
+  // Lấy danh sách 4 tuần của một tháng
+  const getWeeksInMonth = () => ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"];
+
+  // Lấy danh sách 7 ngày của một tuần
+  const getDaysInWeek = (year: number, month: number, week: number) => {
+    const startDay = (week - 1) * 7 + 1;
+    return Array.from({ length: 7 }, (_, i) => `${year}-${month + 1}-${startDay + i}`);
   };
 
-  // Define data for each option
-  const monthlyData = {
-    categories: [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ],
+  // Data Thống Kê
+  const yearlyData = {
+    categories: months,
     series: [
-      {
-        name: "Sales",
-        data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
-      },
-      {
-        name: "Revenue",
-        data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
-      },
+      { name: "Doanh số", data: Array(12).fill(0).map(() => Math.floor(Math.random() * 200)) },
+      { name: "Doanh thu", data: Array(12).fill(0).map(() => Math.floor(Math.random() * 100)) },
     ],
   };
 
-  const quarterlyData = {
-    categories: ["Q1", "Q2", "Q3", "Q4"],
+  const monthlyData = selectedMonth !== null ? {
+    categories: getWeeksInMonth(),
     series: [
-      {
-        name: "Sales",
-        data: [540, 500, 600, 700],
-      },
-      {
-        name: "Revenue",
-        data: [120, 130, 150, 180],
-      },
+      { name: "Doanh số", data: Array(4).fill(0).map(() => Math.floor(Math.random() * 100)) },
+      { name: "Doanh thu", data: Array(4).fill(0).map(() => Math.floor(Math.random() * 50)) },
     ],
-  };
+  } : null;
 
-  const annuallyData = {
-    categories: ["2021", "2022", "2023"],
+  const weeklyData = selectedWeek !== null && selectedMonth !== null ? {
+    categories: getDaysInWeek(selectedYear, selectedMonth, selectedWeek),
     series: [
-      {
-        name: "Sales",
-        data: [2000, 2200, 2500],
-      },
-      {
-        name: "Revenue",
-        data: [500, 600, 700],
-      },
+      { name: "Doanh số", data: Array(7).fill(0).map(() => Math.floor(Math.random() * 100)) },
+      { name: "Doanh thu", data: Array(7).fill(0).map(() => Math.floor(Math.random() * 50)) },
     ],
-  };
+  } : null;
 
-  const weeklyData = {
-    categories: getDatesFromToday(7), // Lấy 7 ngày từ hôm nay
+  const dailyData = selectedDay !== null ? {
+    categories: [selectedDay],
     series: [
-      {
-        name: "Sales",
-        data: [50, 60, 55, 70, 65, 80, 75], // Dữ liệu doanh thu tương ứng
-      },
-      {
-        name: "Revenue",
-        data: [10, 15, 12, 20, 18, 25, 22], // Dữ liệu doanh thu tương ứng
-      },
+      { name: "Doanh số", data: [Math.floor(Math.random() * 100)] },
+      { name: "Doanh thu", data: [Math.floor(Math.random() * 50)] },
     ],
-  };
+  } : null;
 
-  // Select data based on the selected option
-  const { categories, series } =
-    selected === "optionOne"
-      ? monthlyData
-      : selected === "optionTwo"
-      ? quarterlyData
-      : selected === "optionThree"
-      ? annuallyData
-      : weeklyData;
+  const { categories, series } = dailyData || weeklyData || monthlyData || yearlyData;
 
+  // Cấu hình Chart
   const options: ApexOptions = {
-    legend: {
-      show: false,
-      position: "top",
-      horizontalAlign: "left",
-    },
+    chart: { height: 310, type: "area", toolbar: { show: false } },
+    stroke: { curve: "smooth", width: [2, 2] },
+    dataLabels: { enabled: false },
     colors: ["#465FFF", "#9CB9FF"],
-    chart: {
-      fontFamily: "Outfit, sans-serif",
-      height: 310,
-      type: "line",
-      toolbar: {
-        show: false,
-      },
-    },
-    stroke: {
-      curve: "straight",
-      width: [2, 2],
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        opacityFrom: 0.55,
-        opacityTo: 0,
-      },
-    },
-    markers: {
-      size: 0,
-      strokeColors: "#fff",
-      strokeWidth: 2,
-      hover: {
-        size: 6,
-      },
-    },
-    grid: {
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    tooltip: {
-      enabled: true,
-      x: {
-        format: "dd MMM yyyy",
-      },
-    },
     xaxis: {
-      type: "category",
-      categories: categories, // Use dynamic categories
+      categories: categories,
       labels: {
-        formatter: function (value) {
-          // Định dạng ngày nếu cần
-          if (selected === "optionFour") {
-            return new Date(value).toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "short",
-            });
-          }
-          return value;
-        },
-      },
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-      tooltip: {
-        enabled: false,
+        formatter: (value) => isNaN(Date.parse(value)) ? value : new Date(value).toLocaleDateString("vi-VN", { day: "numeric", month: "short" })
       },
     },
-    yaxis: {
-      labels: {
-        style: {
-          fontSize: "12px",
-          colors: ["#6B7280"],
-        },
-      },
-      title: {
-        text: "",
-        style: {
-          fontSize: "0px",
-        },
-      },
-    },
+    yaxis: { labels: { style: { fontSize: "12px", colors: ["#6B7280"] } } },
+    legend: { show: false },
   };
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
+    <div className="rounded-2xl border border-gray-200 bg-white px-5 pb-5 pt-5">
       <div className="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
-        <div className="w-full">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-            Statistics
-          </h3>
-          <p className="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
-            Target you’ve set for each month
-          </p>
+        <div>
+          <h3 className="text-lg font-semibold">Thống kê</h3>
+          <p className="text-gray-500">Mục tiêu bạn đã đặt</p>
         </div>
-        <div className="flex items-start w-full gap-3 sm:justify-end">
-          <ChartTab selected={selected} setSelected={setSelected} />
-        </div>
-      </div>
+        <div className="flex gap-3">
+          {/* Select Năm */}
+          <Select onValueChange={(value) => setSelectedYear(Number(value))}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder={selectedYear} />
+            </SelectTrigger>
+            <SelectContent>
+              {[2022, 2023, 2024].map((year) => (
+                <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      <div className="max-w-full overflow-x-auto custom-scrollbar">
-        <div className="min-w-[1000px] xl:min-w-full">
-          <ReactApexChart
-            options={options}
-            series={series} // Use dynamic series
-            type="area"
-            height={310}
-          />
+          {/* Select Tháng */}
+          <Select onValueChange={(value) => setSelectedMonth(value === "all" ? null : Number(value))}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="Chọn tháng" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tất cả</SelectItem>
+              {months.map((month, index) => (
+                <SelectItem key={month} value={index.toString()}>{month}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Select Tuần */}
+          {selectedMonth !== null && (
+            <Select onValueChange={(value) => setSelectedWeek(value === "all" ? null : Number(value))}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Chọn tuần" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tất cả</SelectItem>
+                {[1, 2, 3, 4].map((week) => (
+                  <SelectItem key={week} value={week.toString()}>Tuần {week}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
+          {/* Select Ngày */}
+          {selectedWeek !== null && selectedMonth !== null && (
+            <Select onValueChange={(value) => setSelectedDay(value === "all" ? null : value)}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Chọn ngày" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tất cả</SelectItem>
+                {getDaysInWeek(selectedYear, selectedMonth, selectedWeek).map((day) => (
+                  <SelectItem key={day} value={day}>{day}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
       </div>
+      <ReactApexChart options={options} series={series} type="area" height={310} />
     </div>
   );
 }
