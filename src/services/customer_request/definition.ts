@@ -1,17 +1,19 @@
     export interface HiringPost {
         id: string;
         file: string;
+        demoFile: string,
         title: string;
         description: string;
-        createdAt: number;
-        deletedAt: number;
-        customerId: number;
+        createdAt: Date;
+        deletedAt: Date;
+        customerId: string;
         customerName: string;
-        staffId: number;
+        staffId: string;
         staffName: string;
         requirementCate: string;
         hashTags: string;
         bookImg: string;
+        bookName: string;
         requirementCateImg: string;
         customerAvt: string;
     }

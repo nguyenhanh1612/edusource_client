@@ -95,6 +95,13 @@ const Header: React.FC = () => {
         >
           Liên hệ
         </Link>
+        <Link
+          href="/personal-hiring-post"
+          className={`text-gray-600 ${currentPath === "/personal-hiring-post" ? "text-teal-400" : "hover:text-teal-400"
+            }`}
+        >
+          Liên hệ
+        </Link>
         <div>
           <BookDropdown books={books} activeTab={activeTab} setActiveTab={setActiveTab} totalPages={totalPages} />
         </div>

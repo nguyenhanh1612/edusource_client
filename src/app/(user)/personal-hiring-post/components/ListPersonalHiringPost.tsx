@@ -1,7 +1,8 @@
 "use client";
 
-import { fetchAllHiringPostsAPI } from "@/services/customer_request/api-service";
+import { fetchAllHiringPostsAPI, fetchHiringPostsByCustomerIdAPI } from "@/services/customer_request/api-service";
 import { HiringPost } from "@/services/customer_request/definition";
+import { useAppSelector } from "@/stores/store";
 import { useEffect, useState } from "react";
 
 const tempArrImg = [
@@ -26,7 +27,7 @@ const getRandomImage = () => tempArrImg[Math.floor(Math.random() * tempArrImg.le
 const getRandomAvt = () => tempArrAvatar[Math.floor(Math.random() * tempArrAvatar.length)];
 
 
-const ListAllCustomerRequestPage = () => {
+const ListPersonalHiringPost = () => {
     const [data, setData] = useState<HiringPost[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -34,12 +35,17 @@ const ListAllCustomerRequestPage = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [staffFilter, setStaffFilter] = useState<string>("");
     const pageSize = 12;
+    const user = useAppSelector((state) => state.userSlice.user);
 
     useEffect(() => {
         const loadHiringPost = async () => {
             try {
-                const res = await fetchAllHiringPostsAPI();
-                setData(res);
+                if (user?.userId) {
+                    const res = await fetchHiringPostsByCustomerIdAPI(user.userId);
+                    setData(res);
+                } else {
+                    setError("User ID is not available.");
+                }
             } catch (e) {
                 console.error(e);
                 setError("Failed to fetch customer requests.");
@@ -121,7 +127,7 @@ const ListAllCustomerRequestPage = () => {
                 </div>
             </div>
 
-            {loading && <p className="text-center text-blue-600">Chờ một chút nhé ...</p>}
+            {loading && <p className="text-center text-blue-600">Chờ một chút nhé...</p>}
             {error && <p className="text-center text-red-500">{error}</p>}
 
             {!loading && !error && paginatedData.length === 0 && (
@@ -209,4 +215,4 @@ const ListAllCustomerRequestPage = () => {
     );
 };
 
-export default ListAllCustomerRequestPage;
+export default ListPersonalHiringPost;
