@@ -1,13 +1,17 @@
 "use client";
 
+import useToast from "@/hooks/use-toast";
 import { createHiringPostAPI } from "@/services/customer_request/api-service";
 import { HiringPost } from "@/services/customer_request/definition";
 import { useAppSelector } from "@/stores/store";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CreatePage = () => {
     const user = useAppSelector((state) => state.userSlice.user);
     const userName = `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+    const { addToast } = useToast();
+    const router = useRouter();
 
     const [isCateDropdownOpen, setIsCateDropdownOpen] = useState(false);
     const [isBookDropdownOpen, setIsBookDropdownOpen] = useState(false);
@@ -61,10 +65,10 @@ const CreatePage = () => {
         e.preventDefault();
         try {
             const response = await createHiringPostAPI(formData as HiringPost);
-            console.log("Hiring Post Created:", response);
-            alert("Hiring Post created successfully!");
+            addToast({ description: "Hiring Post created successfully!", type: "success", duration: 5000 });
+            router.push("/personal-hiring-post");
         } catch (error) {
-            console.error("Error creating hiring post", error);
+            addToast({ description: "Failed to create Hiring Post. Please try again.", type: "error", duration: 5000 });
         }
     };
 
@@ -185,7 +189,6 @@ const CreatePage = () => {
                             )}
                         </div>
 
-                        {/* Submit Button */}
                         <button
                             type="submit"
                             className="w-full bg-blue-600 text-white py-4 text-m rounded-lg hover:bg-blue-700 transition transform hover:scale-105 shadow-md"

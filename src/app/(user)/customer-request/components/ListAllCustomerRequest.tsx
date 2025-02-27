@@ -163,7 +163,7 @@ const ListAllCustomerRequestPage = () => {
                                 {new Date(post.createdAt).toLocaleDateString()}
                             </p>
                             <p className="block font-semibold text-blue-600 mt-3">
-                                Category: {post.requirementCate}
+                                Category: {post.requirementCate || "Undefined Yet"}
                             </p>
                         </div>
                     </div>

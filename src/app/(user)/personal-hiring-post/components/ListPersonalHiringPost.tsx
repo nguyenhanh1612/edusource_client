@@ -3,6 +3,7 @@
 import { fetchAllHiringPostsAPI, fetchHiringPostsByCustomerIdAPI } from "@/services/customer_request/api-service";
 import { HiringPost } from "@/services/customer_request/definition";
 import { useAppSelector } from "@/stores/store";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const tempArrImg = [
@@ -36,6 +37,7 @@ const ListPersonalHiringPost = () => {
     const [staffFilter, setStaffFilter] = useState<string>("");
     const pageSize = 12;
     const user = useAppSelector((state) => state.userSlice.user);
+    const router = useRouter();
 
     useEffect(() => {
         const loadHiringPost = async () => {
@@ -97,34 +99,45 @@ const ListPersonalHiringPost = () => {
 
     return (
         <div className="max-w-6xl mx-auto p-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                {/* Search by Post */}
-                <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Search hiring posts..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    />
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        🔍
-                    </span>
+            {/* Filter & Create New Button */}
+            <div className="flex justify-between items-center mb-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
+                    {/* Search by Post */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search hiring posts..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            🔍
+                        </span>
+                    </div>
+
+                    {/* Filter by Staff */}
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Filter by Staff ID or Name..."
+                            value={staffFilter}
+                            onChange={(e) => setStaffFilter(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            👤
+                        </span>
+                    </div>
                 </div>
 
-                {/* Filter by Staff */}
-                <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Filter by Staff ID or Name..."
-                        value={staffFilter}
-                        onChange={(e) => setStaffFilter(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    />
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        👤
-                    </span>
-                </div>
+                {/* Create New Button */}
+                <button
+                    onClick={() => router.push("/create-hiring")}
+                    className="ml-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
+                >
+                    Create New
+                </button>
             </div>
 
             {loading && <p className="text-center text-blue-600">Chờ một chút nhé...</p>}
@@ -169,7 +182,7 @@ const ListPersonalHiringPost = () => {
                                 {new Date(post.createdAt).toLocaleDateString()}
                             </p>
                             <p className="block font-semibold text-blue-600 mt-3">
-                                Category: {post.requirementCate}
+                                Category: {post.requirementCate || "Undefined Yet"}
                             </p>
                         </div>
                     </div>
