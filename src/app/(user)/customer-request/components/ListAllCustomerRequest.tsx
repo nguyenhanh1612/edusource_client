@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchAllHiringPostsAPI } from "@/services/customer_request/api-service";
-import { HiringPost } from "@/services/customer_request/definition";
+import { HiringPostDetailResponse, HiringPostListResponse } from "@/services/customer_request/definition";
 import { useEffect, useState } from "react";
 
 const tempArrImg = [
@@ -22,12 +22,19 @@ const tempArrAvatar = [
 ];
 
 
-const getRandomImage = () => tempArrImg[Math.floor(Math.random() * tempArrImg.length)];
-const getRandomAvt = () => tempArrAvatar[Math.floor(Math.random() * tempArrAvatar.length)];
+const getRandomImage = (bookImg: string, cateImg: string) => {
+    if (!(bookImg && cateImg)) {
+        return tempArrImg[Math.floor(Math.random() * tempArrImg.length)];
+    }
+    return bookImg && cateImg;
+};
+const getRandomAvt = (img: string) => {
+    return img && tempArrAvatar[Math.floor(Math.random() * tempArrAvatar.length)];
+}
 
 
 const ListAllCustomerRequestPage = () => {
-    const [data, setData] = useState<HiringPost[]>([]);
+    const [data, setData] = useState<HiringPostListResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -90,7 +97,7 @@ const ListAllCustomerRequestPage = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-5">
+        <div className="max-w-full mx-auto p-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 {/* Search by Post */}
                 <div className="relative">
@@ -129,7 +136,8 @@ const ListAllCustomerRequestPage = () => {
             )}
 
             {/* Card Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
                 {paginatedData.map(post => (
                     <div
                         key={post.id}
@@ -138,7 +146,7 @@ const ListAllCustomerRequestPage = () => {
                         <img
                             className="w-full h-48 object-cover rounded-lg"
                             alt="Post Image"
-                            src={getRandomImage()}
+                            src={getRandomImage(post.bookImg, post.requirementCateImg)}
                         />
                         <div className="p-4">
                             <h4 className="text-xl font-semibold text-gray-800">{post.title}</h4>
@@ -147,7 +155,7 @@ const ListAllCustomerRequestPage = () => {
                             </p>
                             <div className="flex items-center space-x-3 mb-3">
                                 <img
-                                    src={getRandomAvt()}
+                                    src={getRandomAvt(post.customerAvt)}
                                     alt="Customer Avatar"
                                     className="w-10 h-10 rounded-full border-2 border-blue-500"
                                 />

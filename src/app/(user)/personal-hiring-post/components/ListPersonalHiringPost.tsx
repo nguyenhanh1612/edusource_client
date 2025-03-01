@@ -1,7 +1,7 @@
 "use client";
 
-import { fetchAllHiringPostsAPI, fetchHiringPostsByCustomerIdAPI } from "@/services/customer_request/api-service";
-import { HiringPost } from "@/services/customer_request/definition";
+import { fetchAllHiringPostsAPI } from "@/services/customer_request/api-service";
+import { HiringPostListResponse } from "@/services/customer_request/definition";
 import { useAppSelector } from "@/stores/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,25 +29,20 @@ const getRandomAvt = () => tempArrAvatar[Math.floor(Math.random() * tempArrAvata
 
 
 const ListPersonalHiringPost = () => {
-    const [data, setData] = useState<HiringPost[]>([]);
+    const [data, setData] = useState<HiringPostListResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [staffFilter, setStaffFilter] = useState<string>("");
     const pageSize = 12;
-    const user = useAppSelector((state) => state.userSlice.user);
     const router = useRouter();
 
     useEffect(() => {
         const loadHiringPost = async () => {
             try {
-                if (user?.userId) {
-                    const res = await fetchHiringPostsByCustomerIdAPI(user.userId);
-                    setData(res);
-                } else {
-                    setError("User ID is not available.");
-                }
+                const res = await fetchAllHiringPostsAPI();
+                setData(res);
             } catch (e) {
                 console.error(e);
                 setError("Failed to fetch customer requests.");
@@ -98,7 +93,7 @@ const ListPersonalHiringPost = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-5">
+        <div className="max-w-full mx-auto p-5">
             {/* Filter & Create New Button */}
             <div className="flex justify-between items-center mb-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
@@ -147,8 +142,11 @@ const ListPersonalHiringPost = () => {
                 <p className="text-center text-gray-500">No customer requests found.</p>
             )}
 
+       
+        
             {/* Card Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
                 {paginatedData.map(post => (
                     <div
                         key={post.id}
