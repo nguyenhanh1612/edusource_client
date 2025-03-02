@@ -35,3 +35,25 @@ export const getAllOrders = async ({
 
   return response.data;
 };
+
+export const getDashboard = async ({
+  month,
+  year,
+  week,
+}: REQUEST.GetDashboard): Promise<
+  TResponseData<API.TDashboardData>
+> => {
+  const response = await request<TResponseData<API.TDashboardData>>(
+    API_ENDPOINTS.GET_DASH_BOARD,
+    {
+      method: "GET",
+      params: {
+        month,
+        year,
+        week,
+      },
+    }
+  );
+
+  return response.data;
+};
