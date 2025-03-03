@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/stores/store';
 import useGetAllProductPurchased from '../../homepage/hooks/useGetAllProductPurchased';
 import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 function Purchased() {
     const { getAllProductPurchasedApi } = useGetAllProductPurchased();
@@ -40,44 +42,52 @@ function Purchased() {
     };
 
     return (
-        <div className="py-10 px-4 mt-28">
-            <h2 className="text-2xl font-semibold text-center mb-6">Sản phẩm đã mua</h2>
+        <div className="py-10 px-4 mt-28 bg-[url('/images/BG_1.png')] bg-cover bg-center">
+            <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">
+                Sản phẩm đã mua
+            </h2>
 
             {purchasedProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {purchasedProducts.map((product, index) => (
-                        <div
+                        <Card
                             key={`${product.id}-${index}`}
-                            className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto"
+                            className="shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl cursor-pointer"
                             onClick={() => handleClick(product)}
                         >
-                            
-                            <img
-                                className="w-full h-64 object-cover"
-                                src={product.imageUrl}
-                                alt={product.name}
-                            />
-
-                            <div className="px-6 py-4">
-                                <h3 className="text-xl font-semibold text-gray-800">{product.name}</h3>
-
-                               
-                                {product.description && (
-                                    <p className="text-gray-600 mt-2">{product.description}</p>
+                            <div className="relative w-full h-56">
+                                <img
+                                    src={product.imageUrl}
+                                    alt={product.name}
+                                    className="w-full h-full object-cover rounded-t-lg"
+                                />
+                                {product.isPurchased && (
+                                    <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded-md">
+                                        Đã mua
+                                    </span>
                                 )}
-
-                                
-                                <p className={`mt-2 ${product.isPurchased ? 'text-green-600' : 'text-red-600'}`}>
-                                    {product.isPurchased ? 'Sản phẩm đã mua' : 'Chưa mua'}
-                                </p>
                             </div>
-                        </div>
+
+                            <CardHeader>
+                                <CardTitle className="text-lg font-semibold text-gray-900">
+                                    {product.name}
+                                </CardTitle>
+                            </CardHeader>
+
+                            <CardContent>
+                                {product.description && (
+                                    <p className="text-gray-600 text-sm line-clamp-2">{product.description}</p>
+                                )}
+                                <Button variant="outline" className="mt-4 w-full">
+                                    Xem chi tiết
+                                </Button>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
             ) : (
                 <p className="text-center text-gray-600">Không có sản phẩm đã mua.</p>
             )}
-
         </div>
     );
 }

@@ -40,7 +40,7 @@ function AllExercise() {
       {isPending && <Backdrop open={isPending} />}
 
       {!isPending && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 bg-[url('/images/BG_1.png')]">
           {filteredProducts.map((product) => (
             <motion.div
               key={product.id}

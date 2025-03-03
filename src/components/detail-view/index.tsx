@@ -38,6 +38,7 @@ interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
   isAddingToCart: boolean;
+  
 }
 
 export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProps) {
@@ -74,7 +75,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   return (
     <div className="mx-auto">
       <div className="p-8 bg-[#669bbc]">
-        <div className="relative flex flex-col bg-[#669bbc] mt-28">
+        <div className="relative flex flex-col bg-[#669bbc] mt-28 bg-[url('/images/BG_2.png')]">
           <div className="ml-20">
             <h1 className="text-2xl font-bold text-white">{data.name}</h1>
             <h2 className="text-lg text-white">{data.description}</h2>
@@ -274,7 +275,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
         <Reviews />
       </div>
 
-      <div className="space-y-4 p-12">
+      <div className="space-y-4 p-12 bg-[url('/images/BG_1.png')]">
         <div className="flex gap-4">
           <Select>
             <SelectTrigger className="w-[180px]">
