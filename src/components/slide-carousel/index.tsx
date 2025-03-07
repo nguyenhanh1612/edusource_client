@@ -23,6 +23,7 @@ const CardComponent: React.FC<CardComponentProps> = ({ slideId, product }) => {
     if (!userState.user?.roleId) {
       router.push("/login");
     } else if (userState.user.roleId === 2) {
+      localStorage.setItem("selectedProducts", JSON.stringify([product]));
       router.push("/checkout");
     }
   };
@@ -41,11 +42,8 @@ const CardComponent: React.FC<CardComponentProps> = ({ slideId, product }) => {
       </Link>
 
       <div className="p-4 flex flex-col flex-grow">
-        {/* Tên sản phẩm */}
         <h5 className="font-semibold text-xl text-gray-900 text-center">{product.name}</h5>
         <p className="text-gray-600 text-center text-sm mt-1">({product.description})</p>
-
-        {/* Đánh giá & Đơn vị */}
         <div className="flex flex-col items-center mt-2">
           <p className="flex items-center gap-1.5 text-base text-gray-900">
             <svg
@@ -70,7 +68,6 @@ const CardComponent: React.FC<CardComponentProps> = ({ slideId, product }) => {
           <span className="text-sm text-gray-700">Bởi <span className="text-orange-400 font-medium">EduSource</span></span>
         </div>
 
-        {/* Nút Mua Ngay */}
         <div className="mt-auto">
           {isPurchased ? (
             <div className="w-full bg-gray-400 py-3.5 text-white rounded-full mt-4 text-xl text-center">

@@ -1,9 +1,9 @@
 import { createOrder } from "./api-services";
 
 export const OrderService = {
-  createOrder: async () => {
+  createOrder: async (data: REQUEST.CreateOrderList) => {
     try {
-      const response = await createOrder();
+      const response = await createOrder(data);
       if (response.isSuccess && response.value.data.success) {
         return response.value.data.paymentUrl; 
       } else {

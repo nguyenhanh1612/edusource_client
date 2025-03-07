@@ -38,11 +38,12 @@ interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
   isAddingToCart: boolean;
-  
+
 }
 
 export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProps) {
   const userState = useAppSelector((state) => state.userSlice);
+  const [showPdf, setShowPdf] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const galleryRef = useRef<HTMLDivElement>(null);
   const [ref1, inView1] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -161,9 +162,18 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
                 )}
               </div>
 
-
-
-              <Button className="rounded-full bg-[#003566] w-1/2"><IoSearchOutline />Xem trước</Button>
+              <Button
+                className="rounded-full bg-[#003566] w-1/2"
+                onClick={() => {
+                  if (!data.isPurchased) {
+                    alert("Bạn chỉ có thể xem trước 3 trang. Mua khóa học để xem toàn bộ!");
+                  }
+                  window.open(data.fileUrl, "_blank"); 
+                }}
+              >
+                <IoSearchOutline />
+                Xem trước
+              </Button>
             </div>
 
             <div className="mx-auto">
@@ -270,7 +280,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
           ))}
         </motion.div>
       </motion.div>
-      
+
       <div className="px-12">
         <Reviews />
       </div>

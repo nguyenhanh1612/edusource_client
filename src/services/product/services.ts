@@ -25,6 +25,9 @@ export const useServiceCreateProduct = () => {
       if (data.file) {
         formData.append("File", data.file);
       }
+      if (data.fileDemo) {
+        formData.append("FileDemo", data.fileDemo);
+      }
       data.otherImages?.forEach((image) => {
         formData.append("OtherImages", image);
       });

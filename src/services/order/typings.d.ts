@@ -13,6 +13,11 @@ declare namespace REQUEST {
     year: number;
     week?: number;
   };
+
+  type CreateOrderList = {
+    productIds?: string[];
+    isFromCart?: boolean;
+  };
 }
 
 declare namespace API {

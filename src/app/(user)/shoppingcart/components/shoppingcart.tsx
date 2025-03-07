@@ -12,6 +12,7 @@ function ShoppingCart() {
     const [totalPrice, setTotalPrice] = useState(0);
     const router = useRouter()
     const cartItem = useSelector((state: RootState) => state.cartSlice.items);
+    const [selectedItems, setSelectedItems] = useState<API.ProductCart[]>([]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -19,26 +20,34 @@ function ShoppingCart() {
             if (res) {
                 setCartItems(res.value.data.items);
             }
-            console.log("Hello", res.value.data.items)
         };
 
         fetchProducts();
     }, []);
 
+    const handleCheckout = () => {
+        if (selectedItems.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+            return;
+        }
+        
+        localStorage.setItem("selectedProducts", JSON.stringify(selectedItems));
+        setTimeout(() => {
+            router.push('/checkout');
+        }, 100); 
+    };
+    
 
     return (
         <div className="font-sans max-w-7xl max-md:max-w-xl mx-auto bg-white py-8">
             <h1 className="text-3xl font-bold text-gray-800 text-center">Giỏ hàng</h1>
 
             <div className="grid md:grid-cols-3 gap-8 mt-28">
-                {/* Phần ReviewProduct */}
-                <ReviewProduct cartItems={cartItems} setCartItems={setCartItems} setTotalPrice={setTotalPrice} />
+                <ReviewProduct cartItems={cartItems} setCartItems={setCartItems} setTotalPrice={setTotalPrice} setSelectedItems={setSelectedItems} />
 
-                {/* Phần OrderSummary */}
                 <div className="bg-white border border-gray-300 rounded-lg p-6 shadow-md h-max">
                     <h3 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-4">Tóm tắt đơn hàng</h3>
 
-                    {/* Tổng giá */}
                     <ul className="text-gray-800 mt-6 space-y-3">
                         <li className="flex flex-wrap gap-4 text-base font-semibold">
                             Tổng tiền:
@@ -51,19 +60,18 @@ function ShoppingCart() {
                         </li>
                     </ul>
 
-                    {/* Nút thanh toán và tiếp tục mua sắm */}
                     <div className="mt-6 space-y-3">
                         <button
                             type="button"
                             className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-orange-500 hover:bg-orange-600 text-white rounded-md transition-colors"
-                            onClick={() => router.push('/checkout')}
+                            onClick={handleCheckout}
                         >
                             Thanh toán
                         </button>
                         <button
                             type="button"
                             className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 hover:bg-gray-100 rounded-md transition-colors"
-                            onClick={() => router.push('/')}
+                            onClick={handleCheckout}
                         >
                             Tiếp tục mua sắm
                         </button>

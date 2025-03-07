@@ -30,6 +30,7 @@ function UploadFile() {
             totalPage: data.totalPage,
             bookId: selectedBook,
             file: selectedFiles || undefined,
+            fileDemo: selectedFileDemo || undefined,
             mainImage: filePreview || undefined,
             otherImages: otherImages
         };
@@ -46,6 +47,7 @@ function UploadFile() {
     const [filePreview, setFilePreview] = useState<File | null>(null);
     const [otherImages, setOtherImages] = useState<File[]>([]);
     const [selectedFiles, setSelectedFiles] = useState<File | null>(null);
+    const [selectedFileDemo, setSelectedFileDemo] = useState<File | null>(null);
     const [books, setBooks] = useState<API.Book[]>([]);
     const [selectedBook, setSelectedBook] = useState<string>("");
 
@@ -91,6 +93,12 @@ function UploadFile() {
         setValue("file", selectedFile);
         setFileSize(size);
         setSelectedFiles(selectedFile);
+    };
+
+    const handleFileUploadDemo = (selectedFileDemo: File | null, preview: string | null, size: number | null) => {
+        setValue("filedemo", selectedFileDemo);
+        setFileSize(size);
+        setSelectedFileDemo(selectedFileDemo);
     };
 
 
@@ -235,11 +243,15 @@ function UploadFile() {
                     <div>
                         <UploadPhoto
                             onFileUpload={handleFileUpload}
+                            onFileUploadDemo={handleFileUploadDemo}
                             onMainImageSelect={handleFileSelect}
                             onOtherImagesSelect={handleOtherImagesSelect}
                         />
                         {selectedFiles && (
                             <p className="px-7 py-4">File đã chọn: {selectedFiles.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
+                        )}
+                        {selectedFileDemo && (
+                            <p className="px-7 py-4">File demo đã chọn: {selectedFileDemo.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
                         )}
                     </div>
 

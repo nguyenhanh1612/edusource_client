@@ -53,6 +53,16 @@ const cartSlice = createSlice({
         item.quantity = action.payload.quantity;
       }
     },
+    removePaidItems: (state, action: PayloadAction<{ productIds?: string[] }>) => {
+      if (!action.payload.productIds || action.payload.productIds.length === 0) {
+        return; // Nếu danh sách rỗng hoặc undefined, không làm gì cả
+      }
+      state.items = state.items.filter(
+        (item) => !action.payload.productIds?.includes(item.productId) // 🛠 Sử dụng ?. để tránh lỗi
+      );
+      state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
+    },
+    
     resetCart: (state) => {
       state.items = [];
       state.totalItems = 0;
@@ -67,6 +77,7 @@ const cartSlice = createSlice({
 export const {
   addToCart,
   removeFromCart,
+  removePaidItems,
   updateQuantity,
   resetCart,
   setCart,

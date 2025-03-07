@@ -73,6 +73,7 @@ declare namespace REQUEST {
     size: number | null;
     bookId: string;
     file?: File;
+    fileDemo?: File;
     mainImage?: File;
     otherImages?: File[];
   };
