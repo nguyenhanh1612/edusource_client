@@ -8,6 +8,7 @@ import { ListMessages } from "@/const/user";
 import stringSimilarity from "string-similarity";
 import { useAppDispatch, useAppSelector } from "@/stores/store";
 import { closeMessageUser } from "@/stores/difference-slice";
+import ReactMarkdown from 'react-markdown';
 
 export default function Message({
   children,
@@ -22,7 +23,7 @@ export default function Message({
   const [messagesBot, setMessagesBot] = useState<{ SenderId: string; Content: string }[]>([]);
   const [messagesStaff, setMessagesStaff] = useState<{ SenderId: string; Content: string }[]>([]);
   const dispatch = useAppDispatch();
-  const messagesEndRef = useRef<HTMLDivElement>(null); // Tham chiếu đến phần tử cuối cùng của chat
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const sampleQuestions = [
     { question: "Chào bạn", answer: "Xin chào! Tôi có thể giúp gì cho bạn?" },
@@ -150,10 +151,28 @@ export default function Message({
         <div
           className={`w-max flex items-center px-2 py-1 min-h-8 rounded-xl max-w-[80%] ${isCurrentUserMessage ? "bg-blue-200" : "bg-slate-200"
             }`}
+          style={{
+            wordBreak: "normal", 
+            overflowWrap: "anywhere",
+            whiteSpace: "pre-wrap", 
+            lineHeight: "1.5",
+            display: "inline",
+          }}
         >
-          <p className="text-[14px] font-sans">
+          <ReactMarkdown
+            allowedElements={["strong", "p", "br", "ul", "ol", "li", "h2"]} 
+            components={{
+              p: ({ node, ...props }) => <p className="text-[14px] font-sans leading-relaxed" {...props} />, 
+              strong: ({ node, ...props }) => <strong className="font-bold inline" {...props} />,
+              br: () => <br />,
+              ul: ({ node, ...props }) => <ul className="list-disc pl-4 text-[14px] font-sans leading-relaxed" {...props} />, 
+              ol: ({ node, ...props }) => <ol className="list-decimal pl-4 text-[14px] font-sans leading-relaxed" {...props} />,
+              li: ({ node, ...props }) => <li className="mb-1 text-[14px] font-sans leading-relaxed" {...props} />, 
+              h2: ({ node, ...props }) => <h2 className="text-[16px] font-semibold mt-4 text-gray-800" {...props} />, 
+            }}
+          >
             {item.Content || "No content available"}
-          </p>
+          </ReactMarkdown>
         </div>
       </div>
     );

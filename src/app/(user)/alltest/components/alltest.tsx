@@ -8,26 +8,28 @@ import { Backdrop } from "@/components/backdrop";
 function AllTest() {
   const { isPending, getAllProductApi } = useGetAllProduct();
   const [filteredProducts, setFilteredProducts] = useState<API.Product[]>([]);
+  const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
       const res = await getAllProductApi({
-        category: 2, 
+        category: 2,
         pageIndex: 1,
         pageSize: 10,
       });
-  
+
       if (res) {
         setFilteredProducts(res.value.data.items);
       }
     };
-  
+
     fetchProducts();
   }, []);
-  
-const handleProductClick = (id: string) => {
-    router.push(`/test/${id}`); 
+
+  const handleProductClick = (id: string) => {
+    setIsNavigating(true);
+    router.push(`/test/${id}`);
   };
 
   return (
@@ -36,7 +38,7 @@ const handleProductClick = (id: string) => {
         Tổng hợp bài kiểm tra
       </h1>
 
-      {isPending && <Backdrop open={isPending} />}
+      {(isPending || isNavigating) && <Backdrop open={true} />}
 
       {!isPending && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 bg-[url('/images/BG_1.png')]">
@@ -60,7 +62,6 @@ const handleProductClick = (id: string) => {
                 <p className="text-sm text-gray-700">{product.description}</p>
               </div>
 
-              {/* Hiển thị rating */}
               <div className="flex items-center justify-center mt-3 space-x-2">
                 <div className="flex space-x-1">
                   {[1, 2, 3, 4, 5].map((star) =>

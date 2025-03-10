@@ -8,6 +8,7 @@ import { Backdrop } from "@/components/backdrop";
 function AllPowerPoint() {
   const { isPending, getAllProductApi } = useGetAllProduct();
   const [filteredProducts, setFilteredProducts] = useState<API.Product[]>([]);
+  const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function AllPowerPoint() {
   }, []);
 
   const handleProductClick = (id: string) => {
+    setIsNavigating(true);
     router.push(`/test/${id}`);
   };
 
@@ -36,7 +38,7 @@ function AllPowerPoint() {
         Tổng hợp PowerPoint
       </h1>
 
-      {isPending && <Backdrop open={isPending} />}
+      {(isPending || isNavigating) && <Backdrop open={true} />}
 
       {!isPending && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 bg-[url('/images/BG_1.png')]">

@@ -34,6 +34,7 @@ import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import PdfViewer from "../pdf_viewer";
 interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
@@ -47,6 +48,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   const [selectedValue, setSelectedValue] = useState("");
   const galleryRef = useRef<HTMLDivElement>(null);
   const [ref1, inView1] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (!galleryRef.current) return;
@@ -72,6 +74,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   const getCategoryType = (id: number) => categoryType.find((item) => item.id === id)?.type || "Không xác định";
   const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
   const getUploadType = (id: number) => uploadType.find((item) => item.id === id)?.type || "Không xác định";
+
 
   return (
     <div className="mx-auto">
@@ -162,18 +165,35 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
                 )}
               </div>
 
-              <Button
-                className="rounded-full bg-[#003566] w-1/2"
-                onClick={() => {
-                  if (!data.isPurchased) {
-                    alert("Bạn chỉ có thể xem trước 3 trang. Mua khóa học để xem toàn bộ!");
-                  }
-                  window.open(data.fileUrl, "_blank"); 
-                }}
-              >
-                <IoSearchOutline />
-                Xem trước
-              </Button>
+              <div className="w-2/4">
+                <button
+                  className="rounded-full bg-[#003566] text-white px-4 py-2 w-full flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-110 active:scale-95"
+                  onClick={() => {
+                    if (!data.isPurchased) {
+                      alert("Bạn chỉ có thể xem trước 3 trang. Mua khóa học để xem toàn bộ!");
+                    }
+                    setShowPreview(true);
+                  }}
+                >
+                  <IoSearchOutline />
+                  Xem trước
+                </button>
+
+                {showPreview && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <button
+                      className="absolute top-5 right-5 text-white text-3xl z-50"
+                      onClick={() => setShowPreview(false)}
+                    >
+                      ✖
+                    </button>
+                    <div className="relative w-[80%] h-[95%] bg-white shadow-lg overflow-hidden">
+                      <PdfViewer fileUrl={data.fileUrl} isPurchased={data.isPurchased} />
+                    </div>
+                  </div>
+                )}
+
+              </div>
             </div>
 
             <div className="mx-auto">
