@@ -1,12 +1,15 @@
 import axios from "axios";
-import { CreateHiringPostRequest, HiringPostListResponse } from "./definition";
+import { BookSelectBoxResponse, CommentUser, CreateHiringPostRequest, HiringPostDetailResponse, HiringPostListResponse } from "./definition";
+
+
+//hard value: https://drive.google.com/file/d/1vnxyxufndqV7pF7r73VjihIwuukuhZYT/view?usp=drive_link
+const tempFile = "https://drive.google.com/file/d/1vnxyxufndqV7pF7r73VjihIwuukuhZYT/view?usp=drive_link";
 
 // Create an axios instance
 const apiClient = axios.create({
   baseURL: "https://67b97a9d51192bd378dd88cf.mockapi.io",
 });
 
-// Add an interceptor to include the token in every request
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken"); // Retrieve token from localStorage
   if (token) {
@@ -17,19 +20,57 @@ apiClient.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
+const bookApiClient = axios.create({
+  baseURL: "https://67c7e25ac19eb8753e7b2444.mockapi.io",
+});
+
+bookApiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken"); // Retrieve token from localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+
+//axios instance for EduSource server to get the link of the file
+
+const EduSourceApiClient = axios.create({
+  baseURL: "https://your-server.com/api", // Replace with your actual server URL
+});
+
+
 // Fetch all hiring posts
 export const fetchAllHiringPostsAPI = async (): Promise<HiringPostListResponse[]> => {
   try {
-    console.log("CUSTOMER_REQUEST (api-service) : fetching ...");
     const response = await apiClient.get("/hiring-post");
     return response.data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
 };
+//Fetch hiring post by the customer id
+export const fetchCustomerPersonalHiringAPI = async (customerId: string): Promise<HiringPostListResponse[]> => {
+  try {
+    const response = await apiClient.get("/hiring-post");
+    return response.data.filter((post: HiringPostListResponse) => post.customerId === customerId);
+  } catch (error) {
+    throw new Error("Failed to fetch data");
+  }
+};
+//Fetch hiring post detail by the id
+export const fetchDetailHiringPostByIdAPI = async (id: number): Promise<HiringPostDetailResponse> => {
+  try {
+    const response = await apiClient.get(`/hiring-post/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch data");
+  }
+};
 
-
-// Create a new hiring post
+//Post to create the hiring post
 export const createHiringPostAPI = async (postData: CreateHiringPostRequest): Promise<string> => {
   try {
     const response = await apiClient.post("/hiring-post", postData);
@@ -39,9 +80,114 @@ export const createHiringPostAPI = async (postData: CreateHiringPostRequest): Pr
   }
 };
 
+// Assign the task
+export const assignTaskAPI = async (postId: number, staffId: string, staffName: string): Promise<string> => {
+  try {
+    console.log(postId + " " + staffId + " " + staffName);
+    const response = await apiClient.put(`/hiring-post/${postId}`, { staffId, staffName });
+    return "OK";
+  } catch (e) {
+    throw new Error("Failed to assign task");
+  }
+};
 
-//view detail
+//TODO: use API of EduSource Server to gen the link of the file || use the real API of EduSource Server
 
-//create comment
+const getLinkFile = async (fileInput: File): Promise<string> => {
+  try {
+    const formData = new FormData();
+    formData.append("file", fileInput);
 
-//staff upload file cho customer => update  
+    const response = await EduSourceApiClient.post("/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data.fileUrl;
+  } catch (e) {
+    throw new Error("Failed to upload file");
+  }
+};
+// Put method to upload the file
+
+
+export const uploadCompleteFileAPI = async (postId: number, file: File): Promise<string> => {
+  try {
+    // const linkFile = await getLinkFile(file);
+    const response = await apiClient.put(`/hiring-post/${postId}`, { file: tempFile });
+    return tempFile;
+  } catch (e) {
+    throw new Error("Failed to upload file");
+  }
+};
+
+
+// Put method to upload the demo file
+
+
+
+export const uploadDemoFileAPI = async (postId: number, file: File): Promise<string> => {
+  try {
+    // const linkFile = await getLinkFile(file);
+    const response = await apiClient.put(`/hiring-post/${postId}`, { demoFile: tempFile, status: "ready" });
+    return tempFile;
+  } catch (e) {
+    throw new Error("Failed to upload file");
+  }
+};
+
+
+
+//Fetch book select box
+export const fetchBookSelectBoxAPI = async (): Promise<BookSelectBoxResponse[]> => {
+  try {
+    const response = await apiClient.get("/DemoBook");
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch book select box");
+  }
+}
+
+//Fetch All Comment base on the hiring post id
+export const fetchCommentAPI = async (postId: number): Promise<CommentUser[]> => {
+  try {
+    const response = await apiClient.get(`/comment?postId=${postId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to fetch comment");
+  }
+}
+//Post method to comment to the specific hiring post
+export const postCommentAPI = async (request: CommentUser): Promise<string> => {
+  try {
+    const response = await apiClient.post("/comment", request);
+    return "OK";
+  } catch (error) {
+    throw new Error("Failed to create comment");
+  }
+}
+
+
+
+//TODO: Post method to check out for the hiring post
+
+
+//CHAT BOT
+
+const ChatBotClient = axios.create({
+  baseURL: "https://localhost:7272/api", // Replace with your actual server URL
+});
+
+export const sendMessageAPI = async (message: string): Promise<string> => {
+  try {
+    const response = await ChatBotClient.post("/ChatBot", { Message: message });
+    return response.data.response;
+  } catch (error) {
+    return "Failed to send message";
+  }
+};
+
+
+

@@ -22,7 +22,7 @@ const Header: React.FC = () => {
     if (user?.roleId === 3) {
       return { href: "/customer-request", label: "Yêu cầu khách hàng" };
     } else if (user?.roleId === 2) {
-      return { href: "/personal-hiring-post", label: "Bài giảng theo yêu cầu" };
+      return { href: "/personal-hiring-post", label: "Tài liệu theo yêu cầu" };
     }
     return null;
   };

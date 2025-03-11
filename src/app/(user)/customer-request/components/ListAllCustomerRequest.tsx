@@ -3,6 +3,8 @@
 import { fetchAllHiringPostsAPI } from "@/services/customer_request/api-service";
 import { HiringPostDetailResponse, HiringPostListResponse } from "@/services/customer_request/definition";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 const tempArrImg = [
     "https://m.media-amazon.com/images/I/71DoSRyaXWL._AC_UF1000,1000_QL80_.jpg",
@@ -22,15 +24,9 @@ const tempArrAvatar = [
 ];
 
 
-const getRandomImage = (bookImg: string, cateImg: string) => {
-    if (!(bookImg && cateImg)) {
-        return tempArrImg[Math.floor(Math.random() * tempArrImg.length)];
-    }
-    return bookImg && cateImg;
-};
-const getRandomAvt = (img: string) => {
-    return img && tempArrAvatar[Math.floor(Math.random() * tempArrAvatar.length)];
-}
+const getRandomImage = (bookImg: string, cateImg: string) => bookImg ? bookImg : cateImg ? cateImg : tempArrImg[Math.floor(Math.random() * tempArrImg.length)];
+const getRandomAvt = (userAvt: string) => userAvt ? userAvt : tempArrAvatar[Math.floor(Math.random() * tempArrAvatar.length)];
+
 
 
 const ListAllCustomerRequestPage = () => {
@@ -41,6 +37,7 @@ const ListAllCustomerRequestPage = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [staffFilter, setStaffFilter] = useState<string>("");
     const pageSize = 12;
+    const router = useRouter();
 
     useEffect(() => {
         const loadHiringPost = async () => {
@@ -137,44 +134,47 @@ const ListAllCustomerRequestPage = () => {
 
             {/* Card Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-
-                {paginatedData.map(post => (
+            {paginatedData.map(post => (
                     <div
                         key={post.id}
-                        className="bg-white rounded-xl shadow-lg overflow-hidden p-5 transition-transform transform hover:scale-105 hover:shadow-xl duration-300"
+                        onClick={() => router.push(`/hiring-post-detail/${post.id}`)}
+                        className="bg-white rounded-2xl shadow-md overflow-hidden p-5 transition-all transform hover:scale-105 hover:shadow-2xl duration-300 cursor-pointer border border-gray-200"
                     >
-                        <img
-                            className="w-full h-48 object-cover rounded-lg"
-                            alt="Post Image"
-                            src={getRandomImage(post.bookImg, post.requirementCateImg)}
-                        />
-                        <div className="p-4">
-                            <h4 className="text-xl font-semibold text-gray-800">{post.title}</h4>
-                            <p className="text-gray-600 mt-2 mb-4 leading-relaxed">
-                                {post.description.split(" ").slice(0, 20).join(" ")}...
-                            </p>
-                            <div className="flex items-center space-x-3 mb-3">
+                        <div className="relative">
+                            <img
+                                className="w-full h-52 object-cover rounded-xl"
+                                alt="Post Image"
+                                src={getRandomImage(post.bookImg, post.requirementCateImg)}
+                            />
+                            <div className="absolute top-3 left-3 bg-blue-600 text-white px-3 py-1 text-xs font-semibold rounded-lg shadow-md">
+                                {post.bookName || post.requirementCate || "Undefined Yet"}
+                            </div>
+                        </div>
+                        <div className="p-5">
+                            <h4 className="text-xl font-bold text-gray-900 leading-tight">{post.title}</h4>
+                            <div className="flex items-center space-x-3 my-4">
                                 <img
                                     src={getRandomAvt(post.customerAvt)}
                                     alt="Customer Avatar"
-                                    className="w-10 h-10 rounded-full border-2 border-blue-500"
+                                    className="w-12 h-12 rounded-full border-2 border-blue-500 shadow-sm"
                                 />
-                                <span className="font-medium text-gray-700">{post.customerName}</span>
+                                <span className="font-medium text-gray-800">{post.customerName}</span>
                             </div>
-                            <p className="text-sm text-gray-700 font-medium">
-                                Staff Assigned:{" "}
-                                <span className={`font-semibold ${post.staffName ? "text-green-500" : "text-yellow-600"}`}>
-                                    {post.staffName || "Not Assigned Yet"}
+                            <p className="text-sm text-gray-700">
+                                <span className="font-semibold">Staff :</span>{" "}
+                                <span className={`${post.staffName ? "text-green-600" : "text-yellow-600"} font-semibold`}>
+                                    {post.staffName || "Not Yet"}
                                 </span>
                             </p>
-                            <p className="text-gray-500 text-sm mt-1">
-                                {new Date(post.createdAt).toLocaleDateString()}
+                            <p className="text-gray-500 text-xs mt-2">
+                                Posted on {new Date(post.createdAt).toLocaleDateString()}
                             </p>
-                            <p className="block font-semibold text-blue-600 mt-3">
-                                Category: {post.requirementCate || "Undefined Yet"}
-                            </p>
+                            <button className="mt-4 w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                                View Details
+                            </button>
                         </div>
                     </div>
+
                 ))}
             </div>
 

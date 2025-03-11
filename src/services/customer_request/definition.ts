@@ -1,51 +1,83 @@
 export interface HiringPostDetailResponse {
-    id: string;
+    id: number;
     file: string;
-    demoFile: string,
     title: string;
     description: string;
-    createdAt: Date;
-    deletedAt: Date;
+    createdAt: string;
+    deletedAt: string;
     customerId: string;
     customerName: string;
     staffId: string;
     staffName: string;
     requirementCate: string;
     bookImg: string;
-    bookName: string;
     requirementCateImg: string;
     customerAvt: string;
-    status: string,
-    sourceType: number,
-    fileType: number,
-    contentType: number
-    /* comment region below */
+    bookName: string;
+    demoFile: string;
+    fileType: string;
+    contentType: string;
+    sourceType: string;
+    status: string;
 }
 
 
 export interface CreateHiringPostRequest {
-    title: string,
-    description: string,
-    requirementCate: string,
-    bookId: string,
-    requirementCateImg: string,
-    sourceType: number,
-    fileType: number,
-    contentType: number
+    id: number;
+    file: string;
+    title: string;
+    description: string;
+    createdAt: string;
+    deletedAt: string;
+    customerId: string;
+    customerName: string;
+    staffId: string;
+    staffName: string;
+    requirementCate: string;
+    bookImg: string;
+    requirementCateImg: string;
+    customerAvt: string;
+    bookName: string;
+    demoFile: string;
+    fileType: string;
+    contentType: string;
+    sourceType: string;
+    status: string;
 }
 
 export interface HiringPostListResponse {
-    id: string;
+    id: number;
+    file: string;
     title: string;
+    description: string;
+    createdAt: string;
+    deletedAt: string;
+    customerId: string;
+    customerName: string;
     staffId: string;
     staffName: string;
-    description: string;
-    createdAt: Date;
-    customerAvt: string;
-    customerName: string;
     requirementCate: string;
-    requirementCateImg: string;
-    bookName: string;
     bookImg: string;
-    status: string
+    requirementCateImg: string;
+    customerAvt: string;
+    bookName: string;
+    demoFile: string;
+    fileType: string;
+    contentType: string;
+    sourceType: string;
+    status: string;
+}
+
+export interface BookSelectBoxResponse {
+    id: number;
+    name: string;
+    img: string;
+}
+
+export interface CommentUser {
+    id: number
+    createdAt: string,
+    userName: string,
+    content: string
+    postId: number,
 }
