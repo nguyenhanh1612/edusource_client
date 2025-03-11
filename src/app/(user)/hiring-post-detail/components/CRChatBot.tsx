@@ -31,16 +31,18 @@ const CRChatBot = () => {
         <div className="fixed bottom-4 left-4 z-50">
             {!isOpen && (
                 <button
-                    className="w-14 h-14 rounded-full shadow-lg overflow-hidden p-0 border-none"
+                    className="w-14 h-14 rounded-full shadow-lg overflow-hidden p-0 border-none flex items-center justify-center bg-white"
                     onClick={toggleChat}
                 >
                     <Image
                         src={botChatIcon}
                         alt="Chat Icon"
-                        layout="fill" // Ensures the image fills the button
-                        objectFit="cover" // Prevents distortion, keeps aspect ratio
+                        width={56} // Ensures the image fits within 14x14 dimensions
+                        height={56} // Adjust according to w-14 (56px)
+                        className="rounded-full"
                     />
                 </button>
+
             )}
             {isOpen && (
                 <div className="w-80 h-96 bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
