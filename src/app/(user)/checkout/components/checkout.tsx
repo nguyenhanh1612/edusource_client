@@ -30,6 +30,8 @@ function CheckOut() {
     const handleCheckout = async () => {
         try {
             const isBuyingFromCart = cartItems.length > 1; 
+
+            localStorage.setItem("pendingCheckoutItems", JSON.stringify(cartItems.map(item => item.id)));
             
             const paymentUrl = await OrderService.createOrder({
                 productIds: cartItems.map(item => item.id),
@@ -37,15 +39,11 @@ function CheckOut() {
             });
     
             window.location.href = paymentUrl;
-            
-            dispatch(removePaidItems({ productIds: cartItems.map(item => item.id) }));
         } catch (error) {
             alert("Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.");
         }
     };    
     
-    
-
     return (
         <div className="font-[sans-serif] bg-white p-8">
             <div className="max-lg:max-w-xl mx-auto w-full">

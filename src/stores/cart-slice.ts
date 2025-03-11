@@ -32,6 +32,16 @@ const cartSlice = createSlice({
         state.totalItems += action.payload.quantity;
       }
     },
+    addItemsToCart: (state, action: PayloadAction<{ productIds: string[] }>) => {
+      console.log("Khôi phục sản phẩm vào giỏ hàng:", action.payload.productIds); // Debug 🛠
+      action.payload.productIds.forEach((productId) => {
+        const existingItem = state.items.find((item) => item.productId === productId);
+        if (!existingItem) {
+          state.items.push({ productId, quantity: 1 }); // Thêm sản phẩm với quantity = 1
+          state.totalItems += 1;
+        }
+      });
+    },
     removeFromCart: (state, action: PayloadAction<{ productId: string }>) => {
       const index = state.items.findIndex(
         (item) => item.productId === action.payload.productId
@@ -57,6 +67,7 @@ const cartSlice = createSlice({
       if (!action.payload.productIds || action.payload.productIds.length === 0) {
         return; // Nếu danh sách rỗng hoặc undefined, không làm gì cả
       }
+      console.log("Trước khi xóa:", state.items); // 🛠 Debug
       state.items = state.items.filter(
         (item) => !action.payload.productIds?.includes(item.productId) // 🛠 Sử dụng ?. để tránh lỗi
       );
@@ -64,6 +75,7 @@ const cartSlice = createSlice({
     },
     
     resetCart: (state) => {
+      console.log("resetCart() đã được gọi!"); // 🛠 Debug
       state.items = [];
       state.totalItems = 0;
     },
@@ -81,6 +93,7 @@ export const {
   updateQuantity,
   resetCart,
   setCart,
+  addItemsToCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

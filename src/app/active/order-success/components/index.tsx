@@ -13,15 +13,15 @@ export default function OrderSuccessComponent({ children }: { children: React.Re
     useEffect(() => {
         addToast({
             type: "success",
-            description: "Giao dịch thành công! Đơn hàng của bạn sẽ sớm được xử lý.",
+            description: "Giao dịch thành công!",
             duration: 3500,
         });
-
-        const query = new URLSearchParams(window.location.search);
-        const paidProductIds = query.get("productIds")?.split(",") || [];
-
-        if (paidProductIds.length > 0) {
+        
+        const storedProductIds = localStorage.getItem("pendingCheckoutItems");
+        if (storedProductIds) {
+            const paidProductIds = JSON.parse(storedProductIds);
             dispatch(removePaidItems({ productIds: paidProductIds }));
+            localStorage.removeItem("pendingCheckoutItems");
         }
 
         setTimeout(() => {

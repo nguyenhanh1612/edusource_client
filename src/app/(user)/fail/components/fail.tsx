@@ -5,8 +5,21 @@ import { useRouter } from "next/navigation";
 import { FaTimesCircle } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import { GoArrowLeft } from "react-icons/go";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { addItemsToCart } from "@/stores/cart-slice";
 export default function PaymentFailedPage() {
   const router = useRouter()
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const storedProductIds = localStorage.getItem("pendingCheckoutItems");
+    if (storedProductIds) {
+        const productIds = JSON.parse(storedProductIds);
+        dispatch(addItemsToCart({ productIds }));
+        localStorage.removeItem("pendingCheckoutItems");
+    }
+}, [dispatch]);
 
   return (
 
