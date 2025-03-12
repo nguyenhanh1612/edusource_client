@@ -7,7 +7,6 @@ const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludWtjZ3VscGVlaml4cG5ndHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE3Mjk3NDgsImV4cCI6MjA1NzMwNTc0OH0.rfuwAZYfalGXhi69MSb0xR7Kbo1SO_umBmm_8UQjARI";
 
 const supabase = createClient(supabaseUrl, supabaseKey);
-const tempFile = "https://drive.google.com/file/d/1vnxyxufndqV7pF7r73VjihIwuukuhZYT/view?usp=drive_link";
 
 // Create an axios instance
 const apiClient = axios.create({
@@ -23,28 +22,6 @@ apiClient.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
-
-const bookApiClient = axios.create({
-  baseURL: "https://67c7e25ac19eb8753e7b2444.mockapi.io",
-});
-
-bookApiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken"); // Retrieve token from localStorage
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-
-//axios instance for EduSource server to get the link of the file
-
-const EduSourceApiClient = axios.create({
-  baseURL: "https://your-server.com/api", // Replace with your actual server URL
-});
-
 
 // Fetch all hiring posts
 export const fetchAllHiringPostsAPI = async (): Promise<HiringPostListResponse[]> => {
@@ -95,8 +72,6 @@ export const assignTaskAPI = async (postId: number, staffId: string, staffName: 
   }
 };
 
-//TODO: use API of EduSource Server to gen the link of the file || use the real API of EduSource Server
-
 const getLinkFile = async (fileInput: File): Promise<string | null> => {
   try {
     const bucketName = "fu-testing"; // ✅ Correct bucket name
@@ -124,14 +99,11 @@ const getLinkFile = async (fileInput: File): Promise<string | null> => {
     return null;
   }
 };
+
 // Put method to upload the file
-
-
 export const uploadCompleteFileAPI = async (postId: number, file: File): Promise<string> => {
   try {
-    console.log(">>>>>>> CHECK BEFORE UPLOAD DEMO FILE" + " " + postId + " " + file.name);
     const fileUrl = await getLinkFile(file);
-    console.log(">>>>>>> CHECK AFTER UPLOAD DEMO FILE" + " " + fileUrl);
     if (!fileUrl) {
       throw new Error("Failed to upload file to Supabase");
     }
@@ -142,16 +114,10 @@ export const uploadCompleteFileAPI = async (postId: number, file: File): Promise
   }
 };
 
-
 // Put method to upload the demo file
-
-
-
 export const uploadDemoFileAPI = async (postId: number, file: File): Promise<string> => {
   try {
-    console.log(">>>>>>> CHECK BEFORE UPLOAD DEMO FILE" + " " + postId + " " + file.name);
     const fileUrl = await getLinkFile(file);
-    console.log(">>>>>>> CHECK AFTER UPLOAD DEMO FILE" + " " + fileUrl);
 
     if (!fileUrl) {
       throw new Error("Failed to upload file to Supabase");
@@ -163,17 +129,9 @@ export const uploadDemoFileAPI = async (postId: number, file: File): Promise<str
   }
 };
 
-
-
 //Fetch book select box
 export const fetchBookSelectBoxAPI = async (): Promise<BookSelectBoxResponse[]> => {
-  try {
-    const response = await apiClient.get("/DemoBook");
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    throw new Error("Failed to fetch book select box");
-  }
+  throw new Error("Please using book data from client side");
 }
 
 //Fetch All Comment base on the hiring post id
@@ -197,7 +155,30 @@ export const postCommentAPI = async (request: CommentUser): Promise<string> => {
 
 
 
-//TODO: Post method to check out for the hiring post
+//create edusource client instance
+const EduSourceClient = axios.create({
+  baseURL: "https://localhost:7289/api"
+});
+
+EduSourceClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+export const GetThePaymentURLAPI = async (postId: number, postTitle: string): Promise<string> => {
+  try {
+    const response = await EduSourceClient.post("/CustomerRequestPayment", { postId, postTitle });
+    return response.data.paymentUrl;
+  } catch (error) {
+    throw new Error("Failed to gen QR code");
+  }
+}
+
 
 
 //CHAT BOT

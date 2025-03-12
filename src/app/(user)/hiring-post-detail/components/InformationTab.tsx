@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useToast from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { HiringPostDetailResponse } from "@/services/customer_request/definition";
-import { assignTaskAPI, fetchDetailHiringPostByIdAPI, uploadCompleteFileAPI, uploadDemoFileAPI } from "@/services/customer_request/api-service";
+import { assignTaskAPI, fetchDetailHiringPostByIdAPI, GetThePaymentURLAPI, uploadCompleteFileAPI, uploadDemoFileAPI } from "@/services/customer_request/api-service";
 import { useAppSelector } from "@/stores/store";
 
 const dummyImgBg = [
@@ -31,7 +31,7 @@ const HiringPostDetailInforTab = () => {
     const postIdNumber = Number(id);
     const user = useAppSelector((state) => state.userSlice.user);
     const roleId = user?.roleId;
-    
+
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -126,7 +126,15 @@ const HiringPostDetailInforTab = () => {
 
     //CHECKOUT
     const handleCheckoutClicked = async () => {
-        //TODO
+        try {
+            if (mainData) {
+                const paymentUrl = await GetThePaymentURLAPI(mainData?.id, mainData?.title);
+                window.location.href = paymentUrl;
+            }
+        } catch (e) {
+            addToast({ description: "Something wrong when checking out", type: "error", duration: 5000 });
+
+        }
     }
 
 
