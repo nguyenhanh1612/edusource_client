@@ -1,8 +1,12 @@
 import axios from "axios";
 import { BookSelectBoxResponse, CommentUser, CreateHiringPostRequest, HiringPostDetailResponse, HiringPostListResponse } from "./definition";
+import { createClient } from "@supabase/supabase-js";
 
+const supabaseUrl = "https://ynukcgulpeejixpngtvv.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludWtjZ3VscGVlaml4cG5ndHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE3Mjk3NDgsImV4cCI6MjA1NzMwNTc0OH0.rfuwAZYfalGXhi69MSb0xR7Kbo1SO_umBmm_8UQjARI";
 
-//hard value: https://drive.google.com/file/d/1vnxyxufndqV7pF7r73VjihIwuukuhZYT/view?usp=drive_link
+const supabase = createClient(supabaseUrl, supabaseKey);
 const tempFile = "https://drive.google.com/file/d/1vnxyxufndqV7pF7r73VjihIwuukuhZYT/view?usp=drive_link";
 
 // Create an axios instance
@@ -93,20 +97,31 @@ export const assignTaskAPI = async (postId: number, staffId: string, staffName: 
 
 //TODO: use API of EduSource Server to gen the link of the file || use the real API of EduSource Server
 
-const getLinkFile = async (fileInput: File): Promise<string> => {
+const getLinkFile = async (fileInput: File): Promise<string | null> => {
   try {
-    const formData = new FormData();
-    formData.append("file", fileInput);
+    const bucketName = "fu-testing"; // ✅ Correct bucket name
+    const filePath = `uploads/${Date.now()}_${fileInput.name}`;
 
-    const response = await EduSourceApiClient.post("/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    // Upload file to Supabase Storage
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .upload(filePath, fileInput, {
+        cacheControl: "3600",
+        upsert: false, // Prevents overwriting existing files
+      });
 
-    return response.data.fileUrl;
-  } catch (e) {
-    throw new Error("Failed to upload file");
+    if (error || !data) {
+      console.error("Supabase Upload Error:", error?.message || "Unknown error");
+      return null;
+    }
+
+    // ✅ Get public URL of the uploaded file
+    const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+
+    return publicUrlData.publicUrl;
+  } catch (err) {
+    console.error("Unexpected Upload Error:", err);
+    return null;
   }
 };
 // Put method to upload the file
@@ -114,9 +129,14 @@ const getLinkFile = async (fileInput: File): Promise<string> => {
 
 export const uploadCompleteFileAPI = async (postId: number, file: File): Promise<string> => {
   try {
-    // const linkFile = await getLinkFile(file);
-    const response = await apiClient.put(`/hiring-post/${postId}`, { file: tempFile });
-    return tempFile;
+    console.log(">>>>>>> CHECK BEFORE UPLOAD DEMO FILE" + " " + postId + " " + file.name);
+    const fileUrl = await getLinkFile(file);
+    console.log(">>>>>>> CHECK AFTER UPLOAD DEMO FILE" + " " + fileUrl);
+    if (!fileUrl) {
+      throw new Error("Failed to upload file to Supabase");
+    }
+    const response = await apiClient.put(`/hiring-post/${postId}`, { file: fileUrl });
+    return fileUrl;
   } catch (e) {
     throw new Error("Failed to upload file");
   }
@@ -129,9 +149,15 @@ export const uploadCompleteFileAPI = async (postId: number, file: File): Promise
 
 export const uploadDemoFileAPI = async (postId: number, file: File): Promise<string> => {
   try {
-    // const linkFile = await getLinkFile(file);
-    const response = await apiClient.put(`/hiring-post/${postId}`, { demoFile: tempFile, status: "ready" });
-    return tempFile;
+    console.log(">>>>>>> CHECK BEFORE UPLOAD DEMO FILE" + " " + postId + " " + file.name);
+    const fileUrl = await getLinkFile(file);
+    console.log(">>>>>>> CHECK AFTER UPLOAD DEMO FILE" + " " + fileUrl);
+
+    if (!fileUrl) {
+      throw new Error("Failed to upload file to Supabase");
+    }
+    const response = await apiClient.put(`/hiring-post/${postId}`, { demoFile: fileUrl, status: "ready" });
+    return fileUrl;
   } catch (e) {
     throw new Error("Failed to upload file");
   }
