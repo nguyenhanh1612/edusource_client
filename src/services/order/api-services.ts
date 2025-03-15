@@ -1,16 +1,21 @@
 import API_ENDPOINTS from "./api-path";
 import request from "@/services/interceptor";
 
-export const createOrder = async (): Promise<
-  TResponseData<{ success: boolean; paymentUrl: string; message: string }>
-> => {
-  const response = await request<
-    TResponseData<{ success: boolean; paymentUrl: string; message: string }>
-  >(API_ENDPOINTS.POST_CREATE_ORDER, {
-    method: "POST",
-  });
+export const createOrder = async (
+  data: REQUEST.CreateOrderList
+): Promise<TResponseData<{ success: boolean; paymentUrl: string; message: string }>> => {
+  const response = await request.post<TResponseData<{ success: boolean; paymentUrl: string; message: string }>>(
+    API_ENDPOINTS.POST_CREATE_ORDER,
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
+
 
 export const getAllOrders = async ({
   SortType,
@@ -29,6 +34,28 @@ export const getAllOrders = async ({
         IsSortASC,
         pageIndex,
         pageSize,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const getDashboard = async ({
+  month,
+  year,
+  week,
+}: REQUEST.GetDashboard): Promise<
+  TResponseData<API.TDashboardData>
+> => {
+  const response = await request<TResponseData<API.TDashboardData>>(
+    API_ENDPOINTS.GET_DASH_BOARD,
+    {
+      method: "GET",
+      params: {
+        month,
+        year,
+        week,
       },
     }
   );

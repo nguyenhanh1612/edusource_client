@@ -10,26 +10,32 @@ import { useRouter } from "next/navigation";
 interface CardComponentProps {
   slideId: string;
   product: API.Product;
-
+  setIsPending: (value: boolean) => void;
 }
 
-const CardComponent: React.FC<CardComponentProps> = ({ slideId, product }) => {
+const CardComponent: React.FC<CardComponentProps> = ({ slideId, product, setIsPending }) => {
   const userState = useAppSelector((state) => state.userSlice);
   const router = useRouter();
 
   const isPurchased = product.isPurchased;
 
+  const handleNavigateToDetail = async () => {
+    setIsPending(true); 
+    router.push(`/detailslide/${slideId}`);
+  };
+
   const handleBuyClick = () => {
     if (!userState.user?.roleId) {
       router.push("/login");
     } else if (userState.user.roleId === 2) {
+      localStorage.setItem("selectedProducts", JSON.stringify([product]));
       router.push("/checkout");
     }
   };
 
   return (
     <div className="relative flex flex-col rounded-xl bg-white text-gray-700 shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl p-4">
-      <Link href={`/detailslide/${slideId}`} className="block">
+      <div onClick={handleNavigateToDetail} className="block cursor-pointer">
         <div className="relative overflow-hidden rounded-xl bg-gray-200">
           <img
             src={product.imageUrl}
@@ -38,14 +44,11 @@ const CardComponent: React.FC<CardComponentProps> = ({ slideId, product }) => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         </div>
-      </Link>
+      </div>
 
       <div className="p-4 flex flex-col flex-grow">
-        {/* Tên sản phẩm */}
         <h5 className="font-semibold text-xl text-gray-900 text-center">{product.name}</h5>
         <p className="text-gray-600 text-center text-sm mt-1">({product.description})</p>
-
-        {/* Đánh giá & Đơn vị */}
         <div className="flex flex-col items-center mt-2">
           <p className="flex items-center gap-1.5 text-base text-gray-900">
             <svg
@@ -70,7 +73,6 @@ const CardComponent: React.FC<CardComponentProps> = ({ slideId, product }) => {
           <span className="text-sm text-gray-700">Bởi <span className="text-orange-400 font-medium">EduSource</span></span>
         </div>
 
-        {/* Nút Mua Ngay */}
         <div className="mt-auto">
           {isPurchased ? (
             <div className="w-full bg-gray-400 py-3.5 text-white rounded-full mt-4 text-xl text-center">

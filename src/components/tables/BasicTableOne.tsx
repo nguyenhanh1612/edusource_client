@@ -183,20 +183,28 @@ export default function BasicTableOne() {
           <DialogContent className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
             <DialogTitle className="border-b pb-4 text-lg font-semibold">Chi tiết đơn hàng</DialogTitle>
             <DialogDescription>
-              <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+              <div className="mb-4 p-4 bg-gray-100 dark:bg-gray-800">
+                <h3 className="text-md font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">Thông tin khách hàng</h3>
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>Họ và Tên:</strong> {`${selectedOrder.account.firstName} ${selectedOrder.account.lastName}`}
+                </p>
+                <p className="text-gray-700 dark:text-gray-300"><strong>Email:</strong> {selectedOrder.account.email}</p>
+              </div>
+
+              <table className="w-full">
                 <thead>
                   <tr className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-                    <th className="py-2 px-4 border">Tên sản phẩm</th>
-                    <th className="py-2 px-4 border">Đơn giá</th>
-                    <th className="py-2 px-4 border">Số lượng</th>
+                    <th className="py-2 px-4">Tên sản phẩm</th>
+                    <th className="py-2 px-4">Đơn giá</th>
+                    <th className="py-2 px-4">Số lượng</th>
                   </tr>
                 </thead>
                 <tbody>
                   {selectedOrder.orderDetails.map((detail) => (
                     <tr key={detail.id} className="text-gray-700 dark:text-gray-300">
-                      <td className="py-2 px-4 border text-center">{detail.productName}</td>
-                      <td className="py-2 px-4 border text-center">{detail.price.toLocaleString()} VND</td>
-                      <td className="py-2 px-4 border text-center">{detail.quantity}</td>
+                      <td className="py-2 px-4 text-center">{detail.productName}</td>
+                      <td className="py-2 px-4 text-center">{detail.price.toLocaleString()} VND</td>
+                      <td className="py-2 px-4 text-center">{detail.quantity}</td>
                     </tr>
                   ))}
                 </tbody>

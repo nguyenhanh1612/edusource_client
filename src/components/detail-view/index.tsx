@@ -34,17 +34,21 @@ import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import PdfViewer from "../pdf_viewer";
 interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
   isAddingToCart: boolean;
+
 }
 
 export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProps) {
   const userState = useAppSelector((state) => state.userSlice);
+  const [showPdf, setShowPdf] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const galleryRef = useRef<HTMLDivElement>(null);
   const [ref1, inView1] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (!galleryRef.current) return;
@@ -71,10 +75,11 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
   const getUploadType = (id: number) => uploadType.find((item) => item.id === id)?.type || "Không xác định";
 
+
   return (
     <div className="mx-auto">
       <div className="p-8 bg-[#669bbc]">
-        <div className="relative flex flex-col bg-[#669bbc] mt-28">
+        <div className="relative flex flex-col bg-[#669bbc] mt-28 bg-[url('/images/BG_2.png')]">
           <div className="ml-20">
             <h1 className="text-2xl font-bold text-white">{data.name}</h1>
             <h2 className="text-lg text-white">{data.description}</h2>
@@ -160,9 +165,35 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
                 )}
               </div>
 
+              <div className="w-2/4">
+                <button
+                  className="rounded-full bg-[#003566] text-white px-4 py-2 w-full flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-110 active:scale-95"
+                  onClick={() => {
+                    if (!data.isPurchased) {
+                      alert("Bạn chỉ có thể xem trước 3 trang. Mua khóa học để xem toàn bộ!");
+                    }
+                    setShowPreview(true);
+                  }}
+                >
+                  <IoSearchOutline />
+                  Xem trước
+                </button>
 
+                {showPreview && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <button
+                      className="absolute top-5 right-5 text-white text-3xl z-50"
+                      onClick={() => setShowPreview(false)}
+                    >
+                      ✖
+                    </button>
+                    <div className="relative w-[80%] h-[95%] bg-white shadow-lg overflow-hidden">
+                      <PdfViewer fileUrl={data.fileUrl} isPurchased={data.isPurchased} />
+                    </div>
+                  </div>
+                )}
 
-              <Button className="rounded-full bg-[#003566] w-1/2"><IoSearchOutline />Xem trước</Button>
+              </div>
             </div>
 
             <div className="mx-auto">
@@ -269,12 +300,12 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
           ))}
         </motion.div>
       </motion.div>
-      
+
       <div className="px-12">
         <Reviews />
       </div>
 
-      <div className="space-y-4 p-12">
+      <div className="space-y-4 p-12 bg-[url('/images/BG_1.png')]">
         <div className="flex gap-4">
           <Select>
             <SelectTrigger className="w-[180px]">

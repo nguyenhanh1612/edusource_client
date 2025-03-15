@@ -9,6 +9,7 @@ import { Backdrop } from "@/components/backdrop";
 function AllExercise() {
   const { isPending, getAllProductApi } = useGetAllProduct();
   const [filteredProducts, setFilteredProducts] = useState<API.Product[]>([]);
+  const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ function AllExercise() {
   }, []);
 
   const handleProductClick = (id: string) => {
+    setIsNavigating(true);
     router.push(`/exercise/${id}`);
   };
 
@@ -37,10 +39,10 @@ function AllExercise() {
         Tổng hợp bài tập
       </h1>
 
-      {isPending && <Backdrop open={isPending} />}
+      {(isPending || isNavigating) && <Backdrop open={true} />}
 
       {!isPending && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 bg-[url('/images/BG_1.png')]">
           {filteredProducts.map((product) => (
             <motion.div
               key={product.id}

@@ -21,6 +21,11 @@ export const CreateProductBody = z.object({
     .nullable()
     .optional(),
 
+  filedemo: z
+    .custom<File>((file) => file instanceof File, "File tải lên không hợp lệ")
+    .nullable()
+    .optional(),
+
   otherImages: z
     .array(
       z.custom<File>((file) => file instanceof File, "Ảnh khác không hợp lệ")

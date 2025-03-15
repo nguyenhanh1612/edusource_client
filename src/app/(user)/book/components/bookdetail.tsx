@@ -88,8 +88,6 @@ function BookDetail({ bookId }: BookDetailProps) {
         }
     };
 
-
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-4 bg-[#8ecae6] px-20">
             <div className="flex flex-col space-y-4 bg-[#fdf0d5] p-4 shadow-lg rounded-lg mt-32">

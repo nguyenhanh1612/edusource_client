@@ -30,6 +30,7 @@ function UploadFile() {
             totalPage: data.totalPage,
             bookId: selectedBook,
             file: selectedFiles || undefined,
+            fileDemo: selectedFileDemo || undefined,
             mainImage: filePreview || undefined,
             otherImages: otherImages
         };
@@ -46,6 +47,7 @@ function UploadFile() {
     const [filePreview, setFilePreview] = useState<File | null>(null);
     const [otherImages, setOtherImages] = useState<File[]>([]);
     const [selectedFiles, setSelectedFiles] = useState<File | null>(null);
+    const [selectedFileDemo, setSelectedFileDemo] = useState<File | null>(null);
     const [books, setBooks] = useState<API.Book[]>([]);
     const [selectedBook, setSelectedBook] = useState<string>("");
 
@@ -93,12 +95,18 @@ function UploadFile() {
         setSelectedFiles(selectedFile);
     };
 
+    const handleFileUploadDemo = (selectedFileDemo: File | null, preview: string | null, size: number | null) => {
+        setValue("filedemo", selectedFileDemo);
+        setFileSize(size);
+        setSelectedFileDemo(selectedFileDemo);
+    };
+
 
     return (
-        <div className="flex min-h-screen items-center justify-center py-10 mt-28">
+        <div className="flex min-h-screen items-center justify-center py-10 mt-28 bg-[url('/images/BG_1.png')] bg-gray-100">
             <div className="grid bg-white rounded-lg shadow-xl w-11/12 md:w-9/12 lg:w-1/2">
                 <div className="flex justify-center">
-                    <h1 className="text-gray-600 font-bold md:text-2xl text-xl">Tạo tài liệu</h1>
+                    <h1 className="text-gray-600 font-bold md:text-2xl text-xl py-4">Tạo tài liệu</h1>
                 </div>
 
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -235,11 +243,15 @@ function UploadFile() {
                     <div>
                         <UploadPhoto
                             onFileUpload={handleFileUpload}
+                            onFileUploadDemo={handleFileUploadDemo}
                             onMainImageSelect={handleFileSelect}
                             onOtherImagesSelect={handleOtherImagesSelect}
                         />
                         {selectedFiles && (
                             <p className="px-7 py-4">File đã chọn: {selectedFiles.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
+                        )}
+                        {selectedFileDemo && (
+                            <p className="px-7 py-4">File demo đã chọn: {selectedFileDemo.name} ({(fileSize! / 1024).toFixed(2)} KB)</p>
                         )}
                     </div>
 

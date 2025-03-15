@@ -4,39 +4,46 @@ import { useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import useGetAllProductCart from '../hooks/useGetProductFromCart';
 import { getAllProductCart } from '@/services/cart/api-services';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/stores/store';
 import { OrderService } from '@/services/order/services';
+import { removePaidItems } from '@/stores/cart-slice';
 
 function CheckOut() {
     const { isPending, getAllProductCartApi } = useGetAllProductCart();
     const [cartItems, setCartItems] = useState<API.ProductCart[]>([]);
-
+    const [selectedItems, setSelectedItems] = useState<API.ProductCart[]>([]);
     const cartItem = useSelector((state: RootState) => state.cartSlice.items);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            const res = await getAllProductCart({ pageIndex: 1, pageSize: 10 });
-            if (res) {
-                setCartItems(res.value.data.items);
-            }
-            console.log("Hello", res.value.data.items)
-        };
-
-        fetchProducts();
+        const selectedProductsJSON = localStorage.getItem("selectedProducts");
+        if (selectedProductsJSON) {
+            const selectedProducts: API.ProductCart[] = JSON.parse(selectedProductsJSON);
+            setCartItems(selectedProducts); 
+        }
     }, []);
+    
 
     const router = useRouter()
 
     const handleCheckout = async () => {
         try {
-            const paymentUrl = await OrderService.createOrder();
+            const isBuyingFromCart = cartItems.length > 1; 
+
+            localStorage.setItem("pendingCheckoutItems", JSON.stringify(cartItems.map(item => item.id)));
+            
+            const paymentUrl = await OrderService.createOrder({
+                productIds: cartItems.map(item => item.id),
+                isFromCart: isBuyingFromCart,
+            });
+    
             window.location.href = paymentUrl;
         } catch (error) {
             alert("Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.");
         }
-    };
-
+    };    
+    
     return (
         <div className="font-[sans-serif] bg-white p-8">
             <div className="max-lg:max-w-xl mx-auto w-full">
@@ -72,7 +79,8 @@ function CheckOut() {
                     </div>
 
                     <div className="lg:h-screen lg:sticky lg:top-0 w-full lg:ml-auto lg:col-span-2">
-                        {isPending ? <p>Loading...</p> : <OrderSummary cartItems={cartItems} setCartItems={setCartItems} />}
+                        {isPending ? <p>Loading...</p> : <OrderSummary cartItems={cartItems} setCartItems={setCartItems} />
+                    }
                     </div>
                 </div>
             </div>

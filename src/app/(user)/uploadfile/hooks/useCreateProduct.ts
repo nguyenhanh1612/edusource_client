@@ -29,6 +29,7 @@ export default function useCreateProductForm() {
       size: 1,
       mainImage: null,
       file: undefined,
+      filedemo: undefined,
       otherImages: [],
     },
   });

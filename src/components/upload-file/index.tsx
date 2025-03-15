@@ -10,10 +10,11 @@ interface FileInfo {
 interface UploadPhotoProps {
     onMainImageSelect: (file: File | null, filePreview: string | null, fileInfo: FileInfo | null) => void;
     onFileUpload: (file: File | null, preview: string | null, size: number | null) => void;
+    onFileUploadDemo: (filedemo: File | null, preview: string | null, size: number | null) => void;
     onOtherImagesSelect?: (files: FileList | null, previews: string[] | null, fileInfos: FileInfo[] | null) => void;
 }
 
-const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUpload, onOtherImagesSelect }) => {
+const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUpload, onOtherImagesSelect, onFileUploadDemo }) => {
     const [mainImage, setMainImage] = useState<File | null>(null);
     const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
     const [mainImageInfo, setMainImageInfo] = useState<FileInfo | null>(null);
@@ -23,6 +24,10 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
     const [uploadedFileInfo, setUploadedFileInfo] = useState<FileInfo | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isUploaded, setIsUploaded] = useState<boolean>(false);
+
+    const [uploadedFileDemo, setUploadedFileDemo] = useState<File | null>(null);
+    const [uploadedFileDemoPreview, setUploadedFileDemoPreview] = useState<string | null>(null);
+    const [uploadedFileDemoInfo, setUploadedFileDemoInfo] = useState<FileInfo | null>(null);
 
     const [otherFiles, setOtherFiles] = useState<File[]>([]);
     const [otherPreviews, setOtherPreviews] = useState<string[]>([]);
@@ -76,6 +81,31 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
             }, 200);
 
             onFileUpload(selectedFile, previewUrl, fileSize);
+        }
+    };
+
+    const handleFileUploadDemo = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFileDemo = e.target.files ? e.target.files[0] : null;
+
+        if (selectedFileDemo) {
+            const previewUrl = URL.createObjectURL(selectedFileDemo);
+            const fileSize = selectedFileDemo.size;
+            setUploadedFileDemo(selectedFileDemo);
+            setUploadedFileDemoPreview(previewUrl);
+            const info = { name: selectedFileDemo.name, size: selectedFileDemo.size, type: selectedFileDemo.type };
+            setUploadedFileDemoInfo(info);
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                setUploadProgress(progress);
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setIsUploaded(true);
+                }
+            }, 200);
+
+            onFileUploadDemo(selectedFileDemo, previewUrl, fileSize);
         }
     };
 
@@ -218,6 +248,20 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                 </label>
             </div>
 
+            <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold mb-1">
+                File demo tải lên (PDF, PPT, ZIP, RAR)
+            </label>
+            <div className="flex items-center justify-center w-full">
+                <label className="flex flex-col border-4 border-dashed w-full h-32 hover:bg-gray-100 hover:border-purple-300 group">
+                    <div className="flex flex-col items-center justify-center pt-7">
+                        <p className="text-sm text-gray-400 group-hover:text-purple-600 pt-1 tracking-wider">
+                            Chọn file demo
+                        </p>
+                    </div>
+                    <input type="file" accept=".pdf, .pptx, .ppt, .zip, .rar" className="hidden" onChange={handleFileUploadDemo} />
+                </label>
+            </div>
+
             {uploadedFile && !isUploaded && (
                 <div className="mt-5">
                     <div className="bg-gray-300 rounded-full w-full h-2.5">
@@ -258,6 +302,40 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onMainImageSelect, onFileUplo
                             <div className="mt-2 w-full max-w-full h-64 overflow-hidden border border-gray-300 rounded-md">
                                 <iframe
                                     src={`https://docs.google.com/gview?url=${uploadedFilePreview}&embedded=true`}
+                                    title="PPT Preview"
+                                    className="w-full h-full"
+                                ></iframe>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+            {isUploaded && uploadedFileDemo && uploadedFileDemoInfo &&
+                ["pdf", "ppt", "pptx"].some(type => uploadedFileDemoInfo.type.includes(type)) && (
+                    <div className="mt-5 mx-7">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-gray-600 font-semibold">Uploaded File Demo:</h2>
+                            <IoClose className="text-2xl cursor-pointer" onClick={handleRemoveUploadedFile} />
+                        </div>
+                        <div className="flex items-center">
+                            <div className="flex items-center">
+                                {uploadedFileDemoInfo.type.includes("pdf") && <i className="fas fa-file-pdf text-2xl mr-2"></i>}
+                                {(uploadedFileDemoInfo.type.includes("ppt") || uploadedFileDemoInfo.type.includes("pptx")) && <i className="fas fa-file-powerpoint text-2xl mr-2"></i>}
+                            </div>
+                        </div>
+
+                        {/* Preview cho PDF */}
+                        {uploadedFileDemoInfo.type.includes("pdf") && uploadedFileDemoPreview && (
+                            <div className="mt-2 w-full max-w-full h-64 overflow-hidden border border-gray-300 rounded-md">
+                                <iframe src={uploadedFileDemoPreview} title="PDF Preview" className="w-full h-full"></iframe>
+                            </div>
+                        )}
+
+                        {/* Preview cho PowerPoint */}
+                        {(uploadedFileDemoInfo.type.includes("ppt") || uploadedFileDemoInfo.type.includes("pptx")) && uploadedFileDemoPreview && (
+                            <div className="mt-2 w-full max-w-full h-64 overflow-hidden border border-gray-300 rounded-md">
+                                <iframe
+                                    src={`https://docs.google.com/gview?url=${uploadedFileDemoPreview}&embedded=true`}
                                     title="PPT Preview"
                                     className="w-full h-full"
                                 ></iframe>

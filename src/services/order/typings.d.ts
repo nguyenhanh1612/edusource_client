@@ -7,6 +7,17 @@ declare namespace REQUEST {
     pageIndex: number;
     pageSize: number;
   };
+
+  type GetDashboard = {
+    month?: number;
+    year: number;
+    week?: number;
+  };
+
+  type CreateOrderList = {
+    productIds?: string[];
+    isFromCart?: boolean;
+  };
 }
 
 declare namespace API {
@@ -45,5 +56,29 @@ declare namespace API {
     totalPages: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
+  };
+
+  type SalesData = {
+    name: string;
+    sales: number;
+    revenue: number;
+  };
+
+  type MonthlyTarget = {
+    progress: number;
+    target: number;
+    revenue: number;
+    todayRevenue: number;
+    growthPercentage: number;
+    currency: string;
+    comparison: number;
+  };
+
+  type TDashboardData = {
+    category: string;
+    data: SalesData[];
+    monthlyTarget: MonthlyTarget;
+    customersCount: number;
+    ordersCount: number;
   };
 }

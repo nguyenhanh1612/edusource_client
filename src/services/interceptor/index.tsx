@@ -16,7 +16,7 @@ const request = axios.create({
   },
   withCredentials: true,
 });
-console.log(process.env.NEXT_PUBLIC_SERVER);
+
 
 let refreshTokenPromise: any = null;
 
