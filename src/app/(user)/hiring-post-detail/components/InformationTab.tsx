@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useToast from "@/hooks/use-toast";
 import { useParams } from "next/navigation";
 import { HiringPostDetailResponse } from "@/services/customer_request/definition";
-import { assignTaskAPI, fetchDetailHiringPostByIdAPI, GetThePaymentURLAPI, uploadCompleteFileAPI, uploadDemoFileAPI } from "@/services/customer_request/api-service";
+import { assignTaskAPI, FakeCompleteTransactionHiringPostAPI, fetchDetailHiringPostByIdAPI, GetThePaymentURLAPI, uploadCompleteFileAPI, uploadDemoFileAPI } from "@/services/customer_request/api-service";
 import { useAppSelector } from "@/stores/store";
 
 const dummyImgBg = [
@@ -31,6 +31,16 @@ const HiringPostDetailInforTab = () => {
     const postIdNumber = Number(id);
     const user = useAppSelector((state) => state.userSlice.user);
     const roleId = user?.roleId;
+    const [inputPrice, setInputPrice] = useState<number>(-1);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setInputPrice(-1); // Reset input
+    };
+
 
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -44,27 +54,55 @@ const HiringPostDetailInforTab = () => {
     //#region handle button click
 
     //ASSIGN TASK TO ME
-    const handleAssignTaskToMe = async () => {
-        try {
-            //call API to assign task
-            if (user) {
-                const response = await assignTaskAPI(postIdNumber, user?.userId || "", user?.firstName + user?.lastName || "");
+    // const handleAssignTaskToMe = async () => {
+    //     try {
+    //         //call API to assign task
+    //         if (user) {
+    //             const response = await assignTaskAPI(postIdNumber, user?.userId || "", user?.firstName + user?.lastName || "");
 
+    //         }
+    //         //show toast
+    //         addToast({ description: "OK to assign task", type: "success", duration: 5000 });
+
+    //         //update view
+    //         setMainData((prev) => {
+    //             if (prev && user) {
+    //                 return { ...prev, staffId: user.userId, staffName: (user.firstName + user.lastName) || "Anonymous" };
+    //             }
+    //             return prev;
+    //         });
+    //     } catch (e) {
+    //         addToast({ description: "Fail to assign task", type: "error", duration: 5000 });
+    //     }
+    // }
+    const handleConfirmAssign = async () => {
+        if (inputPrice < 0) {
+            addToast({ description: "Please enter a valid price", type: "error", duration: 5000 });
+            return;
+        }
+
+        try {
+            // Call API to assign task
+            if (user) {
+                await assignTaskAPI(postIdNumber, user.userId, `${user.firstName} ${user.lastName}`, inputPrice);
             }
-            //show toast
+
+            // Show success toast
             addToast({ description: "OK to assign task", type: "success", duration: 5000 });
 
-            //update view
+            // Update view
             setMainData((prev) => {
                 if (prev && user) {
-                    return { ...prev, staffId: user.userId, staffName: (user.firstName + user.lastName) || "Anonymous" };
+                    return { ...prev, staffId: user.userId, staffName: `${user.firstName} ${user.lastName}` };
                 }
                 return prev;
             });
+
+            handleCloseModal();
         } catch (e) {
             addToast({ description: "Fail to assign task", type: "error", duration: 5000 });
         }
-    }
+    };
 
 
     // UPLOAD FILE
@@ -128,7 +166,8 @@ const HiringPostDetailInforTab = () => {
     const handleCheckoutClicked = async () => {
         try {
             if (mainData) {
-                const paymentUrl = await GetThePaymentURLAPI(mainData?.id, mainData?.title);
+                const paymentUrl = await GetThePaymentURLAPI(mainData?.id, mainData?.title, mainData?.price);
+                const response = await FakeCompleteTransactionHiringPostAPI(mainData?.id);
                 window.location.href = paymentUrl;
             }
         } catch (e) {
@@ -153,6 +192,7 @@ const HiringPostDetailInforTab = () => {
             try {
                 const res = await fetchDetailHiringPostByIdAPI(postIdNumber);
                 setMainData(res);
+                setInputPrice(res.price);
             } catch (e) {
                 console.error(e);
             } finally {
@@ -220,6 +260,13 @@ const HiringPostDetailInforTab = () => {
                             </span>
                         </div>
 
+                        {/* Price */}
+                        <div>
+                            <p className="text-gray-500 font-semibold">Price</p>
+                            <span className="px-3 py-1 text-sm font-medium text-black-700 bg-orange-100 rounded-lg">
+                                {inputPrice >= 0 ? inputPrice : "Undefined"}
+                            </span>
+                        </div>
                         {/* Assigned To */}
                         <div>
                             <p className="text-gray-500 font-semibold">Assigned to</p>
@@ -348,7 +395,10 @@ const HiringPostDetailInforTab = () => {
                     {/* Action buttons for : Staff role */}
                     {roleId !== 2 &&
                         (mainData.status === "pending" && !mainData.staffId ? (
-                            <button onClick={handleAssignTaskToMe} className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`}>
+                            // <button onClick={handleAssignTaskToMe} className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`}>
+                            //     Assign Task To Me
+                            // </button>
+                            <button onClick={handleOpenModal} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                                 Assign Task To Me
                             </button>
                         ) : (
@@ -369,9 +419,31 @@ const HiringPostDetailInforTab = () => {
 
                         ))}
                 </div>
-
-
             </div>
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                        <h2 className="text-lg font-semibold mb-4">Enter Price</h2>
+
+                        <input
+                            type="number"
+                            value={inputPrice}
+                            onChange={(e) => setInputPrice(Number(e.target.value))}
+                            className="w-full p-2 border rounded mb-4"
+                            placeholder="Enter price"
+                        />
+
+                        <div className="flex justify-end space-x-3">
+                            <button onClick={handleCloseModal} className="px-4 py-2 bg-gray-500 text-white rounded">
+                                Cancel
+                            </button>
+                            <button onClick={handleConfirmAssign} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
 
     );

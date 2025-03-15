@@ -1,9 +1,9 @@
 "use client";
 
 import { fetchAllHiringPostsAPI } from "@/services/customer_request/api-service";
-import { HiringPostDetailResponse, HiringPostListResponse } from "@/services/customer_request/definition";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { HiringPostListResponse } from "@/services/customer_request/definition";
 
 
 const tempArrImg = [
@@ -134,7 +134,7 @@ const ListAllCustomerRequestPage = () => {
 
             {/* Card Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {paginatedData.map(post => (
+                {paginatedData.map(post => (
                     <div
                         key={post.id}
                         onClick={() => router.push(`/hiring-post-detail/${post.id}`)}
@@ -164,6 +164,12 @@ const ListAllCustomerRequestPage = () => {
                                 <span className="font-semibold">Staff :</span>{" "}
                                 <span className={`${post.staffName ? "text-green-600" : "text-yellow-600"} font-semibold`}>
                                     {post.staffName || "Not Yet"}
+                                </span>
+                            </p>
+                            <p className="text-sm text-gray-700">
+                                <span className="font-semibold">Price :</span>{" "}
+                                <span className={`${(post.price >= 0) ? "text-green-600" : "text-yellow-600"} font-semibold`}>
+                                    {post.price >= 0 ? post.price : "Undefined Yet"}
                                 </span>
                             </p>
                             <p className="text-gray-500 text-xs mt-2">

@@ -19,6 +19,7 @@ export interface HiringPostDetailResponse {
     contentType: string;
     sourceType: string;
     status: string;
+    price: number;
 }
 
 
@@ -43,6 +44,7 @@ export interface CreateHiringPostRequest {
     contentType: string;
     sourceType: string;
     status: string;
+    price: number;
 }
 
 export interface HiringPostListResponse {
@@ -66,6 +68,7 @@ export interface HiringPostListResponse {
     contentType: string;
     sourceType: string;
     status: string;
+    price: number;
 }
 
 export interface BookSelectBoxResponse {

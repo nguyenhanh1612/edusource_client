@@ -6,6 +6,8 @@ const supabaseUrl = "https://ynukcgulpeejixpngtvv.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludWtjZ3VscGVlaml4cG5ndHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE3Mjk3NDgsImV4cCI6MjA1NzMwNTc0OH0.rfuwAZYfalGXhi69MSb0xR7Kbo1SO_umBmm_8UQjARI";
 
+const tempSuccessPaymentUrl = "https://static1.cafeland.vn/cafelandData/upload/tintuc/tuvanhoidap/2018/05/tuan-04/giao-dich-voi-khach-hang-nuoc-ngoai-1527351257.jpg";
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Create an axios instance
@@ -62,10 +64,10 @@ export const createHiringPostAPI = async (postData: CreateHiringPostRequest): Pr
 };
 
 // Assign the task
-export const assignTaskAPI = async (postId: number, staffId: string, staffName: string): Promise<string> => {
+export const assignTaskAPI = async (postId: number, staffId: string, staffName: string, price: number): Promise<string> => {
   try {
     console.log(postId + " " + staffId + " " + staffName);
-    const response = await apiClient.put(`/hiring-post/${postId}`, { staffId, staffName });
+    const response = await apiClient.put(`/hiring-post/${postId}`, { staffId, staffName, price });
     return "OK";
   } catch (e) {
     throw new Error("Failed to assign task");
@@ -105,7 +107,7 @@ export const uploadCompleteFileAPI = async (postId: number, file: File): Promise
   try {
     const fileUrl = await getLinkFile(file);
     if (!fileUrl) {
-      throw new Error("Failed to upload file to Supabase");
+      throw new Error("Failed to upload file to Superbase");
     }
     const response = await apiClient.put(`/hiring-post/${postId}`, { file: fileUrl });
     return fileUrl;
@@ -170,16 +172,15 @@ EduSourceClient.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-export const GetThePaymentURLAPI = async (postId: number, postTitle: string): Promise<string> => {
+export const GetThePaymentURLAPI = async (postId: number, postTitle: string, price: number): Promise<string> => {
   try {
-    const response = await EduSourceClient.post("/CustomerRequestPayment", { postId, postTitle });
-    return response.data.paymentUrl;
+    // const response = await EduSourceClient.post("/CustomerRequestPayment", { postId, postTitle, price });
+    // return response.data.paymentUrl;
+    return tempSuccessPaymentUrl;
   } catch (error) {
     throw new Error("Failed to gen QR code");
   }
 }
-
-
 
 //CHAT BOT
 
@@ -197,4 +198,13 @@ export const sendMessageAPI = async (message: string): Promise<string> => {
 };
 
 
+//FAKE COMPLETE TRANSACTION API
+export const FakeCompleteTransactionHiringPostAPI = async (postId: number): Promise<string> => {
+  try {
+    const response = await apiClient.put(`/hiring-post/${postId}`, { status: "completed" });
+    return "OK";
+  } catch (e) {
+    throw new Error("Failed to complete transaction");
+  }
+}
 

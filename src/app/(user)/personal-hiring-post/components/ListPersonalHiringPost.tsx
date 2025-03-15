@@ -182,6 +182,12 @@ const ListPersonalHiringPost = () => {
                                     {post.staffName || "Not Yet"}
                                 </span>
                             </p>
+                            <p className="text-sm text-gray-700">
+                                <span className="font-semibold">Price :</span>{" "}
+                                <span className={`${(post.price >= 0) ? "text-green-600" : "text-yellow-600"} font-semibold`}>
+                                    {post.price >= 0 ? post.price : "Undefined Yet"}
+                                </span>
+                            </p>
                             <p className="text-gray-500 text-xs mt-2">
                                 Posted on {new Date(post.createdAt).toLocaleDateString()}
                             </p>

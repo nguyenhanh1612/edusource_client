@@ -44,7 +44,8 @@ const CreatePage = () => {
         fileType: "",
         contentType: "",
         sourceType: "",
-        status: "pending"
+        status: "pending",
+        price: -1,
     });
 
 
