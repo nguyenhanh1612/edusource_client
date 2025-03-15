@@ -93,7 +93,7 @@ const HiringPostDetailInforTab = () => {
             // Update view
             setMainData((prev) => {
                 if (prev && user) {
-                    return { ...prev, staffId: user.userId, staffName: `${user.firstName} ${user.lastName}` };
+                    return { ...prev, staffId: user.userId, staffName: `${user.firstName} ${user.lastName}`, price: inputPrice };
                 }
                 return prev;
             });
@@ -192,7 +192,6 @@ const HiringPostDetailInforTab = () => {
             try {
                 const res = await fetchDetailHiringPostByIdAPI(postIdNumber);
                 setMainData(res);
-                setInputPrice(res.price);
             } catch (e) {
                 console.error(e);
             } finally {
@@ -264,7 +263,7 @@ const HiringPostDetailInforTab = () => {
                         <div>
                             <p className="text-gray-500 font-semibold">Price</p>
                             <span className="px-3 py-1 text-sm font-medium text-black-700 bg-orange-100 rounded-lg">
-                                {inputPrice >= 0 ? inputPrice : "Undefined"}
+                                {mainData.price >= 0 ? mainData.price : "Undefined"}
                             </span>
                         </div>
                         {/* Assigned To */}
