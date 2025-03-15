@@ -34,9 +34,7 @@ function UploadFile() {
             mainImage: filePreview || undefined,
             otherImages: otherImages
         };
-
         onSubmit(formattedData, () => setFilePreview(null));
-
     }
 
     const { getAllBookApi, isPending: isLoadingBooks } = useGetAllBook();
@@ -101,7 +99,6 @@ function UploadFile() {
         setSelectedFileDemo(selectedFileDemo);
     };
 
-
     return (
         <div className="flex min-h-screen items-center justify-center py-10 mt-28 bg-[url('/images/BG_1.png')] bg-gray-100">
             <div className="grid bg-white rounded-lg shadow-xl w-11/12 md:w-9/12 lg:w-1/2">
@@ -153,7 +150,8 @@ function UploadFile() {
                             <input
                                 {...register("price", { valueAsNumber: true })}
                                 className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                type="number"
+
+                                step="any"
                                 placeholder="Giá"
                             />
                             {errors.price && <p className="text-red-500 text-xs">{errors.price.message}</p>}
@@ -223,7 +221,8 @@ function UploadFile() {
                         <input
                             {...register("unit", { valueAsNumber: true })}
                             className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                            type="number"
+
+                            step="any"
                             placeholder="Unit"
                         />
                         {errors.unit && <p className="text-red-500 text-xs">{errors.unit.message}</p>}
@@ -234,7 +233,8 @@ function UploadFile() {
                         <input
                             {...register("totalPage", { valueAsNumber: true })}
                             className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                            type="number"
+
+                            step="any"
                             placeholder="Số trang"
                         />
                         {errors.totalPage && <p className="text-red-500 text-xs">{errors.totalPage.message}</p>}

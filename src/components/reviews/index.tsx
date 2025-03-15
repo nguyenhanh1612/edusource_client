@@ -3,7 +3,7 @@ import { FaRegStar } from "react-icons/fa6";
 function Reviews() {
     return (
         <div>
-            <div className="flex mt-4 gap-2 items-center">
+            <div className="flex gap-2 items-center">
                 <div className="">
                     <div className="flex text-3xl gap-4">
                         <span><FaRegStar /></span>

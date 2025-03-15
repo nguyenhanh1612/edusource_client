@@ -35,6 +35,7 @@ import "photoswipe/style.css";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import PdfViewer from "../pdf_viewer";
+import ReviewForm from "../review-form";
 interface DetailViewProps {
   data: API.Unit;
   onAddToCart: () => void;
@@ -75,6 +76,20 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
   const getContentType = (id: number) => contentType.find((item) => item.id === id)?.type || "Không xác định";
   const getUploadType = (id: number) => uploadType.find((item) => item.id === id)?.type || "Không xác định";
 
+  const [reviews, setReviews] = useState([
+    {
+      id: 1,
+      name: "John Doe",
+      avatar: "https://readymadeui.com/team-2.webp",
+      date: "21 tháng 10 năm 2024",
+      rating: 3,
+      comment: "The service was amazing...",
+    },
+  ]);
+
+  const addReview = (newReview: any) => {
+    setReviews((prevReviews) => [newReview, ...prevReviews]); // Thêm mới vào đầu danh sách
+  };
 
   return (
     <div className="mx-auto">
@@ -301,57 +316,67 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
         </motion.div>
       </motion.div>
 
-      <div className="px-12">
-        <Reviews />
-      </div>
-
-      <div className="space-y-4 p-12 bg-[url('/images/BG_1.png')]">
-        <div className="flex gap-4">
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Tất cả xếp hạng" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="5 star">5 sao</SelectItem>
-              <SelectItem value="4 star">4 sao</SelectItem>
-              <SelectItem value="3 star">3 sao</SelectItem>
-              <SelectItem value="2 star">2 sao</SelectItem>
-              <SelectItem value="1 star">1 sao</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Tất cả các lớp" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="5 star">Lớp 1</SelectItem>
-              <SelectItem value="4 star">Lớp 2</SelectItem>
-              <SelectItem value="3 star">Lớp 3</SelectItem>
-              <SelectItem value="2 star">Lớp 4</SelectItem>
-              <SelectItem value="1 star">Lớp 5</SelectItem>
-            </SelectContent>
-          </Select>
+      <div className="bg-white pt-4">
+        <div className="px-12">
+          <Reviews />
         </div>
-        <div>
-          <Select onValueChange={(value) => setSelectedValue(value)}>
-            <SelectTrigger className="w-[250px]">
-              <span className="text-sm text-gray-700">
-                {`Sắp xếp theo: ${selectedValue || ""}`}
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Gần đây nhất">Gần đây nhất</SelectItem>
-              <SelectItem value="Cũ nhất">Cũ nhất</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <h3 className="font-bold text-xl px-12 ">Tất cả đánh giá(2)</h3>
 
-      <div className="px-12 py-8">
-        <ReviewSection />
+        <div className="space-y-4 p-12 bg-[url('/images/BG_1.png')]">
+          <div className="flex gap-4">
+            <Select>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Tất cả xếp hạng" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5 star">5 sao</SelectItem>
+                <SelectItem value="4 star">4 sao</SelectItem>
+                <SelectItem value="3 star">3 sao</SelectItem>
+                <SelectItem value="2 star">2 sao</SelectItem>
+                <SelectItem value="1 star">1 sao</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Tất cả các lớp" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5 star">Lớp 1</SelectItem>
+                <SelectItem value="4 star">Lớp 2</SelectItem>
+                <SelectItem value="3 star">Lớp 3</SelectItem>
+                <SelectItem value="2 star">Lớp 4</SelectItem>
+                <SelectItem value="1 star">Lớp 5</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Select onValueChange={(value) => setSelectedValue(value)}>
+              <SelectTrigger className="w-[250px]">
+                <span className="text-sm text-gray-700">
+                  {`Sắp xếp theo: ${selectedValue || ""}`}
+                </span>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Gần đây nhất">Gần đây nhất</SelectItem>
+                <SelectItem value="Cũ nhất">Cũ nhất</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <h3 className="font-bold text-xl px-12 ">Tất cả đánh giá ({reviews.length})</h3>
+
+        <div className="px-12 py-8">
+          <ReviewSection reviews={reviews} />
+        </div>
+
+        {data.isPurchased && (
+          <div className="px-12 py-4">
+            <h3 className="font-bold text-lg">Viết đánh giá của bạn</h3>
+            <ReviewForm addReview={addReview} />
+          </div>
+        )}
       </div>
+
     </div>
   );
 }

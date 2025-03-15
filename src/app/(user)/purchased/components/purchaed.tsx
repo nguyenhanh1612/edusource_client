@@ -78,7 +78,7 @@ function Purchased() {
                                 {product.description && (
                                     <p className="text-gray-600 text-sm line-clamp-2">{product.description}</p>
                                 )}
-                                <Button variant="outline" className="mt-4 w-full">
+                                <Button variant="outline" className="mt-4 w-full bg-[#fb8500] text-white transition-opacity hover:bg-[#fd9e41] hover:opacity-80">
                                     Xem chi tiết
                                 </Button>
                             </CardContent>
