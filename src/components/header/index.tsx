@@ -16,6 +16,19 @@ import { Roles } from "@/const/authentication";
 const Header: React.FC = () => {
   const userState = useAppSelector((state) => state.userSlice);
   const totalItems = useAppSelector((state) => state.cartSlice.totalItems);
+  const user = useAppSelector((state) => state.userSlice.user);
+
+  const getLink = () => {
+    if (user?.roleId === 3) {
+      return { href: "/customer-request", label: "Yêu cầu khách hàng" };
+    } else if (user?.roleId === 2) {
+      return { href: "/personal-hiring-post", label: "Tài liệu theo yêu cầu" };
+    }
+    return null;
+  };
+
+  const link = getLink();
+
 
   const currentPath = usePathname();
 
@@ -67,11 +80,11 @@ const Header: React.FC = () => {
   const handleNavigate = () => {
     router.push("/")
   };
-  
+
   return (
     <header className="flex items-center justify-between px-8 bg-white rounded-full fixed top-0 left-0 right-0 z-50 shadow-lg max-w-[1400px] mx-auto mt-6">
       <div className="flex items-center">
-        <img src="/images/logo1.png" alt="Logo" className="h-24" onClick={handleNavigate}/>
+        <img src="/images/logo1.png" alt="Logo" className="h-24" onClick={handleNavigate} />
       </div>
       <nav className="flex items-center space-x-20">
         <Link
@@ -95,6 +108,16 @@ const Header: React.FC = () => {
         >
           Liên hệ
         </Link>
+        {link && (
+          <Link
+            href={link.href}
+            className={`text-gray-600 ${currentPath === link.href ? "text-teal-400" : "hover:text-teal-400"
+              }`}
+          >
+            {link.label}
+          </Link>
+        )}
+
         <div>
           <BookDropdown books={books} activeTab={activeTab} setActiveTab={setActiveTab} totalPages={totalPages} />
         </div>
@@ -103,7 +126,7 @@ const Header: React.FC = () => {
       <div className="flex items-center space-x-6">
         {!(userState.user?.roleId === Roles[2].id) && (
           <div className="relative">
-            <IoMdCart className="text-2xl" onClick={handleNavigateToCart}/>
+            <IoMdCart className="text-2xl" onClick={handleNavigateToCart} />
             {totalItems > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
                 {totalItems}
