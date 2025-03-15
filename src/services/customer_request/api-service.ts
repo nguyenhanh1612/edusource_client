@@ -157,7 +157,7 @@ export const postCommentAPI = async (request: CommentUser): Promise<string> => {
 
 //create edusource client instance
 const EduSourceClient = axios.create({
-  baseURL: "https://localhost:7289/api"
+  baseURL: "https://edusource-fwchfeb2hra6haat.southeastasia-01.azurewebsites.net/api"
 });
 
 EduSourceClient.interceptors.request.use((config) => {
@@ -184,7 +184,7 @@ export const GetThePaymentURLAPI = async (postId: number, postTitle: string): Pr
 //CHAT BOT
 
 const ChatBotClient = axios.create({
-  baseURL: "https://localhost:7272/api", // Replace with your actual server URL
+  baseURL: "http://localhost:8080/api",
 });
 
 export const sendMessageAPI = async (message: string): Promise<string> => {
