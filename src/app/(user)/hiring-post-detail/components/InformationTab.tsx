@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import useToast from "@/hooks/use-toast";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { HiringPostDetailResponse } from "@/services/customer_request/definition";
-import { assignTaskAPI, FakeCompleteTransactionHiringPostAPI, fetchDetailHiringPostByIdAPI, GetThePaymentURLAPI, uploadCompleteFileAPI, uploadDemoFileAPI } from "@/services/customer_request/api-service";
+import { assignTaskAPI, fetchDetailHiringPostByIdAPI, GetThePaymentURLAPI, updateStatusPaidAPI, uploadCompleteFileAPI, uploadDemoFileAPI } from "@/services/customer_request/api-service";
 import { useAppSelector } from "@/stores/store";
 
 const dummyImgBg = [
@@ -27,7 +27,9 @@ const HiringPostDetailInforTab = () => {
     const { addToast } = useToast();
     const [mainData, setMainData] = useState<HiringPostDetailResponse | null>(null);
     const [loading, setLoading] = useState(true);
-    const { id } = useParams();
+    const { id, } = useParams();
+    const searchParams = useSearchParams();
+    const is_success = searchParams.get("is_success"); // "1"
     const postIdNumber = Number(id);
     const user = useAppSelector((state) => state.userSlice.user);
     const roleId = user?.roleId;
@@ -167,7 +169,6 @@ const HiringPostDetailInforTab = () => {
         try {
             if (mainData) {
                 const paymentUrl = await GetThePaymentURLAPI(mainData?.id, mainData?.title, mainData?.price);
-                const response = await FakeCompleteTransactionHiringPostAPI(mainData?.id);
                 window.location.href = paymentUrl;
             }
         } catch (e) {
@@ -192,6 +193,7 @@ const HiringPostDetailInforTab = () => {
             try {
                 const res = await fetchDetailHiringPostByIdAPI(postIdNumber);
                 setMainData(res);
+
             } catch (e) {
                 console.error(e);
             } finally {
@@ -199,6 +201,21 @@ const HiringPostDetailInforTab = () => {
             }
         };
 
+        const checkBeforeFetching = async () => {
+            try {
+
+                if (is_success === "1") {
+                    addToast({ description: "Checkout successfully", type: "success", duration: 5000 });
+                    const res = await updateStatusPaidAPI(postIdNumber);
+                }
+
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkBeforeFetching();
         loadHiringPost();
     }, [id]);
 

@@ -159,13 +159,13 @@ export const postCommentAPI = async (request: CommentUser): Promise<string> => {
 
 //create edusource client instance
 const EduSourceClient = axios.create({
-  baseURL: "https://edusource-fwchfeb2hra6haat.southeastasia-01.azurewebsites.net/api"
+  baseURL: "https://edusource-fwchfeb2hra6haat.southeastasia-01.azurewebsites.net/api/v1"
 });
 
 EduSourceClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `${token}`;
   }
   return config;
 }, (error) => {
@@ -174,9 +174,10 @@ EduSourceClient.interceptors.request.use((config) => {
 
 export const GetThePaymentURLAPI = async (postId: number, postTitle: string, price: number): Promise<string> => {
   try {
-    // const response = await EduSourceClient.post("/CustomerRequestPayment", { postId, postTitle, price });
-    // return response.data.paymentUrl;
-    return tempSuccessPaymentUrl;
+    const response = await EduSourceClient.post("/Order/create_order_request",
+      { productRequestId: postId, name: postTitle, price: price });
+    console.log(response.data.value.data.paymentUrl);
+    return response.data.value.data.paymentUrl;
   } catch (error) {
     throw new Error("Failed to gen QR code");
   }
@@ -198,13 +199,23 @@ export const sendMessageAPI = async (message: string): Promise<string> => {
 };
 
 
-//FAKE COMPLETE TRANSACTION API
-export const FakeCompleteTransactionHiringPostAPI = async (postId: number): Promise<string> => {
+
+export const updateStatusPaidAPI = async (postId: number): Promise<string> => {
   try {
     const response = await apiClient.put(`/hiring-post/${postId}`, { status: "completed" });
     return "OK";
   } catch (e) {
-    throw new Error("Failed to complete transaction");
+    throw new Error("Failed to update status");
   }
 }
+
+//FAKE COMPLETE TRANSACTION API
+// export const FakeCompleteTransactionHiringPostAPI = async (postId: number): Promise<string> => {
+//   try {
+//     const response = await apiClient.put(`/hiring-post/${postId}`, { status: "completed" });
+//     return "OK";
+//   } catch (e) {
+//     throw new Error("Failed to complete transaction");
+//   }
+// }
 
