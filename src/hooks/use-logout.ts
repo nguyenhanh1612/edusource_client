@@ -8,16 +8,14 @@ export default function useLogout() {
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cartSlice);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
       if (cart.items.length > 0) {
         localStorage.setItem("cartBackup", JSON.stringify(cart));
       }
       dispatch(resetCart());
-      await mutate();
+      mutate();
     } catch (err) {
-      console.error("Logout thất bại:", err);
-    } finally {
       location.href = "/";
     }
   };
