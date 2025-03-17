@@ -7,20 +7,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const tempArrImg = [
-    "https://m.media-amazon.com/images/I/71DoSRyaXWL._AC_UF1000,1000_QL80_.jpg",
-    "https://upload.wikimedia.org/wikipedia/en/e/e4/It_Ends_with_Us_%28Colleen_Hoover%29.png",
-    "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/OXWGA4UNSRAY7CE5S34IXHPL3U.jpg&w=1200",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpDUVsyl3enxkQzFOzgJlB2O52L-o0630iMw&s",
-    "https://storage.googleapis.com/pr-newsroom-wp/1/2022/10/It-Starts-With-Us.jpeg",
-    "https://cup-us.imgix.net/covers/9780231211581.jpg?auto=format&w=350"
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrontVwpuWbJw-Cw6gv2XrpVHcVEEWfmMRXQ&s",
+    "https://www.timeshighereducation.com/student/sites/default/files/istock-151597880.jpg",
+    "https://www.robertsoncollege.com/site-content/uploads/2023/06/post-secondary-education-hero-2400px.jpg",
 ];
 
 const tempArrAvatar = [
-    "https://media-cdn-v2.laodong.vn/storage/newsportal/2018/7/10/617854/Cristiano-Ronaldo-Ba.jpg?w=800&h=420&crop=auto&scale=both",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJnuSzLJ_pnB1vY08vn3RSbsfT0KpmTGWkltv0G3g-RC0OQHjM61dQNkgs7y4KkbiBHE&usqp=CAU",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1DeyZNqRdLF9WiyJOo7YQW5HxbSp3F6tNQQ&s",
-    "https://i.scdn.co/image/ab6761610000e5eb5a79a6ca8c60e4ec1440be53",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2zy4Vpy9Fquns6VF3rZkkj2ceikaHG82dPw&s"
 ];
 
 
@@ -43,12 +37,12 @@ const ListPersonalHiringPost = () => {
     useEffect(() => {
         const loadHiringPost = async () => {
             try {
-                if (!user || !user.userId) throw new Error("User not found.");
+                if (!user || !user.userId) throw new Error("Không tìm thấy tài khoản");
                 const res = await fetchCustomerPersonalHiringAPI(user.userId);
                 setData(res);
             } catch (e) {
                 console.error(e);
-                setError("Failed to fetch customer requests.");
+                setError("Đã xảy ra lỗi khi tải");
             } finally {
                 setLoading(false);
             }
@@ -104,7 +98,7 @@ const ListPersonalHiringPost = () => {
                     <div className="relative">
                         <input
                             type="text"
-                            placeholder="Please search hiring posts..."
+                            placeholder="Tìm kiếm yêu cầu..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
@@ -118,7 +112,7 @@ const ListPersonalHiringPost = () => {
                     <div className="relative">
                         <input
                             type="text"
-                            placeholder="Filter by Staff ID or Name..."
+                            placeholder="Tìm theo nhân viên đảm nhận..."
                             value={staffFilter}
                             onChange={(e) => setStaffFilter(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
@@ -134,7 +128,7 @@ const ListPersonalHiringPost = () => {
                     onClick={() => router.push("/create-hiring")}
                     className="ml-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
                 >
-                    Create New
+                    Tạo mới yêu cầu
                 </button>
             </div>
             {/* ACTION REGION */}
@@ -142,7 +136,7 @@ const ListPersonalHiringPost = () => {
             {error && <p className="text-center text-red-500">{error}</p>}
 
             {!loading && !error && paginatedData.length === 0 && (
-                <p className="text-center text-gray-500">No customer requests found.</p>
+                <p className="text-center text-gray-500">Chưa có dữ liệu</p>
             )}
 
 
@@ -159,11 +153,11 @@ const ListPersonalHiringPost = () => {
                         <div className="relative">
                             <img
                                 className="w-full h-52 object-cover rounded-xl"
-                                alt="Post Image"
+                                alt="Ảnh bài viết"
                                 src={getRandomImage(post.bookImg, post.requirementCateImg)}
                             />
                             <div className="absolute top-3 left-3 bg-blue-600 text-white px-3 py-1 text-xs font-semibold rounded-lg shadow-md">
-                                {post.bookName || post.requirementCate || "Undefined Yet"}
+                                {post.bookName || post.requirementCate || "Không xác định"}
                             </div>
                         </div>
                         <div className="p-5">
@@ -171,28 +165,43 @@ const ListPersonalHiringPost = () => {
                             <div className="flex items-center space-x-3 my-4">
                                 <img
                                     src={getRandomAvt(post.customerAvt)}
-                                    alt="Customer Avatar"
+                                    alt="Ảnh đại diện"
                                     className="w-12 h-12 rounded-full border-2 border-blue-500 shadow-sm"
                                 />
                                 <span className="font-medium text-gray-800">{post.customerName}</span>
                             </div>
                             <p className="text-sm text-gray-700">
-                                <span className="font-semibold">Staff :</span>{" "}
+                                <span className="font-semibold">Nhân viên :</span>{" "}
                                 <span className={`${post.staffName ? "text-green-600" : "text-yellow-600"} font-semibold`}>
-                                    {post.staffName || "Not Yet"}
+                                    {post.staffName || "Chưa xác định"}
                                 </span>
                             </p>
                             <p className="text-sm text-gray-700">
-                                <span className="font-semibold">Price :</span>{" "}
+                                <span className="font-semibold">Giá :</span>{" "}
                                 <span className={`${(post.price >= 0) ? "text-green-600" : "text-yellow-600"} font-semibold`}>
-                                    {post.price >= 0 ? post.price : "Undefined Yet"}
+                                    {post.price >= 0 ? post.price : "Chưa xác định"}
                                 </span>
                             </p>
-                            <p className="text-gray-500 text-xs mt-2">
-                                Posted on {new Date(post.createdAt).toLocaleDateString()}
+                            <p className="text-gray-500 text-xs mt-2 flex items-center gap-3  px-3 py-1 rounded-md">
+                                <span className="bg-green-500 text-white text-[10px] font-semibold px-2 py-1 rounded-md">
+                                    {(() => {
+                                        if (post.status === "completed") {
+                                            return "Hoàn thành";
+                                        } else if (post.status === "pending") {
+                                            return "Đang chờ";
+                                        } else if (post.status === "ready") {
+                                            return "Sẵn sàng";
+                                        } else {
+                                            return "Không xác định";
+                                        }
+                                    })()}
+                                </span>
+
+                                <span className="text-gray-600 text-[10px] bg-gray-100">{new Date(post.createdAt).toLocaleDateString()}</span>
                             </p>
+
                             <button className="mt-4 w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition duration-200">
-                                View Details
+                                Chi tiết
                             </button>
                         </div>
                     </div>
@@ -208,7 +217,7 @@ const ListPersonalHiringPost = () => {
                         disabled={currentPage === 1}
                         className="px-4 py-2 border rounded-md bg-white text-gray-800 hover:bg-gray-200 disabled:opacity-50"
                     >
-                        Previous
+                        Trước
                     </button>
 
                     {generatePagination().map((item, index) => (
@@ -230,7 +239,7 @@ const ListPersonalHiringPost = () => {
                         disabled={currentPage === totalPages}
                         className="px-4 py-2 border rounded-md bg-white text-gray-800 hover:bg-gray-200 disabled:opacity-50"
                     >
-                        Next
+                        Tiếp theo
                     </button>
                 </div>
             )}
@@ -238,5 +247,4 @@ const ListPersonalHiringPost = () => {
 
     );
 };
-
 export default ListPersonalHiringPost;
