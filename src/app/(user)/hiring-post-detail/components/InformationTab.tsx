@@ -86,7 +86,7 @@ const HiringPostDetailInforTab = () => {
         const price = inputPrice.trim() === "" ? 0 : Number(inputPrice);
 
         if (isNaN(price) || price < 0) {
-            addToast({ description: "Please enter a valid price", type: "error", duration: 5000 });
+            addToast({ description: "Hãy nhập giá phù hợp", type: "error", duration: 5000 });
             return;
         }
 
@@ -97,7 +97,7 @@ const HiringPostDetailInforTab = () => {
             }
 
             // Show success toast
-            addToast({ description: "OK to assign task", type: "success", duration: 5000 });
+            addToast({ description: "Nhận đơn thành công", type: "success", duration: 5000 });
 
             // Update view
             setMainData((prev) => {
@@ -109,7 +109,7 @@ const HiringPostDetailInforTab = () => {
 
             handleCloseModal();
         } catch (e) {
-            addToast({ description: "Fail to assign task", type: "error", duration: 5000 });
+            addToast({ description: "Nhận đơn thất bại", type: "error", duration: 5000 });
         }
     };
 
@@ -118,7 +118,7 @@ const HiringPostDetailInforTab = () => {
     const handleUploadCompleteFile = async () => {
         try {
             if (!selectedFile) {
-                addToast({ description: "Please select a file first", type: "warning", duration: 5000 });
+                addToast({ description: "Hãy chọn file", type: "warning", duration: 5000 });
                 return;
             }
 
@@ -126,7 +126,7 @@ const HiringPostDetailInforTab = () => {
             const response = await uploadCompleteFileAPI(postIdNumber, selectedFile);
 
             // Show success toast
-            addToast({ description: "OK to complete file", type: "success", duration: 5000 });
+            addToast({ description: "Thành công", type: "success", duration: 5000 });
 
             // Update view
             setMainData((prev) => {
@@ -136,7 +136,7 @@ const HiringPostDetailInforTab = () => {
                 return prev;
             });
         } catch (e) {
-            addToast({ description: "Fail to upload complete file", type: "error", duration: 5000 });
+            addToast({ description: "Thất bại khi tải file", type: "error", duration: 5000 });
         } finally {
             setSelectedFile(null);
         }
@@ -145,7 +145,7 @@ const HiringPostDetailInforTab = () => {
     const handleUploadDemoFile = async () => {
         try {
             if (!selectedDemoFile) {
-                addToast({ description: "Please select a file first", type: "warning", duration: 5000 });
+                addToast({ description: "Hãy chọn file", type: "warning", duration: 5000 });
                 return;
             }
 
@@ -154,7 +154,7 @@ const HiringPostDetailInforTab = () => {
 
 
             // Show success toast
-            addToast({ description: "OK to demo file", type: "success", duration: 5000 });
+            addToast({ description: "Thành công", type: "success", duration: 5000 });
 
             // Update view
             setMainData((prev) => {
@@ -164,7 +164,7 @@ const HiringPostDetailInforTab = () => {
                 return prev;
             });
         } catch (e) {
-            addToast({ description: "Fail to upload demo file", type: "error", duration: 5000 });
+            addToast({ description: "Thất bại khi tải file", type: "error", duration: 5000 });
         } finally {
             setSelectedDemoFile(null);
         }
@@ -179,7 +179,7 @@ const HiringPostDetailInforTab = () => {
                 window.location.href = paymentUrl;
             }
         } catch (e) {
-            addToast({ description: "Something wrong when checking out", type: "error", duration: 5000 });
+            addToast({ description: "Lỗi khi thanh toán", type: "error", duration: 5000 });
 
         }
     }
@@ -212,7 +212,7 @@ const HiringPostDetailInforTab = () => {
             try {
 
                 if (is_success === "1") {
-                    addToast({ description: "Checkout successfully", type: "success", duration: 5000 });
+                    addToast({ description: "Thanh toán thành công", type: "success", duration: 5000 });
                     const res = await updateStatusPaidAPI(postIdNumber);
                 }
 

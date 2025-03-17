@@ -34,7 +34,7 @@ const HiringPostDetailCommentsTab = () => {
     const handleCreateComment = async () => {
         if (!newComment.trim()) return;
         if (!user) {
-            alert("You need to be logged in to post a comment.");
+            alert("Cần phải đăng nhập trước !");
             return;
         }
 
@@ -51,7 +51,7 @@ const HiringPostDetailCommentsTab = () => {
             setComments([...comments, commentData]);
             setNewComment("");
         } catch (error) {
-            console.error("Error posting comment:", error);
+            console.error("Lỗi khi tạo bình luận:", error);
         }
     };
 
