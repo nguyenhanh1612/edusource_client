@@ -29,7 +29,6 @@ const HiringPostDetailPage = () => {
 
     return (
         <div className="max-w-5xl mx-auto px-8 py-12 bg-gray-50 min-h-screen flex flex-col items-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center">Post Details</h2>
             {/* Chatbot section */}
             {user && user.roleId == 2 && <CRChatBot />}
 
@@ -41,13 +40,13 @@ const HiringPostDetailPage = () => {
                             className={`text-lg font-semibold px-4 py-2 transition-all duration-300 ${activeTab === "json" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-blue-600"}`}
                             onClick={() => setActiveTab("json")}
                         >
-                            Post Information
+                            Thông tin chi tiết
                         </button>
                         <button
                             className={`text-lg font-semibold px-4 py-2 transition-all duration-300 ${activeTab === "comments" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-blue-600"}`}
                             onClick={() => setActiveTab("comments")}
                         >
-                            Conversations
+                            Hội thoại
                         </button>
                     </div>
 
@@ -56,7 +55,7 @@ const HiringPostDetailPage = () => {
 
                         onClick={() => router.push(backingPage)}
                     >
-                        ← Back to List
+                        ← Trở lại
                     </button>
                 </div>
 

@@ -110,10 +110,10 @@ const CreatePage = () => {
         e.preventDefault();
         try {
             const response = await createHiringPostAPI(formData);
-            addToast({ description: "Hiring Post created successfully!", type: "success", duration: 5000 });
+            addToast({ description: "Tạo thành công!", type: "success", duration: 5000 });
             router.push("/personal-hiring-post");
         } catch (error) {
-            addToast({ description: "Failed to create Hiring Post. Please try again.", type: "error", duration: 5000 });
+            addToast({ description: "Lỗi khi tạo bài", type: "error", duration: 5000 });
         }
     };
     useEffect(() => {
@@ -199,26 +199,6 @@ const CreatePage = () => {
                         name: "I Learn Smart Start 4",
                         img: "https://res.cloudinary.com/dc4eascme/image/upload/v1736583438/edusource/I-Learn-Smart-Start-4.jpg"
                     },
-                    { id: 21, name: "English 1", img: "https://www.womenlivingwellafter50.com.au/wp-content/uploads/2023/08/Looking-for-Jane-1.jpg" },
-                    { id: 22, name: "Creative Design", img: "https://skyryedesign.com/wp-content/uploads/2016/04/56c6f9b7efad5-cover-books-design-illustrations.jpg" },
-                    { id: 23, name: "Fantasy Woods", img: "https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg" },
-                    { id: 24, name: "Summer Sunset", img: "https://thumbs.dreamstime.com/b/l-summer-sunset-portrait-landscape-nature-illustration-river-mountain-jungle-sunrise-birds-flying-water-book-cover-vector-333100990.jpg" },
-                    { id: 25, name: "Fatal Exchange", img: "https://smallbluedog.com/wp-content/uploads/2014/10/FatalExchange_Cover-small.jpg" },
-                    { id: 26, name: "Purple Sky", img: "https://marketplace.canva.com/EAGKkPbakT4/1/0/1003w/canva-purple-sky-book-cover-UOKyRwxSEZQ.jpg" },
-                    { id: 27, name: "Graphic Wonders", img: "https://skyryedesign.com/wp-content/uploads/2016/04/56c6f9b7efad5-cover-books-design-illustrations.jpg" },
-                    { id: 28, name: "Mystic Night", img: "https://marketplace.canva.com/EAGKkPbakT4/1/0/1003w/canva-purple-sky-book-cover-UOKyRwxSEZQ.jpg" },
-                    { id: 29, name: "Jungle Secrets", img: "https://thumbs.dreamstime.com/b/l-summer-sunset-portrait-landscape-nature-illustration-river-mountain-jungle-sunrise-birds-flying-water-book-cover-vector-333100990.jpg" },
-                    { id: 40, name: "Lost in Time", img: "https://smallbluedog.com/wp-content/uploads/2014/10/FatalExchange_Cover-small.jpg" },
-                    { id: 31, name: "Design Patterns", img: "https://skyryedesign.com/wp-content/uploads/2016/04/56c6f9b7efad5-cover-books-design-illustrations.jpg" },
-                    { id: 32, name: "Dark Realms", img: "https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg" },
-                    { id: 33, name: "Eternal Forest", img: "https://thumbs.dreamstime.com/b/l-summer-sunset-portrait-landscape-nature-illustration-river-mountain-jungle-sunrise-birds-flying-water-book-cover-vector-333100990.jpg" },
-                    { id: 34, name: "Echoes of War", img: "https://smallbluedog.com/wp-content/uploads/2014/10/FatalExchange_Cover-small.jpg" },
-                    { id: 35, name: "Sky fall Chronicles", img: "https://marketplace.canva.com/EAGKkPbakT4/1/0/1003w/canva-purple-sky-book-cover-UOKyRwxSEZQ.jpg" },
-                    { id: 36, name: "Urban Legends", img: "https://marketplace.canva.com/EAFfSnGl7II/2/0/1003w/canva-elegant-dark-woods-fantasy-photo-book-cover-vAt8PH1CmqQ.jpg" },
-                    { id: 37, name: "Whispers in the Wind", img: "https://skyryedesign.com/wp-content/uploads/2016/04/56c6f9b7efad5-cover-books-design-illustrations.jpg" },
-                    { id: 38, name: "The Forgotten Path", img: "https://smallbluedog.com/wp-content/uploads/2014/10/FatalExchange_Cover-small.jpg" },
-                    { id: 39, name: "Shadows and Light", img: "https://marketplace.canva.com/EAGKkPbakT4/1/0/1003w/canva-purple-sky-book-cover-UOKyRwxSEZQ.jpg" },
-                    { id: 30, name: "The Last Voyage", img: "https://thumbs.dreamstime.com/b/l-summer-sunset-portrait-landscape-nature-illustration-river-mountain-jungle-sunrise-birds-flying-water-book-cover-vector-333100990.jpg" }
                 ];
 
                 setBookList(bookListFailCase);
@@ -248,7 +228,7 @@ const CreatePage = () => {
 
             {/* Form Content */}
             <div className="relative z-10 p-6">
-                <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Create a New Post</h2>
+                <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Tạo mới yêu cầu</h2>
                 <button
                     onClick={() => router.push("/personal-hiring-post")}
                     className="absolute top-4 right-4 bg-red-500 text-white p-2 w-10 h-10 hover:bg-red-600 transition flex items-center justify-center"
@@ -264,7 +244,7 @@ const CreatePage = () => {
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        placeholder="Title (required)"
+                        placeholder="Tiêu đề (*)"
                         className="w-full border-2 border-gray-300 p-4 rounded-lg text-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
                         required
                     />
@@ -273,7 +253,7 @@ const CreatePage = () => {
                     <div className="relative" ref={categoryDropdownRef}>
                         <input
                             type="text"
-                            placeholder="Select category"
+                            placeholder="Chọn chủ đề thiết kế"
                             value={selectedCategoryName}
                             readOnly
                             onClick={() => setIsCateDropdownOpen(!isCateDropdownOpen)}
@@ -283,12 +263,12 @@ const CreatePage = () => {
                             <div className="absolute w-full bg-white border mt-2 rounded-lg shadow-xl max-h-60 overflow-y-auto z-10">
                                 <input
                                     type="text"
-                                    placeholder="Search..."
+                                    placeholder="Tìm..."
                                     value={searchTermCategory}
                                     onChange={(e) => setSearchTermCategory(e.target.value)}
                                     className="w-full p-4 border-b text-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                                 />
-                                <div className="max-h-48 overflow-y-auto"> {/* Ensures only 3 items max are visible */}
+                                <div className="max-h-48 overflow-y-auto">
                                     {Object.keys(categoryImageMap)
                                         .filter((cat) =>
                                             cat.toLowerCase().includes(searchTermCategory.toLowerCase())
@@ -318,20 +298,20 @@ const CreatePage = () => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        placeholder="Description (required)"
+                        placeholder="Mô tả (*)"
                         className="w-full border-2 border-gray-300 p-4 rounded-lg text-lg h-80 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
                         required
                     ></textarea>
                     {/* Content Type: Unit or Review */}
                     <div className="grid grid-cols-1">
-                        <label className="text-gray-600 font-semibold">Unit or Review</label>
+                        <label className="text-gray-600 font-semibold">Unit hoặc Review</label>
                         <select
                             name="contentType"
                             value={formData.contentType}
                             onChange={handleChange}
                             className="py-3 px-4 rounded-lg border-2 border-gray-300 mt-1 focus:ring-2 focus:ring-purple-600 focus:border-purple-600 transition"
                         >
-                            <option value="">Select Content Type</option>
+                            <option value=""></option>
                             <option value="Unit">Unit</option>
 
                             <option value="Review">Review</option>
@@ -340,14 +320,14 @@ const CreatePage = () => {
 
                     {/* Source Type */}
                     <div className="grid grid-cols-1">
-                        <label className="text-gray-600 font-semibold">Source Type</label>
+                        <label className="text-gray-600 font-semibold">Loại nguồn</label>
                         <select
                             name="sourceType"
                             value={formData.sourceType}
                             onChange={handleChange}
                             className="py-3 px-4 rounded-lg border-2 border-gray-300 mt-1 focus:ring-2 focus:ring-purple-600 focus:border-purple-600 transition"
                         >
-                            <option value="">Select Source Type</option>
+                            <option value=""></option>
                             <option value="Slide">Slide</option>
                             <option value="Bài tập">Bài tập</option>
                             <option value="Bài kiểm tra">Bài kiểm tra</option>
@@ -360,7 +340,7 @@ const CreatePage = () => {
                     <div className="relative" ref={bookDropdownRef}>
                         <input
                             type="text"
-                            placeholder="Select a book"
+                            placeholder="Chọn tựa sách"
                             value={selectedBookName}
                             readOnly
                             onClick={() => setIsBookDropdownOpen(!isBookDropdownOpen)}
@@ -370,7 +350,7 @@ const CreatePage = () => {
                             <div className="absolute w-full bg-white border mt-2 rounded-lg shadow-xl max-h-60 overflow-y-auto z-10">
                                 <input
                                     type="text"
-                                    placeholder="Search..."
+                                    placeholder="Tìm tựa sách..."
                                     value={searchTermBook}
                                     onChange={(e) => setSearchTermBook(e.target.value)}
                                     className="w-full p-4 border-b text-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
@@ -402,13 +382,13 @@ const CreatePage = () => {
 
                     {/* File Type */}
                     <div className="grid grid-cols-1">
-                        <label className="text-gray-600 font-semibold">File Type</label>
+                        <label className="text-gray-600 font-semibold">Định dạng thư mục</label>
                         <select
                             name="fileType"
                             value={formData.fileType}
                             onChange={handleChange}
                             className="py-3 px-4 rounded-lg border-2 border-gray-300 mt-1 focus:ring-2 focus:ring-purple-600 focus:border-purple-600 transition">
-                            <option value="">Select file type</option>
+                            <option value=""></option>
                             <option value="PowerPoint">PowerPoint</option>
                             <option value="PDF">PDF</option>
                             <option value="ZIP">ZIP</option>
@@ -422,7 +402,7 @@ const CreatePage = () => {
                         type="submit"
                         className="w-full bg-blue-600 text-white py-4 text-lg rounded-lg hover:bg-blue-700 transition transform hover:scale-105 shadow-md"
                     >
-                        Create Post
+                        Hoàn tất
                     </button>
                 </form>
             </div>
@@ -436,31 +416,24 @@ const CreatePage = () => {
 export default CreatePage;
 
 const categoryImageMap: Record<string, string> = {
-    "Adventure": "https://img.freepik.com/free-vector/walking-through-forest-adventure_24877-76269.jpg",
-    "Mystery": "https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/the-mystery-of-ourselves-cameron-gray.jpg",
-    "Fantasy": "https://www.tallengestore.com/cdn/shop/products/Fantasy_Art_-_Woman_Warrior_With_Tiger_c0829677-def5-4c2e-ab7e-fc9e6345c85d.jpg?v=1568967247",
-    "Science Fiction": "https://media.wired.com/photos/5f4ee313bb023d54b55e4e29/master/pass/sci-fi-last-lines.jpg",
-    "Horror": "https://render.fineartamerica.com/images/rendered/medium/print/8/5.5/break/images-medium-5/castle-in-the-sky-bob-orsillo.jpg",
-    "Thriller": "https://i1.sndcdn.com/artworks-2EgNieCOutUfspte-YlVksw-t500x500.jpg",
-    "Romance": "https://w0.peakpx.com/wallpaper/598/440/HD-wallpaper-love-is-in-the-air-love-theme.jpg",
-    "Psychology": "https://www.simplypsychology.org/wp-content/uploads/psychology.jpeg",
-    "Poetry": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIm_qLdHkkcal1leonDXqwLAwaeyxu9tC9pA&s",
-    "Classic": "https://media.slidesgo.com/storage/33479731/vintage-papyrus-minitheme1680506366.jpg",
-    "Dystopian": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbSk_ENtLHN9M3KSqrnAVfpKq0ladNJmxWmw&s",
-    "Utopian": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxEMEY4AKjOG_Rb48cX_FU1Un2d3fVOvsZJA&s",
-    "Fairy Tale": "https://m.media-amazon.com/images/S/pv-target-images/82aff91a387ad745a6480e2af852a3f950e86bb9c9663c5858ba57c3397cfe1e.jpg",
-    "Education": "https://vnis.edu.vn/wp-content/uploads/2024/04/edu-trends.png",
-    "Travel": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVmlM4cOwkqa95XuYml6OFgbn4gYHok96R1Q&s",
-    "Business": "https://imageio.forbes.com/specials-images/imageserve/5fca87f3ce4ca55e8985a10a/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds",
-    "Politics": "https://www.voicesofyouth.org/sites/voy/files/images/2019-01/politics3.jpg",
-    "Sports": "https://assets.goal.com/images/v3/getty-2153876891/crop/MM5DINZYGQ5DENRZGE5G433XMU5DCMZRHI3DINI=/GettyImages-2153876891.jpg?auto=webp&format=pjpg&width=3840&quality=60",
-    "Music": "https://moises.ai/_next/image/?url=https%3A%2F%2Fstorage.googleapis.com%2Fmoises-cms%2Fhow_to_reading_sheet_music_image_338d99b137%2Fhow_to_reading_sheet_music_image_338d99b137.jpg&w=1920&q=75",
-    "Art": "https://art.rtistiq.com/en-us/_next/image?url=https%3A%2F%2Fd28jbe41jq1wak.cloudfront.net%2FBlogsImages%2FPop_Art_Compressed_638237807745595223.jpg&w=1920&q=75",
-};
-
-
-const bookImgMap: Record<string, string> = {
-    "English 1": "https://source.unsplash.com/150x150/?abc,alphabet",
-    "Math 1": "https://source.unsplash.com/150x150/?math,numbers",
-    "Science 1": "https://source.unsplash.com/150x150/?science,laboratory",
+    "Phiêu lưu": "https://img.freepik.com/free-vector/walking-through-forest-adventure_24877-76269.jpg",
+    "Bí ẩn": "https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/the-mystery-of-ourselves-cameron-gray.jpg",
+    "Giả tưởng": "https://www.tallengestore.com/cdn/shop/products/Fantasy_Art_-_Woman_Warrior_With_Tiger_c0829677-def5-4c2e-ab7e-fc9e6345c85d.jpg?v=1568967247",
+    "Khoa học viễn tưởng": "https://media.wired.com/photos/5f4ee313bb023d54b55e4e29/master/pass/sci-fi-last-lines.jpg",
+    "Kinh dị": "https://render.fineartamerica.com/images/rendered/medium/print/8/5.5/break/images-medium-5/castle-in-the-sky-bob-orsillo.jpg",
+    "Giật gân": "https://i1.sndcdn.com/artworks-2EgNieCOutUfspte-YlVksw-t500x500.jpg",
+    "Lãng mạn": "https://w0.peakpx.com/wallpaper/598/440/HD-wallpaper-love-is-in-the-air-love-theme.jpg",
+    "Tâm lý học": "https://www.simplypsychology.org/wp-content/uploads/psychology.jpeg",
+    "Thơ ca": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIm_qLdHkkcal1leonDXqwLAwaeyxu9tC9pA&s",
+    "Kinh điển": "https://media.slidesgo.com/storage/33479731/vintage-papyrus-minitheme1680506366.jpg",
+    "Chống không tưởng": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbSk_ENtLHN9M3KSqrnAVfpKq0ladNJmxWmw&s",
+    "Không tưởng": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxEMEY4AKjOG_Rb48cX_FU1Un2d3fVOvsZJA&s",
+    "Truyện cổ tích": "https://m.media-amazon.com/images/S/pv-target-images/82aff91a387ad745a6480e2af852a3f950e86bb9c9663c5858ba57c3397cfe1e.jpg",
+    "Giáo dục": "https://vnis.edu.vn/wp-content/uploads/2024/04/edu-trends.png",
+    "Du lịch": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVmlM4cOwkqa95XuYml6OFgbn4gYHok96R1Q&s",
+    "Kinh doanh": "https://imageio.forbes.com/specials-images/imageserve/5fca87f3ce4ca55e8985a10a/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds",
+    "Chính trị": "https://www.voicesofyouth.org/sites/voy/files/images/2019-01/politics3.jpg",
+    "Thể thao": "https://assets.goal.com/images/v3/getty-2153876891/crop/MM5DINZYGQ5DENRZGE5G433XMU5DCMZRHI3DINI=/GettyImages-2153876891.jpg?auto=webp&format=pjpg&width=3840&quality=60",
+    "Âm nhạc": "https://moises.ai/_next/image/?url=https%3A%2F%2Fstorage.googleapis.com%2Fmoises-cms%2Fhow_to_reading_sheet_music_image_338d99b137%2Fhow_to_reading_sheet_music_image_338d99b137.jpg&w=1920&q=75",
+    "Nghệ thuật": "https://art.rtistiq.com/en-us/_next/image?url=https%3A%2F%2Fd28jbe41jq1wak.cloudfront.net%2FBlogsImages%2FPop_Art_Compressed_638237807745595223.jpg&w=1920&q=75",
 };

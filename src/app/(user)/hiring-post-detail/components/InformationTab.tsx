@@ -10,7 +10,6 @@ import { useAppSelector } from "@/stores/store";
 const dummyImgBg = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrontVwpuWbJw-Cw6gv2XrpVHcVEEWfmMRXQ&s",
     "https://www.timeshighereducation.com/student/sites/default/files/istock-151597880.jpg",
-    "https://www.skillstork.org/blog/wp-content/uploads/2022/11/modern-education-Skillstork.jpg",
     "https://www.robertsoncollege.com/site-content/uploads/2023/06/post-secondary-education-hero-2400px.jpg",
 ];
 
@@ -33,24 +32,30 @@ const HiringPostDetailInforTab = () => {
     const postIdNumber = Number(id);
     const user = useAppSelector((state) => state.userSlice.user);
     const roleId = user?.roleId;
-    const [inputPrice, setInputPrice] = useState<number>(-1);
+    const [inputPrice, setInputPrice] = useState<string>("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setInputPrice(-1); // Reset input
+        setInputPrice(""); // Reset input field properly
     };
 
 
-
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedDemoFile, setSelectedDemoFile] = useState<File | null>(null);
+
 
     // Handle file selection
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setSelectedFile(event.target.files[0]);
+        }
+    };
+    const handleDemoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setSelectedDemoFile(event.target.files[0]);
         }
     };
     //#region handle button click
@@ -78,31 +83,33 @@ const HiringPostDetailInforTab = () => {
     //     }
     // }
     const handleConfirmAssign = async () => {
-        if (inputPrice < 0) {
-            addToast({ description: "Please enter a valid price", type: "error", duration: 5000 });
+        const price = inputPrice.trim() === "" ? 0 : Number(inputPrice);
+
+        if (isNaN(price) || price < 0) {
+            addToast({ description: "Hãy nhập giá phù hợp", type: "error", duration: 5000 });
             return;
         }
 
         try {
             // Call API to assign task
             if (user) {
-                await assignTaskAPI(postIdNumber, user.userId, `${user.firstName} ${user.lastName}`, inputPrice);
+                await assignTaskAPI(postIdNumber, user.userId, `${user.firstName} ${user.lastName}`, price);
             }
 
             // Show success toast
-            addToast({ description: "OK to assign task", type: "success", duration: 5000 });
+            addToast({ description: "Nhận đơn thành công", type: "success", duration: 5000 });
 
             // Update view
             setMainData((prev) => {
                 if (prev && user) {
-                    return { ...prev, staffId: user.userId, staffName: `${user.firstName} ${user.lastName}`, price: inputPrice };
+                    return { ...prev, staffId: user.userId, staffName: `${user.firstName} ${user.lastName}`, price };
                 }
                 return prev;
             });
 
             handleCloseModal();
         } catch (e) {
-            addToast({ description: "Fail to assign task", type: "error", duration: 5000 });
+            addToast({ description: "Nhận đơn thất bại", type: "error", duration: 5000 });
         }
     };
 
@@ -111,7 +118,7 @@ const HiringPostDetailInforTab = () => {
     const handleUploadCompleteFile = async () => {
         try {
             if (!selectedFile) {
-                addToast({ description: "Please select a file first", type: "warning", duration: 5000 });
+                addToast({ description: "Hãy chọn file", type: "warning", duration: 5000 });
                 return;
             }
 
@@ -119,7 +126,7 @@ const HiringPostDetailInforTab = () => {
             const response = await uploadCompleteFileAPI(postIdNumber, selectedFile);
 
             // Show success toast
-            addToast({ description: "OK to complete file", type: "success", duration: 5000 });
+            addToast({ description: "Thành công", type: "success", duration: 5000 });
 
             // Update view
             setMainData((prev) => {
@@ -129,7 +136,7 @@ const HiringPostDetailInforTab = () => {
                 return prev;
             });
         } catch (e) {
-            addToast({ description: "Fail to upload complete file", type: "error", duration: 5000 });
+            addToast({ description: "Thất bại khi tải file", type: "error", duration: 5000 });
         } finally {
             setSelectedFile(null);
         }
@@ -137,17 +144,17 @@ const HiringPostDetailInforTab = () => {
     //UPLOAD DEMO FILE
     const handleUploadDemoFile = async () => {
         try {
-            if (!selectedFile) {
-                addToast({ description: "Please select a file first", type: "warning", duration: 5000 });
+            if (!selectedDemoFile) {
+                addToast({ description: "Hãy chọn file", type: "warning", duration: 5000 });
                 return;
             }
 
             // Call API to assign task
-            const response = await uploadDemoFileAPI(postIdNumber, selectedFile);
+            const response = await uploadDemoFileAPI(postIdNumber, selectedDemoFile);
 
 
             // Show success toast
-            addToast({ description: "OK to demo file", type: "success", duration: 5000 });
+            addToast({ description: "Thành công", type: "success", duration: 5000 });
 
             // Update view
             setMainData((prev) => {
@@ -157,9 +164,9 @@ const HiringPostDetailInforTab = () => {
                 return prev;
             });
         } catch (e) {
-            addToast({ description: "Fail to upload demo file", type: "error", duration: 5000 });
+            addToast({ description: "Thất bại khi tải file", type: "error", duration: 5000 });
         } finally {
-            setSelectedFile(null);
+            setSelectedDemoFile(null);
         }
     };
 
@@ -172,7 +179,7 @@ const HiringPostDetailInforTab = () => {
                 window.location.href = paymentUrl;
             }
         } catch (e) {
-            addToast({ description: "Something wrong when checking out", type: "error", duration: 5000 });
+            addToast({ description: "Lỗi khi thanh toán", type: "error", duration: 5000 });
 
         }
     }
@@ -205,7 +212,7 @@ const HiringPostDetailInforTab = () => {
             try {
 
                 if (is_success === "1") {
-                    addToast({ description: "Checkout successfully", type: "success", duration: 5000 });
+                    addToast({ description: "Thanh toán thành công", type: "success", duration: 5000 });
                     const res = await updateStatusPaidAPI(postIdNumber);
                 }
 
@@ -228,7 +235,7 @@ const HiringPostDetailInforTab = () => {
     }
 
     if (!mainData) {
-        return <p className="text-center text-gray-500">No data available.</p>;
+        return <p className="text-center text-gray-500">Chưa có dữ liệu.</p>;
     }
 
 
@@ -241,7 +248,7 @@ const HiringPostDetailInforTab = () => {
                     {/* Book Image */}
                     <img
                         src={getRandomImage(mainData.requirementCateImg, mainData.bookImg)}
-                        alt="Book"
+                        alt="Sách"
                         className="w-full h-64 object-cover rounded-lg shadow-md"
                     />
 
@@ -249,12 +256,12 @@ const HiringPostDetailInforTab = () => {
                     <div className="flex items-center gap-6 mt-6">
                         <img
                             src={mainData.customerAvt || dummyAvtCustomer} // Provide a default avatar
-                            alt="Avatar"
+                            alt="Ảnh đại diện"
                             className="w-20 h-20 rounded-full border-4 border-gray-300 shadow-sm"
                         />
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-800">{mainData.title || "No title"}</h2>
-                            <p className="text-gray-500 text-lg">{mainData.customerName || "Anonymous"}</p>
+                            <h2 className="text-2xl font-bold text-gray-800">{mainData.title || "Không xác định"}</h2>
+                            <p className="text-gray-500 text-lg">{mainData.customerName || "Không xác định"}</p>
                         </div>
                     </div>
 
@@ -262,48 +269,43 @@ const HiringPostDetailInforTab = () => {
                     <div className="mt-6 space-y-6">
                         {/* Description */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Description</p>
+                            <p className="text-gray-500 font-semibold">Diễn tả</p>
                             <p className="text-gray-700 leading-relaxed p-4 bg-gray-100 rounded-lg">
-                                {mainData.description || "No description provided"}
+                                {mainData.description || "Không có diễn tả"}
                             </p>
                         </div>
 
                         {/* Theme */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Theme</p>
+                            <p className="text-gray-500 font-semibold">Chủ đề thiết kế</p>
                             <span className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-lg">
-                                {mainData.requirementCate || "No category"}
+                                {mainData.requirementCate || "Không xác định"}
                             </span>
                         </div>
 
                         {/* Price */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Price</p>
+                            <p className="text-gray-500 font-semibold">Giá</p>
                             <span className="px-3 py-1 text-sm font-medium text-black-700 bg-orange-100 rounded-lg">
-                                {mainData.price >= 0 ? mainData.price : "Undefined"}
+                                {mainData.price != null && mainData.price >= 0 ? `${mainData.price} VND` : "Chưa xác định"}
                             </span>
                         </div>
                         {/* Assigned To */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Assigned to</p>
-                            <p className="text-gray-700">{mainData.staffName || "Not assigned"}</p>
+                            <p className="text-gray-500 font-semibold">Nhân viên</p>
+                            <p className="text-gray-700">{mainData.staffName || "Chưa có"}</p>
                         </div>
 
                         {/* Created At */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Created at</p>
-                            <p className="text-gray-700">{mainData.createdAt ? mainData.createdAt.toString() : "Unknown date"}</p>
-                        </div>
-
-                        {/* Deleted At */}
-                        <div>
-                            <p className="text-gray-500 font-semibold">Deleted at</p>
-                            <p className="text-gray-700">{mainData.deletedAt ? mainData.deletedAt.toString() : "Not deleted yet"}</p>
+                            <p className="text-gray-500 font-semibold">Đăng tải</p>
+                            {/* {new Date(post.createdAt).toLocaleDateString()} */}
+                            <p className="text-gray-700">{mainData.createdAt ? new Date(mainData.createdAt).toLocaleDateString() : "Không xác định"}</p>
                         </div>
 
                         {/* Status as Tag */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Status</p>
+                            <p className="text-gray-500 font-semibold">Trạng thái</p>
                             <span className={`px-3 py-1 text-sm font-medium rounded-lg 
                                     ${mainData.status === "Completed"
                                     ? "text-green-700 bg-green-100"
@@ -313,45 +315,64 @@ const HiringPostDetailInforTab = () => {
                                             ? "text-yellow-700 bg-yellow-100"
                                             : "text-gray-700 bg-gray-100"
                                 }`}>
-                                {mainData.status.toUpperCase() || "Unknown"}
+                                {(() => {
+                                    if (mainData.status === "completed") {
+                                        return "HOÀN THÀNH";
+                                    } else if (mainData.status === "pending") {
+                                        return "ĐANG CHỜ";
+                                    } else if (mainData.status === "ready") {
+                                        return "SẴN SÀNG";
+                                    } else {
+                                        return "Không xác định";
+                                    }
+                                })()}
                             </span>
                         </div>
 
 
-                        {/* Category as Tag */}
+                        {/* Category as Tag
                         <div>
                             <p className="text-gray-500 font-semibold">Category</p>
                             <span className="px-3 py-1 text-sm font-medium text-purple-700 bg-purple-100 rounded-lg">
                                 {mainData.requirementCate || "No category"}
                             </span>
-                        </div>
+                        </div> */}
 
                         {/* Book Name */}
                         <div>
-                            <p className="text-gray-500 font-semibold">Book Name</p>
-                            <p className="text-gray-700 font-medium">{mainData.bookName || "Unknown Book"}</p>
+                            <p className="text-gray-500 font-semibold">Tựa sách</p>
+                            <p className="text-gray-700 font-medium">{mainData.bookName || "Không xác định sách"}</p>
                         </div>
                         {/* Some other attribute relating to types */}
-                        <div>
-                            <p className="text-gray-500 font-semibold">Types</p>
-                            <div className="flex flex-wrap gap-2 mt-1">
-                                <span className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-lg">
-                                    {mainData.fileType || "Unknown file type"}
-                                </span>
-                                <span className="px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-lg">
-                                    {mainData.sourceType || "Unknown source type"}
-                                </span>
-                                <span className="px-3 py-1 text-sm font-medium text-purple-700 bg-purple-100 rounded-lg">
-                                    {mainData.contentType || "Unknown content type"}
-                                </span>
+                        {(mainData.fileType || mainData.sourceType || mainData.contentType) && (
+                            <div>
+                                <p className="text-gray-500 font-semibold">Phân loại</p>
+                                <div className="flex flex-wrap gap-2 mt-1">
+                                    {mainData.fileType && (
+                                        <span className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-lg">
+                                            {mainData.fileType}
+                                        </span>
+                                    )}
+                                    {mainData.sourceType && (
+                                        <span className="px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-lg">
+                                            {mainData.sourceType}
+                                        </span>
+                                    )}
+                                    {mainData.contentType && (
+                                        <span className="px-3 py-1 text-sm font-medium text-purple-700 bg-purple-100 rounded-lg">
+                                            {mainData.contentType}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        )}
+
 
                         {/* Files region */}
                         <div className="mt-6 flex flex-wrap items-center gap-6">
                             {/* Demo File */}
                             <div className="flex-1 min-w-[200px]">
-                                <p className="text-gray-500 font-semibold mb-2">Demo File</p>
+                                <p className="text-gray-500 font-semibold mb-2">Bản xem trước</p>
                                 {mainData.demoFile ? (
                                     <a
                                         href={mainData.demoFile}
@@ -359,18 +380,18 @@ const HiringPostDetailInforTab = () => {
                                         rel="noopener noreferrer"
                                         className="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition-all"
                                     >
-                                        📘  View Demo File
+                                        📘  Xem bản xem trước
                                     </a>
                                 ) : (
                                     <span className="flex items-center gap-2 px-5 py-2 text-sm font-medium text-gray-500 bg-gray-200 rounded-lg shadow-sm">
-                                        ❌ Not Available
+                                        ❌ Chưa sẵn sàng
                                     </span>
                                 )}
                             </div>
 
                             {/* Complete File */}
                             <div className="flex-1 min-w-[200px]">
-                                <p className="text-gray-500 font-semibold mb-2">Complete File</p>
+                                <p className="text-gray-500 font-semibold mb-2">Bản hoàn chỉnh</p>
                                 {mainData.file && ((user?.roleId != 2) || mainData.status == 'completed')
                                     ? (
                                         <a
@@ -379,11 +400,11 @@ const HiringPostDetailInforTab = () => {
                                             rel="noopener noreferrer"
                                             className="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 transition-all"
                                         >
-                                            📂 View Complete File
+                                            📂 Xem bản hoàn chỉnh
                                         </a>
                                     ) : (
                                         <span className="flex items-center gap-2 px-5 py-2 text-sm font-medium text-gray-500 bg-gray-200 rounded-lg shadow-sm">
-                                            ❌ Not Available
+                                            ❌ Chưa sẵn sàng
                                         </span>
                                     )}
                             </div>
@@ -411,27 +432,43 @@ const HiringPostDetailInforTab = () => {
                     {/* Action buttons for : Staff role */}
                     {roleId !== 2 &&
                         (mainData.status === "pending" && !mainData.staffId ? (
-                            // <button onClick={handleAssignTaskToMe} className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`}>
-                            //     Assign Task To Me
-                            // </button>
                             <button onClick={handleOpenModal} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                                Assign Task To Me
+                                Nhận đơn
                             </button>
                         ) : (
-                            <div className="flex flex-col gap-4 p-4 border rounded-lg shadow-md w-fit bg-white">
-                                <div className="flex items-center gap-2">
-                                    <input type="file" onChange={handleFileChange} className="border p-2 rounded-md" />
-                                    <button onClick={handleUploadCompleteFile} className={`${buttonClasses} bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md`}>
-                                        Upload File
-                                    </button>
+                            (mainData.status !== "completed" && !mainData.file) && (
+                                <div className="flex flex-col gap-4 p-4 border rounded-lg shadow-md w-fit bg-white">
+                                    {mainData.status === "ready" && (
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="file"
+                                                onChange={handleFileChange}
+                                                className="border p-2 rounded-md"
+                                            />
+                                            <button
+                                                onClick={handleUploadCompleteFile}
+                                                className={`${buttonClasses} bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md`}
+                                            >
+                                                Tải file hoàn chỉnh
+                                            </button>
+                                        </div>
+                                    )}
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="file"
+                                            onChange={handleDemoFileChange}
+                                            className="border p-2 rounded-md"
+                                        />
+                                        <button
+                                            onClick={handleUploadDemoFile}
+                                            className={`${buttonClasses} bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md`}
+                                        >
+                                            Tải file demo
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <input type="file" onChange={handleFileChange} className="border p-2 rounded-md" />
-                                    <button onClick={handleUploadDemoFile} className={`${buttonClasses} bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md`}>
-                                        Upload Demo File
-                                    </button>
-                                </div>
-                            </div>
+                            )
+
 
                         ))}
                 </div>
@@ -444,7 +481,7 @@ const HiringPostDetailInforTab = () => {
                         <input
                             type="number"
                             value={inputPrice}
-                            onChange={(e) => setInputPrice(Number(e.target.value))}
+                            onChange={(e) => setInputPrice(e.target.value)}
                             className="w-full p-2 border rounded mb-4"
                             placeholder="Enter price"
                         />
@@ -459,6 +496,7 @@ const HiringPostDetailInforTab = () => {
                         </div>
                     </div>
                 </div>
+
             )}
         </div>
 

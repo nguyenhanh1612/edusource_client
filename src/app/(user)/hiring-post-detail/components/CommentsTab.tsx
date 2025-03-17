@@ -34,7 +34,7 @@ const HiringPostDetailCommentsTab = () => {
     const handleCreateComment = async () => {
         if (!newComment.trim()) return;
         if (!user) {
-            alert("You need to be logged in to post a comment.");
+            alert("Cần phải đăng nhập trước !");
             return;
         }
 
@@ -51,7 +51,7 @@ const HiringPostDetailCommentsTab = () => {
             setComments([...comments, commentData]);
             setNewComment("");
         } catch (error) {
-            console.error("Error posting comment:", error);
+            console.error("Lỗi khi tạo bình luận:", error);
         }
     };
 
@@ -65,7 +65,7 @@ const HiringPostDetailCommentsTab = () => {
 
     return (
         <div className="w-full min-h-[75vh] p-6 bg-white shadow-lg rounded-lg mt-10">
-            <h2 className="text-2xl font-bold mb-6">Comments</h2>
+            <h2 className="text-2xl font-bold mb-6">Bàn luận</h2>
             <div className="max-h-[400px] overflow-y-auto space-y-4">
                 {comments.map((comment) => (
                     <div key={comment.id} className="p-4 bg-gray-100 rounded-lg shadow-sm">
@@ -81,7 +81,7 @@ const HiringPostDetailCommentsTab = () => {
                 <textarea
                     className="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     rows={4}
-                    placeholder="Write a comment..."
+                    placeholder="Viết bình luận vào đây ..."
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                 />
@@ -89,7 +89,7 @@ const HiringPostDetailCommentsTab = () => {
                     className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all"
                     onClick={handleCreateComment}
                 >
-                    Post Comment
+                    Gửi
                 </button>
             </div>
         </div>

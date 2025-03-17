@@ -47,7 +47,7 @@ const CRChatBot = () => {
             {isOpen && (
                 <div className="w-80 h-96 bg-white shadow-lg rounded-lg flex flex-col overflow-hidden">
                     <div className="bg-blue-500 text-white p-3 flex justify-between">
-                        <span className="font-bold">ChatBot</span>
+                        <span className="font-bold">Chat-Edusource</span>
                         <button onClick={toggleChat} className="text-white">×</button>
                     </div>
                     <div className="flex-1 p-3 overflow-y-auto space-y-2">

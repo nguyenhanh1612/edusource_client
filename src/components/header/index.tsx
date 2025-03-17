@@ -108,6 +108,11 @@ const Header: React.FC = () => {
         >
           Liên hệ
         </Link>
+
+        <div>
+          <BookDropdown books={books} activeTab={activeTab} setActiveTab={setActiveTab} totalPages={totalPages} />
+        </div>
+
         {link && (
           <Link
             href={link.href}
@@ -117,10 +122,6 @@ const Header: React.FC = () => {
             {link.label}
           </Link>
         )}
-
-        <div>
-          <BookDropdown books={books} activeTab={activeTab} setActiveTab={setActiveTab} totalPages={totalPages} />
-        </div>
 
       </nav>
       <div className="flex items-center space-x-6">
