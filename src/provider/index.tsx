@@ -24,7 +24,7 @@ export default function Provider({
     return (
         <StoreProvider>
             <ReactQueryProvider>
-                <GoogleOAuthProvider clientId="993818907153-7sre2c2eu9psctd7h253phjlif4ssokk.apps.googleusercontent.com">
+                <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
                     <Message>{children}</Message>
                 </GoogleOAuthProvider>
             </ReactQueryProvider>

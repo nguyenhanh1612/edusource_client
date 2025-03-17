@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/stores/store";
 import { isTMeta } from "@/utils/compare";
 import { loginGoogle } from "@/services/auth/api-services";
 import { closeBackdrop, openBackdrop } from "@/stores/state-slice";
+import { setCart } from "@/stores/cart-slice";
 
 export default function useLoginGoogle() {
   const dispatch = useAppDispatch();
@@ -32,6 +33,20 @@ export default function useLoginGoogle() {
         );
         // Save auth profile in redux storage
         dispatch(loginUser(authProfile));
+
+        const cartBackup = localStorage.getItem("cartBackup");
+        if (cartBackup) {
+          try {
+            const parsedCart = JSON.parse(cartBackup);
+            if (Array.isArray(parsedCart.items)) {
+              dispatch(setCart(parsedCart)); 
+            }
+            localStorage.removeItem("cartBackup"); 
+          } catch (error) {
+            console.error("Lỗi khi khôi phục giỏ hàng:", error);
+          }
+        }
+
         router.push("/");
       } catch (error: unknown) {
         if (isTMeta(error)) {
