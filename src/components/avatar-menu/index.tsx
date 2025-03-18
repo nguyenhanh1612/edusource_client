@@ -77,6 +77,7 @@ export default function AvatarMenu({ onCloseTooltip }: AvatarMenuProps) {
           {userState.user?.firstName} {userState.user?.lastName}
         </div>
       </div>
+      
       {userState.user?.roleId === Roles[1]?.id && (
         <ul
           className="py-2 text-sm text-gray-700"

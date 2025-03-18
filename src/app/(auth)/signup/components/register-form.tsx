@@ -24,7 +24,7 @@ export default function RegisterForm() {
 
   return (
     <div>
-      <div className="w-[70%] px-5 py-4 pt-10 m-auto">
+      <div className="w-[80%] px-5 py-4 pt-10 m-auto">
         <h2 className="text-[1.5rem] leading-8 font-medium">Đăng ký</h2>
         <span className="text-gray-500 inline-block mt-2">
           Đăng ký ngay hôm nay để mở khóa hàng ngàn tài liệu tiếng Anh chất lượng, giúp bạn dễ dàng tạo dựng bài học hiệu quả!

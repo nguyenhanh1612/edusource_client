@@ -22,7 +22,7 @@ export default function LoginForm() {
 
   return (
     <div>
-      <div className="w-[70%] px-5 py-4 m-auto">
+      <div className="w-[80%] px-5 py-4 m-auto">
         <h2 className="text-[1.5rem] leading-8 font-medium">Đăng nhập</h2>
         <span className="text-gray-500 inline-block mt-2">
           Khám phá kho tài liệu tiếng Anh cấp 1 được thiết kế sinh động, dễ hiểu – giải pháp tối ưu giúp bé học giỏi hơn mỗi ngày!
@@ -56,8 +56,8 @@ export default function LoginForm() {
           <div className="flex flex-col gap-y-5">
             <button
               className={`mt-2 block w-[100%] rounded-md py-2 ${Object.keys(errors).length === 0
-                  ? "bg-[#7a3cdd]"
-                  : "bg-[#C3B1E1]"
+                ? "bg-[#7a3cdd]"
+                : "bg-[#C3B1E1]"
                 }`}
             >
               <span className="text-base text-gray-200">Đăng nhập</span>
@@ -65,15 +65,15 @@ export default function LoginForm() {
             <div className="flex items-center justify-between gap-3">
               <div
                 className={`w-[50%] h-1 rounded-full ${Object.keys(errors).length === 0
-                    ? "bg-[#7a3cdd]"
-                    : "bg-[#C3B1E1]"
+                  ? "bg-[#7a3cdd]"
+                  : "bg-[#C3B1E1]"
                   }`}
               ></div>
               <span className="text-gray-400">HOẶC</span>
               <div
                 className={`w-[50%] h-1 rounded-full ${Object.keys(errors).length === 0
-                    ? "bg-[#7a3cdd]"
-                    : "bg-[#C3B1E1]"
+                  ? "bg-[#7a3cdd]"
+                  : "bg-[#C3B1E1]"
                   }`}
               ></div>
             </div>
@@ -97,7 +97,7 @@ export default function LoginForm() {
             </button>
             <div className="flex justify-between">
               <p className="text-[1rem]">
-              Lần đầu sử dụng EduSource?
+                Lần đầu sử dụng EduSource?{" "}
                 <Link href="/signup">
                   <span className="font-bold cursor-pointer">Đăng ký</span>
                 </Link>

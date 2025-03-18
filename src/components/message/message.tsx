@@ -26,10 +26,13 @@ export default function Message({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const sampleQuestions = [
+    { question: "EduSource có những loại tài liệu nào?", answer: "Xin chào! Bên EduSource cung cấp một số tài liệu với các thể loại như là slide, bài tập và bài kiểm tra" },
+    { question: "Tài liệu có hỗ trợ file PDF hoặc PowerPoint không?", answer: "Có! Bên EduSource có hỗ trợ cung cấp tài liệu với các định dạng như PDF, PowerPoint, Zip và Rar" },
     { question: "Chào bạn", answer: "Xin chào! Tôi có thể giúp gì cho bạn?" },
     { question: "Bạn có thể giúp tôi không?", answer: "Tất nhiên! Bạn cần hỗ trợ gì?" },
     { question: "Làm sao để mua khóa học?", answer: "Bạn có thể mua khóa học bằng cách nhấn vào nút 'Mua ngay' trên trang khóa học." },
     { question: "Tôi có thể thanh toán bằng cách nào?", answer: "Bạn có thể thanh toán qua thẻ tín dụng, Momo hoặc chuyển khoản ngân hàng." },
+    { question: "Giới thiệu về trang web EduSource", answer: "EduSource là nền tảng chuyên cung cấp tài liệu giảng dạy tiếng Anh chất lượng cao cho giáo viên và học viên. Chúng tôi mang đến các bài giảng PowerPoint, giáo trình PDF, bài tập thực hành và nhiều tài liệu khác, giúp việc giảng dạy và học tập trở nên dễ dàng và hiệu quả hơn." },
   ];
 
   const handleCloseMessage = () => {
@@ -272,7 +275,7 @@ export default function Message({
                         </div>
                       </figure>
                       <span className="text-[15px] whitespace-nowrap">
-                        Chat with AI
+                        Chat với AI
                       </span>
                     </div>
                     <div
@@ -297,7 +300,7 @@ export default function Message({
                           />
                         </div>
                       </figure>
-                      <span className="text-[15px]">Chat to Staff</span>
+                      <span className="text-[15px]">Chat với nhân viên</span>
                     </div>
                   </div>
                 )}

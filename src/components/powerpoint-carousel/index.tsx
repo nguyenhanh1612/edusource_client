@@ -39,6 +39,14 @@ import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 
 export default function PowerPoint() {
+  const images = [
+    "/images/book1.png",
+    "/images/book2.png",
+    "/images/book3.png",
+    "/images/book4.png",
+    "/images/book5.jpg",
+  ];
+
   return (
     <div className="flex justify-center items-center h-fit bg-white w-fit">
       <Swiper
@@ -47,9 +55,12 @@ export default function PowerPoint() {
         modules={[EffectCards]}
         className="w-96 h-96"
       >
-        {[...Array(5)].map((_, index) => (
-          <SwiperSlide key={index} className="flex items-center justify-center rounded-lg bg-gray-800 text-white text-xl font-bold">
-            <img src={`/images/home11.png`} alt={`Slide ${index + 1}`} className="w-full h-full object-cover rounded-lg" />
+        {images.map((image, index) => (
+          <SwiperSlide
+            key={index}
+            className="flex items-center justify-center rounded-lg bg-gray-800 text-white text-xl font-bold"
+          >
+            <img src={image} alt={`Slide ${index + 1}`} className="w-full h-full object-cover rounded-lg" />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -81,6 +81,13 @@ function AllPowerPoint() {
           ))}
         </div>
       )}
+      {!isPending && filteredProducts.length === 0 && (
+        <div className="flex flex-col items-center justify-center mt-10">
+          <p className="text-gray-600 text-lg font-medium">
+            Hiện tại chưa có sản phẩm nào. Vui lòng quay lại sau nhé!
+          </p>
+        </div>
+      )}
     </div>
   );
 }

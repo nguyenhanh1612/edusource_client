@@ -9,12 +9,12 @@ export const Genders = [
 
 export const ListMessages = [
   {
-    value: "Có bao nhiêu hình thức quyên góp?",
+    value: "EduSource có những loại tài liệu nào?",
   },
   {
-    value: "Quyên góp bằng tiền mặt!",
+    value: "Làm sao để mua tài liệu học tiếng Anh?",
   },
   {
-    value: "Quyên góp bằng chuyển khoản!",
+    value: "Tài liệu có hỗ trợ file PDF hoặc PowerPoint không?",
   },
 ];

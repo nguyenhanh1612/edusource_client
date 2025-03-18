@@ -10,10 +10,12 @@ import FeedbackCarousel from "@/components/feedback-carousel";
 import useGetAllProduct from "./hooks/useGetAllProduct";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import useGetProductByIdByUser from "../detailslide/hooks/useGetProductByIdByUser";
-import { useAppSelector } from "@/stores/store";
+import { useAppDispatch, useAppSelector } from "@/stores/store";
 import useGetAllProductByUser from "./hooks/useGetAllProductsByUser";
 import PowerPoint from "@/components/powerpoint-carousel";
 import { Backdrop } from "@/components/backdrop";
+import { openMessageUser } from "@/stores/difference-slice";
+import { FaCommentDots } from "react-icons/fa";
 
 export default function HomePage() {
   const userState = useAppSelector((state) => state.userSlice);
@@ -362,26 +364,28 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          ref={ref8}
-          initial="hidden"
-          animate={inView8 ? "visible" : "hidden"}
-          variants={sectionVariants}
-          transition={{ duration: 0.7 }}
-          className="p-8 bg-[#669bbc] w-full"
-        >
-          <Carousel opts={{ align: "start" }} className="w-full max-w-7xl mx-auto">
-            <CarouselContent className="flex-nowrap">
-              {products.map((product) => (
-                <CarouselItem className="md:basis-1/2 lg:basis-1/4 px-6 py-4 overflow-visible" key={product.id}>
-                  <CardComponent slideId={product.id} product={product} setIsPending={setIsPending}/>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </motion.div>
+        {products.length > 0 && (
+          <motion.div
+            ref={ref8}
+            initial="hidden"
+            animate={inView8 ? "visible" : "hidden"}
+            variants={sectionVariants}
+            transition={{ duration: 0.7 }}
+            className="p-8 bg-[#669bbc] w-full"
+          >
+            <Carousel opts={{ align: "start" }} className="w-full max-w-7xl mx-auto">
+              <CarouselContent className="flex-nowrap">
+                {products.map((product) => (
+                  <CarouselItem className="md:basis-1/2 lg:basis-1/4 px-6 py-4 overflow-visible" key={product.id}>
+                    <CardComponent slideId={product.id} product={product} setIsPending={setIsPending} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </motion.div>
+        )}
 
         <div className="bg-[url('/images/home2.png')] ">
           <motion.div
