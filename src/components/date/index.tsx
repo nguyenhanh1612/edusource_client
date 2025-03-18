@@ -5,9 +5,15 @@ const DateTimeDisplay = ({ dateTime }: { dateTime: string }) => {
 
     try {
         const { day, month, year, hours, minutes, seconds } = parseDateTimeString(dateTime);
-        return <span>{`${day}-${month}-${year} ${hours}:${minutes}:${seconds}`}</span>;
+        const formatNumber = (num: number) => num.toString().padStart(2, "0");
+        return (
+            <span>
+                {`${formatNumber(day)}-${formatNumber(month)}-${year} ${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`}
+            </span>
+        );
     } catch (error) {
         return <span>Invalid Date</span>;
     }
 };
-export default DateTimeDisplay; 
+
+export default DateTimeDisplay;

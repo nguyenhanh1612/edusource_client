@@ -12,12 +12,15 @@ export function parseDateTimeString(dateTimeString: string): {
     throw new Error("Invalid date time string");
   }
 
+  const vietnamOffset = 7 * 60 * 60 * 1000; 
+  const localTime = new Date(dateObject.getTime() + vietnamOffset);
+
   return {
-    day: dateObject.getDate(),
-    month: dateObject.getMonth() + 1,
-    year: dateObject.getFullYear(),
-    hours: dateObject.getHours(),
-    minutes: dateObject.getMinutes(),
-    seconds: dateObject.getSeconds(), // 🔹 Thêm giây
+    day: localTime.getDate(),
+    month: localTime.getMonth() + 1,
+    year: localTime.getFullYear(),
+    hours: localTime.getHours(),
+    minutes: localTime.getMinutes(),
+    seconds: localTime.getSeconds(),
   };
 }

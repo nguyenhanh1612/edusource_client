@@ -24,8 +24,8 @@ export default function BasicTableOne() {
   const [totalPages, setTotalPages] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(2);
   const [totalOrders, setTotalOrders] = useState(0);
-  const [SortType, setSortType] = useState<FilterSortType>(FilterSortType.TotalAmount);
-  const [IsSortASC, setIsSortASC] = useState<boolean>(true);
+  const [SortType, setSortType] = useState<FilterSortType>(FilterSortType.PaidDate);
+  const [IsSortASC, setIsSortASC] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchOrders() {
