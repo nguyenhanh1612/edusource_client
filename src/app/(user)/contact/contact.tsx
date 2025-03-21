@@ -8,7 +8,7 @@ export default function Contact() {
     return (
         <div>
             <section>
-                <div className="relative w-full h-96"><img className="absolute h-full w-full object-cover object-center" src="https://bucket.material-tailwind.com/magic-ai/bbe71871de8b4d6f23bb0f17a6d5aa342f3dea72677ba7238b18defa3741244d.jpg" alt="nature image" />
+                <div className="relative w-full h-96"><img className="absolute h-full w-full object-cover object-center" src="https://tienganhtieuhoc.edu.vn/images/home/banner.png" alt="nature image" />
                     <div className="absolute inset-0 h-full w-full bg-black/50"></div>
                     <div className="relative pt-28 text-center">
                         <h2 className="block antialiased tracking-normal font-sans font-semibold leading-[1.3] text-white mb-4 text-3xl lg:text-4xl mt-6">Thông tin liên hệ</h2>
@@ -22,23 +22,23 @@ export default function Contact() {
                                 <div className="flex items-center gap-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-6 w-6">
                                     <MdLocationPin className='text-2xl' />
                                 </svg>
-                                    <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">123 Main Street, Los Angeles, CA</p>
+                                    <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">Thành phố Hồ Chí Minh, Việt Nam</p>
                                 </div>
                                 <div className="flex items-center gap-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-6 w-6">
                                     <FaPhone className='text-2xl' />
                                 </svg>
-                                    <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">+1 123 456 7890</p>
+                                    <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">0918777437</p>
                                 </div>
                                 <div className="flex items-center gap-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-6 w-6">
                                     <MdEmail className='text-2xl' />
                                 </svg>
-                                    <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">info@lahospital.com</p>
+                                    <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">edusource@gmail.com</p>
                                 </div>
-                                <div className="flex items-center gap-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-6 w-6">
+                                {/* <div className="flex items-center gap-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-6 w-6">
                                     <HiTicket className='text-2xl'/>
                                 </svg>
                                     <p className="block antialiased font-sans text-base leading-relaxed text-inherit font-bold">Open Support Ticket </p>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="py-4">
                                 <form action="#">

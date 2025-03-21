@@ -78,17 +78,17 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
 
   const [reviews, setReviews] = useState([
     {
-      id: 1,
-      name: "John Doe",
-      avatar: "https://readymadeui.com/team-2.webp",
-      date: "21 tháng 10 năm 2024",
-      rating: 3,
-      comment: "The service was amazing...",
-    },
+      "id": 1,
+      "name": "Trần Minh Đức",
+      "avatar": "https://randomuser.me/api/portraits/men/10.jpg",
+      "date": "21 tháng 2 năm 2025",
+      "rating": 5,
+      "comment": "Tài liệu rất bổ ích và đầy đủ, đa dạng"
+    }    
   ]);
 
   const addReview = (newReview: any) => {
-    setReviews((prevReviews) => [newReview, ...prevReviews]); // Thêm mới vào đầu danh sách
+    setReviews((prevReviews) => [newReview, ...prevReviews]); 
   };
 
   return (
@@ -239,10 +239,14 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
             <div className="space-y-8">
               <div className="flex flex-col py-16 items-center justify-center bg-[#fdf0d5] shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] w-[70%] rounded-md space-y-4 mx-auto">
                 <h3 className="text-4xl font-semibold text-[#219ebc]">
-                  {(data.price).toLocaleString("vi-VN")}<sup className="text-2xl">đ</sup>
+                  {data.price.toLocaleString("vi-VN")}<sup className="text-2xl">đ</sup>
                 </h3>
-                <p className="mt-2 text-sm text-gray-500 leading-relaxed">Giá niêm yết:  VND</p>
-                <p className="mt-2 text-sm leading-relaxed text-red-500">Bạn tiết kiệm:  VND</p>
+                <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+                  Giá niêm yết: <s>{(data.price * 1.2).toLocaleString("vi-VN")} đ</s>
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-red-500">
+                  Bạn tiết kiệm: {(data.price * 0.2).toLocaleString("vi-VN")} đ
+                </p>
                 {!(userState.user?.roleId === Roles[2].id) && (
                   data.isPurchased ? (
                     <a
@@ -263,26 +267,16 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
                   )
                 )}
               </div>
-              <div className="flex flex-col justify-center items-center text-white space-y-4">
-                <span>Chia sẻ tài nguyên này</span>
-                <span className="flex gap-4">
-                  <LiaFacebookF />
-                  <PiThreadsLogo />
-                  <PiInstagramLogo />
-                </span>
-                <span className="flex items-center gap-2"><CiFlag1 />Báo cáo tài nguyên này cho EduSource</span>
-              </div>
             </div>
           </div>
         </div>
-
         <div className="px-20">
           <div className="rounded-full bg-white p-4 flex items-center gap-4 mt-8">
             <div className="ml-4">
-              <img src="/images/about1.jpg" alt="" className="rounded-full w-14 h-14" />
+              <img src="/images/logo1.png" alt="" className="rounded-full w-14 h-14" />
             </div>
             <div className="flex flex-col">
-              <strong>Suke</strong>
+              <strong>EduSource</strong>
               <div className="flex items-center gap-2">
                 <span>7k người theo dõi</span>
                 <span><FaRegStar /></span>

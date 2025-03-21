@@ -150,7 +150,7 @@ function BookDetail({ bookId }: BookDetailProps) {
                     </div>
                 )}
 
-                <div>
+                {/* <div>
                     <h3 className="text-lg font-medium text-[#fb8500]">Bài học</h3>
                     <div className="flex items-center space-x-2">
                         <Checkbox id="terms" />
@@ -161,7 +161,7 @@ function BookDetail({ bookId }: BookDetailProps) {
                             Bài 1
                         </label>
                     </div>
-                </div>
+                </div> */}
 
 
                 <div>
@@ -210,7 +210,7 @@ function BookDetail({ bookId }: BookDetailProps) {
 
 
             <div className="col-span-2 md:col-span-2 bg-[#add7f6] p-4 shadow-lg rounded-lg mt-32">
-                <h2 className="text-2xl font-semibold mb-4">Content</h2>
+                <h2 className="text-2xl font-semibold mb-4">Sản phẩm</h2>
 
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

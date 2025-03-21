@@ -94,13 +94,13 @@ export default function AdminSidebar() {
                             </Link>
                         </li>
 
-                        <li>
+                        {/* <li>
                             <Link href="/admin/manage-users" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
                                 <Users className="size-5" />
 
                                 <span className={`${staffState.openSidebar || isMobile ? "block" : "hidden"}`}>Quản lí người dùng</span>
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </aside>

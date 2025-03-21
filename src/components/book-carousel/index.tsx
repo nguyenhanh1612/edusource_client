@@ -112,7 +112,7 @@ export function BookDropdown({ books, activeTab, setActiveTab, totalPages }: Boo
                         ))}
                     </div>
 
-                    <div className="flex-1">
+                    <div className="flex-1 ">
                         {Object.entries(groupedBooks).map(([category, books]) => {
                             const currentIndex = getCategoryIndex(Number(category));
                             const booksToDisplay = books.slice(currentIndex, currentIndex + 3);

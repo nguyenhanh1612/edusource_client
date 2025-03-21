@@ -417,7 +417,7 @@ export default function HomePage() {
                 Các bài giảng điện tử được trình bày với  bố cục rõ ràng, hình minh họa sống động và trò chơi, và các tệp nghe tích hợp để tạo ra cảm giác trực quan trong giảng dạy.
               </p>
               <span className="text-gray-500 text-left text-xl">
-                Người thực hiện: <span className="text-[#fb8500] font-bold">Jake</span>
+                Người thực hiện: <span className="text-[#fb8500] font-bold">EduSource</span>
               </span>
             </div>
           </motion.div>
