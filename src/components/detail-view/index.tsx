@@ -203,7 +203,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
                       ✖
                     </button>
                     <div className="relative w-[80%] h-[95%] bg-white shadow-lg overflow-hidden">
-                      <PdfViewer fileUrl={"https://res.cloudinary.com/dc4eascme/raw/upload/v1742640380/edusource/I-LEARN-SMART-START-4-SEMESTER-I_demo.pdf"} isPurchased={data.isPurchased} />
+                      <PdfViewer fileUrl={data.fileUrl} isPurchased={data.isPurchased} />
                     </div>
                   </div>
                 )}
