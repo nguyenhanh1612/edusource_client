@@ -22,7 +22,7 @@ function UploadFile() {
     const handleFormSubmit = (data: CreateProductBodyType) => {
         const formattedData: REQUEST.TCreateProduct = {
             ...data,
-            unit: data.unit,
+            unit: data.unit ?? 0,
             size: fileSize,
             category: category.id,
             contentType: content.id,
@@ -48,6 +48,7 @@ function UploadFile() {
     const [selectedFileDemo, setSelectedFileDemo] = useState<File | null>(null);
     const [books, setBooks] = useState<API.Book[]>([]);
     const [selectedBook, setSelectedBook] = useState<string>("");
+    const [isReviewSelected, setIsReviewSelected] = useState(false);
 
     const fetchAllBooks = async () => {
         let allBooks: API.Book[] = [];
@@ -186,13 +187,20 @@ function UploadFile() {
                                 const selectedContent = contentType.find(c => c.id === Number(e.target.value));
                                 setContent(selectedContent || contentType[0]);
                                 setValue("contentType", selectedContent?.id ?? 0);
+                                setIsReviewSelected(selectedContent?.id === 1); // 1 là id của "Review"
+
+                                // Nếu chọn "Review", gán unit = 0
+                                if (selectedContent?.id === 1) {
+                                    setValue("unit", 0); // Gán unit = 0
+                                } else {
+                                    setValue("unit", undefined); // Nếu không phải Review, xóa giá trị unit
+                                }
                             }}
                             className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                         >
                             <option value="0">Unit</option>
                             <option value="1">Review</option>
                         </select>
-
                         {errors.contentType && <p className="text-red-500 text-xs">{errors.contentType.message}</p>}
                     </div>
 
@@ -216,17 +224,18 @@ function UploadFile() {
                         {errors.uploadType && <p className="text-red-500 text-xs">{errors.uploadType.message}</p>}
                     </div>
 
-                    <div className="grid grid-cols-1 mt-5 mx-7">
-                        <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Unit</label>
-                        <input
-                            {...register("unit", { valueAsNumber: true })}
-                            className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-
-                            step="any"
-                            placeholder="Unit"
-                        />
-                        {errors.unit && <p className="text-red-500 text-xs">{errors.unit.message}</p>}
-                    </div>
+                    {!isReviewSelected && (
+                        <div className="grid grid-cols-1 mt-5 mx-7">
+                            <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Unit</label>
+                            <input
+                                {...register("unit", { valueAsNumber: true })}
+                                className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                step="1"
+                                placeholder="Unit"
+                            />
+                            {errors.unit && <p className="text-red-500 text-xs">{errors.unit.message}</p>}
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-1 mt-5 mx-7">
                         <label className="uppercase md:text-sm text-xs text-gray-500 font-semibold">Số trang</label>
