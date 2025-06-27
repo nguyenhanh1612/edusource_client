@@ -365,7 +365,7 @@ export function DetailView({ data, onAddToCart, isAddingToCart }: DetailViewProp
         {data.isPurchased && (
           <div className="px-12 py-4">
             <h3 className="font-bold text-lg">Viết đánh giá của bạn</h3>
-            <ReviewForm addReview={addReview} />
+            <ReviewForm productId={data.id} addReview={addReview} />
           </div>
         )}
       </div>

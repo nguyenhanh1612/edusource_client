@@ -23,7 +23,6 @@ export function useLoginForm() {
   const router = useRouter();
   const [typePassword, setTypePassword] = useState<boolean>(false);
   const { mutate, isPending } = useServiceLogin();
-
   const dispatch = useDispatch();
   const { getAllProductCartApi } = useGetAllProductCart();
   const userState = useAppSelector((state) => state.userSlice);

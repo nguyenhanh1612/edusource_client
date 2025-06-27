@@ -33,7 +33,7 @@ function BookDetail({ bookId }: BookDetailProps) {
     const hasReviewContent = products.some(product => product.contentType === 1);
     const router = useRouter();
 
-    useEffect(() => {
+    useEffect(() => { 
         if (!bookId) return;
 
         const fetchProducts = async () => {
@@ -208,11 +208,8 @@ function BookDetail({ bookId }: BookDetailProps) {
                 </div>
             </div>
 
-
             <div className="col-span-2 md:col-span-2 bg-[#add7f6] p-4 shadow-lg rounded-lg mt-32">
                 <h2 className="text-2xl font-semibold mb-4">Sản phẩm</h2>
-
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {isPending ? (
                         <div>Loading products...</div>
