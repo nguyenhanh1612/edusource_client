@@ -1,5 +1,5 @@
 REVIEWBOARD_URL = "https://rbcommons.com/s/SWP_ReviewBoard_Demo/"
 REPOSITORY = "demo-rb"
 REPOSITORY_TYPE = "git"
-BRANCH = "review/test-rbt-clean"
+BRANCH = "main"
 LAND_DEST_BRANCH = "main"
